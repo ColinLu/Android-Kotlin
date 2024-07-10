@@ -4,15 +4,15 @@ plugins {
 }
 
 android {
-    namespace = "com.colin.android.demo.kotlin"
-    compileSdk = 34
+    namespace = libs.versions.applicationID.get()
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.colin.android.demo.kotlin"
-        minSdk = 31
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = libs.versions.applicationID.get()
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -21,8 +21,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -39,7 +38,7 @@ android {
 }
 
 dependencies {
-
+//    implementation("com.github.ColinLu:Android-Java:0.2.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -48,6 +47,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
+
+    implementation(project(":Base"))
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
