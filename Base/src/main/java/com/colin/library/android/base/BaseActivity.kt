@@ -23,7 +23,7 @@ abstract class BaseActivity : AppCompatActivity() {
     fun setContentView(view: View?, savedInstanceState: Bundle?) {
         super.setContentView(view)
         initView(savedInstanceState)
-        initData(null)
+        initData(intent?.extras)
     }
 
     override fun onResume() {
