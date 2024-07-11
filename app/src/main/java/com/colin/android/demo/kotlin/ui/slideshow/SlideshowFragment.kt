@@ -1,42 +1,21 @@
 package com.colin.android.demo.kotlin.ui.slideshow
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.colin.android.demo.kotlin.databinding.FragmentSlideshowBinding
+import com.colin.android.demo.kotlin.app.AppFragment
+import com.colin.android.demo.kotlin.createModel
+import com.colin.android.demo.kotlin.databinding.FragmentBinding
 
-class SlideshowFragment : Fragment() {
+class SlideshowFragment : AppFragment<FragmentBinding, SlideshowViewModel>() {
 
-    private var _binding: FragmentSlideshowBinding? = null
+    override val model: SlideshowViewModel by lazy { createModel(this) }
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
-    private val binding get() = _binding!!
+    override fun initView(savedInstanceState: Bundle?) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        val slideshowViewModel =
-            ViewModelProvider(this).get(SlideshowViewModel::class.java)
-
-        _binding = FragmentSlideshowBinding.inflate(inflater, container, false)
-        val root: View = binding.root
-
-        val textView: TextView = binding.textSlideshow
-        slideshowViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    override fun initData(bundle: Bundle?) {
+        model.text.observe(this) {
+            binding.text.text = it
+        }
     }
 }

@@ -17,7 +17,9 @@ minSdk = "31"
 targetSdk = "34"
 versionCode = "1"
 versionName = "0.0.1"
-app_id = "com.colin.android.demo.kotlin"
+applicationID = "com.colin.android.demo.kotlin"
+viewbinding = "8.5.0"
+databindingCompilerCommon = "8.5.0"
 
 
 
@@ -33,6 +35,8 @@ androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecy
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+androidx-viewbinding = { group = "androidx.databinding", name = "viewbinding", version.ref = "viewbinding" }
+androidx-databinding-compiler-common = { group = "androidx.databinding", name = "databinding-compiler-common", version.ref = "databindingCompilerCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

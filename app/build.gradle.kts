@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.colin.android.demo.kotlin"
+    namespace = libs.versions.applicationID.get()
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.colin.android.demo.kotlin"
+        applicationId = libs.versions.applicationID.get()
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
@@ -21,8 +21,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -39,6 +38,7 @@ android {
 }
 
 dependencies {
+//    implementation("com.github.ColinLu:Android-Java:0.2.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

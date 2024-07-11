@@ -29,14 +29,17 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    compileOnly(libs.androidx.core.ktx)
+    compileOnly(libs.androidx.appcompat)
+//    compileOnly(libs.material)
+//    compileOnly(libs.androidx.lifecycle.livedata.ktx)
+    compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
+    testCompileOnly(libs.junit)
+    androidTestCompileOnly(libs.androidx.junit)
+    androidTestCompileOnly(libs.androidx.espresso.core)
 }
