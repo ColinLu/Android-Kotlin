@@ -29,6 +29,9 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 
 }
 
@@ -36,6 +39,7 @@ dependencies {
 
     compileOnly(libs.androidx.core.ktx)
     compileOnly(libs.androidx.appcompat)
+    compileOnly(libs.androidx.recyclerview)
 //    compileOnly(libs.material)
 //    compileOnly(libs.androidx.lifecycle.livedata.ktx)
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)

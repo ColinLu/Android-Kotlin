@@ -1,6 +1,5 @@
 package com.colin.android.demo.kotlin.app
 
-import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,37 +9,33 @@ import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseFragment
 import java.lang.reflect.ParameterizedType
 
+
 abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
-    private var _binding: VB? = null
-    val binding: VB by lazy {
-        _binding!!
-    }
+    private var _viewBinding: VB? = null
+    val viewBinding: VB by lazy { _viewBinding!! }
 
-    abstract val model: VM
-
-    override val layoutRes: Int = Resources.ID_NULL
-
-    override val rootView: View
-        get() = binding.root
+    abstract val viewModel: VM
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        _binding = inflate(inflater, container)
-        return rootView
+        _viewBinding = createViewBinding(inflater, container)
+        return _viewBinding!!.root
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _viewBinding = null
     }
 
     override fun loadData(refresh: Boolean) {
 
     }
 
-    private fun inflate(inflater: LayoutInflater, container: ViewGroup?): VB {
+    @Suppress("UNCHECKED_CAST")
+    private fun <VB : ViewBinding> createViewBinding(
+        inflater: LayoutInflater, container: ViewGroup?
+    ): VB {
         val type = javaClass.genericSuperclass as ParameterizedType
         val cls = type.actualTypeArguments[0] as Class<*>
         try {
@@ -50,7 +45,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
                 ViewGroup::class.java,
                 Boolean::class.javaPrimitiveType
             )
-            return inflate.invoke(null, inflater, container, false) as VB
+            return inflate.invoke(this, inflater, container, false) as VB
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -2,25 +2,17 @@ package com.colin.library.android.base
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.colin.library.android.base.def.IBase
 
-
-abstract class BaseFragment : Fragment() {
+/**
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Date  :2024-09-11
+ * Des   :BaseFragment基类:最简单的业务逻辑定义
+ */
+abstract class BaseFragment : Fragment(), IBase {
     var refresh: Boolean = true
-
-    @get:LayoutRes
-    abstract val layoutRes: Int
-
-    abstract val rootView: View
-    /*init default view(findView、listener)*/
-    abstract fun initView(savedInstanceState: Bundle?)
-
-    /*init default data*/
-    abstract fun initData(bundle: Bundle?)
-
-    /*load data by sqlite、http*/
-    abstract fun loadData(refresh: Boolean)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

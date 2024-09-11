@@ -1,0 +1,54 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+<!--    <style name="dialog">-->
+<!--        <item name="android:windowBackground">@color/translucence</item>-->
+<!--        <item name="android:windowFrame">@null</item>-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:windowIsFloating">true</item>-->
+<!--        <item name="android:windowIsTranslucent">false</item>-->
+<!--        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>-->
+<!--        <item name="android:backgroundDimEnabled">true</item>-->
+<!--    </style>-->
+
+<!--    <style name="loading_dialog" parent="@android:style/Theme.Dialog">-->
+<!--        <item name="android:windowFrame">@null</item>&lt;!&ndash;Dialog的windowFrame框为无 &ndash;&gt;-->
+<!--        <item name="android:windowIsFloating">true</item>&lt;!&ndash; 是否漂现在activity上 &ndash;&gt;-->
+<!--        <item name="android:windowIsTranslucent">true</item>&lt;!&ndash; 是否半透明 &ndash;&gt;-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        <item name="android:background">@android:color/transparent</item>-->
+<!--        <item name="android:windowBackground">@android:color/transparent-->
+<!--        </item>&lt;!&ndash;  去除黑色边框的关键设置项 &ndash;&gt;-->
+<!--        <item name="android:backgroundDimEnabled">true</item>&lt;!&ndash;屏幕背景是否变暗&ndash;&gt;-->
+<!--        <item name="android:backgroundDimAmount">0.6</item>-->
+<!--    </style>-->
+
+<!--    <style name="BaseDialogStyle" parent="Theme.AppCompat.DayNight.Dialog.Alert">&lt;!&ndash; @android:style/Theme.Dialog &ndash;&gt;-->
+<!--        &lt;!&ndash; 无边框 &ndash;&gt;-->
+<!--        <item name="android:windowFrame">@null</item>-->
+<!--        &lt;!&ndash; 浮在 Activity 之上 &ndash;&gt;-->
+<!--        <item name="android:windowIsFloating">true</item>-->
+<!--        &lt;!&ndash; 半透明 &ndash;&gt;-->
+<!--        <item name="android:windowIsTranslucent">true</item>-->
+<!--        &lt;!&ndash; 背景透明 &ndash;&gt;-->
+<!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+<!--        &lt;!&ndash; 遮盖层 &ndash;&gt;-->
+<!--        <item name="android:backgroundDimEnabled">true</item>-->
+<!--        &lt;!&ndash; 无标题 &ndash;&gt;-->
+<!--        <item name="android:windowNoTitle">true</item>-->
+<!--        &lt;!&ndash; 动画效果 &ndash;&gt;-->
+<!--        <item name="android:windowEnterAnimation">@anim/dialog_scale_in</item>-->
+<!--        <item name="android:windowExitAnimation">@anim/dialog_scale_out</item>-->
+<!--        &lt;!&ndash; Base.Theme.AppCompat.Light.Dialog.Alert 特有的属性，用于指定默认宽度，这里需要禁用 &ndash;&gt;-->
+<!--        <item name="android:windowMinWidthMajor">0dp</item>-->
+<!--        <item name="android:windowMinWidthMinor">0dp</item>-->
+<!--        &lt;!&ndash; 解决 ActionBar 占位导致 Dialog 无法全屏显示的问题 &ndash;&gt;-->
+<!--        <item name="windowActionBar">false</item>-->
+<!--        <item name="windowNoTitle">true</item>-->
+<!--        &lt;!&ndash; ActionMode覆盖Actionbar，不顶下来 &ndash;&gt;-->
+<!--        <item name="windowActionModeOverlay">true</item>-->
+<!--        <item name="android:windowContentOverlay">@null</item>-->
+<!--        &lt;!&ndash; Dialog 全屏显示 &ndash;&gt;-->
+<!--        &lt;!&ndash;<item name="android:windowFullscreen">true</item>&ndash;&gt;-->
+<!--    </style>-->
+<!--    -->
+</resources>

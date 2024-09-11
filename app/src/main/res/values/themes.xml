@@ -22,4 +22,17 @@
     <style name="Theme.AndroidKotlin.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.AndroidKotlin.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Text" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="Text.Button" parent="Text">
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>

@@ -2,25 +2,25 @@ package com.colin.library.android.base
 
 import android.os.Bundle
 import android.view.View
-import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import com.colin.library.android.base.def.IBase
 
-
-abstract class BaseActivity : AppCompatActivity() {
+/**
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Date  :2024-09-11
+ * Des   :Activity基类:最简单的业务逻辑定义
+ */
+abstract class BaseActivity : AppCompatActivity(), IBase {
     var refresh: Boolean = true
 
-    @get:LayoutRes
-    abstract val layoutRes: Int
-
-    abstract val rootView: View
-
-    fun setContentView(layoutRes: Int, savedInstanceState: Bundle?) {
+    open fun setContentView(layoutRes: Int, savedInstanceState: Bundle?) {
         super.setContentView(layoutRes)
         initView(savedInstanceState)
         initData(intent?.extras)
     }
 
-    fun setContentView(view: View?, savedInstanceState: Bundle?) {
+    fun setContentView(view: View, savedInstanceState: Bundle?) {
         super.setContentView(view)
         initView(savedInstanceState)
         initData(intent?.extras)
@@ -33,13 +33,4 @@ abstract class BaseActivity : AppCompatActivity() {
             loadData(true)
         }
     }
-
-    /*init default view(findView、listener)*/
-    abstract fun initView(savedInstanceState: Bundle?)
-
-    /*init default data*/
-    abstract fun initData(bundle: Bundle?)
-
-    /*load data by sqlite、http*/
-    abstract fun loadData(refresh: Boolean)
 }

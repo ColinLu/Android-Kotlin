@@ -1,29 +1,42 @@
 package com.colin.android.demo.kotlin.app
 
-import android.content.res.Resources
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseActivity
+import com.colin.library.android.utils.Log
+import java.lang.reflect.ParameterizedType
+
 
 abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
-    abstract val binding: VB
-    abstract val model: VM
-
-    override val layoutRes: Int = Resources.ID_NULL
-
-    override val rootView: View
-        get() = binding.root
-
+    lateinit var viewBinding: VB
+        private set
+    lateinit var viewModel: VM
+        private set
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(rootView, savedInstanceState)
+        viewBinding = reflectViewBinding()
+        setContentView(viewBinding.root, savedInstanceState)
     }
 
     override fun loadData(refresh: Boolean) {
 
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class)
+    private fun reflectViewBinding(): VB {
+        try {
+            val type = javaClass.genericSuperclass as ParameterizedType
+            val cls = type.actualTypeArguments[0] as Class<*>
+            val inflate = cls.getDeclaredMethod("inflate", LayoutInflater::class.java)
+            return inflate.invoke(this, layoutInflater) as VB
+        } catch (e: Exception) {
+            Log.log(e)
+        }
+        throw IllegalStateException("reflectViewBinding fail")
     }
 }
 
