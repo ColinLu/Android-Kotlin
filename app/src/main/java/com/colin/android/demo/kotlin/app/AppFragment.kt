@@ -14,7 +14,6 @@ import java.lang.reflect.ParameterizedType
 abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
     private var _viewBinding: VB? = null
     val viewBinding: VB by lazy { _viewBinding!! }
-
     abstract val viewModel: VM
 
     override fun onCreateView(

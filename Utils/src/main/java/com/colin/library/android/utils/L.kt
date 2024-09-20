@@ -28,13 +28,13 @@ object L {
     private const val TOP_BORDER: String = "$TOP_CORNER$DOUBLE_DIVIDER$DOUBLE_DIVIDER"
     private const val MIDDLE_BORDER: String = "$MIDDLE_CORNER$SINGLE_DIVIDER$SINGLE_DIVIDER"
     private const val BOTTOM_BORDER: String = "$BOTTOM_CORNER$DOUBLE_DIVIDER$DOUBLE_DIVIDER"
+    private const val INDENT_SPACES = 4
 
     //解决windows和linux换行不一致的问题 功能和"\n"是一致的,但是此种写法屏蔽了 Windows和Linux的区别 更保险.
     private val LINE_SEPARATOR = System.lineSeparator()
-    private val NULL = "null"
     private var logEnabled = true           // log总开关
     private var logTag: String = "Colin"    // log Tag
-    private var logLevel = Log.INFO         // log Level
+    private var logLevel = Log.VERBOSE         // log Level
     private var logThread = true            // log print thread msg
     private var logMethodCount = 1          // log print method count
     private var logMethodOffset = 0         // log print method offset
@@ -87,6 +87,10 @@ object L {
         print(Log.WARN, tag, "$msg")
     }
 
+    fun log(msg: Any?) {
+        print(logLevel, logTag, "$msg")
+    }
+
     fun log(error: Throwable) {
         print(Log.ERROR, logTag, format(error))
     }
@@ -99,12 +103,28 @@ object L {
         print(level, tag, "$any")
     }
 
+    fun json(json: Any?) {
+        print(logLevel, logTag, formatJson(json) ?: "json is error or null")
+    }
+
+    fun json(tag: String, json: Any?) {
+        print(logLevel, tag, formatJson(json) ?: "json is error or null")
+    }
+
     fun json(level: Int = logLevel, tag: String = logTag, json: Any?) {
         print(level, tag, formatJson(json) ?: "json is error or null")
     }
 
-    fun xml(level: Int = logLevel, tag: String = logTag, json: String?) {
-        print(level, tag, formatXml(json) ?: "xml is error or null")
+    fun xml(xml: String?) {
+        print(logLevel, logTag, formatXml(xml) ?: "xml is error or null")
+    }
+
+    fun xml(tag: String = logTag, xml: String?) {
+        print(logLevel, tag, formatXml(xml) ?: "xml is error or null")
+    }
+
+    fun xml(level: Int = logLevel, tag: String = logTag, xml: String?) {
+        print(level, tag, formatXml(xml) ?: "xml is error or null")
     }
 
     fun format(error: Throwable): String {
@@ -120,11 +140,15 @@ object L {
     fun formatJson(any: Any?): String? {
         if (any == null) return null
         try {
-            if (any is JSONObject) return any.toString(4)
-            if (any is JSONArray) return any.toString(4)
+            if (any is JSONObject) return any.toString(INDENT_SPACES)
+            if (any is JSONArray) return any.toString(INDENT_SPACES)
             val json = "$any"
-            if (json.startsWith('{') && json.endsWith('}')) return JSONObject(json).toString(4)
-            if (json.startsWith('[') && json.endsWith(']')) return JSONArray(json).toString(4)
+            if (json.startsWith('{') && json.endsWith('}')) return JSONObject(json).toString(
+                INDENT_SPACES
+            )
+            if (json.startsWith('[') && json.endsWith(']')) return JSONArray(json).toString(
+                INDENT_SPACES
+            )
             return json
         } catch (e: Exception) {
             e.printStackTrace()

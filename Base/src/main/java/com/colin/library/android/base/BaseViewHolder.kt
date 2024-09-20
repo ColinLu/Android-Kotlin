@@ -31,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView
  *
  * Des   :ViewHolder基类
  */
-class BaseViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemView) {
+class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val arrays: SparseArrayCompat<View> = SparseArrayCompat()
 
     /**

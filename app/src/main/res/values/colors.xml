@@ -13,4 +13,11 @@
     <color name="colorAccent">#D81B60</color>
 
     <color name="text_normal">@color/black</color>
+
+    <integer-array name="colors">
+        <item>@color/purple_200</item>
+        <item>@color/purple_500</item>
+        <item>@color/purple_700</item>
+    </integer-array>
+
 </resources>

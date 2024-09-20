@@ -32,22 +32,16 @@
     <string-array name="log_list">
         <item>Log V</item>
         <item>Log V with Tag</item>
-        <item>Log V by format</item>
         <item>Log D</item>
         <item>Log D with Tag</item>
-        <item>Log D by format</item>
         <item>Log I</item>
         <item>Log I with Tag</item>
-        <item>Log I by format</item>
         <item>Log W</item>
         <item>Log W with Tag</item>
-        <item>Log W by format</item>
         <item>Log E</item>
         <item>Log E with Tag</item>
-        <item>Log E by format</item>
         <item>Log A</item>
         <item>Log A with Tag</item>
-        <item>Log A by format</item>
         <item>Log Json</item>
         <item>Log Json with Tag</item>
         <item>Log Xml</item>
