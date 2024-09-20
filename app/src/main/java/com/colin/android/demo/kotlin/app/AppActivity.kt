@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseActivity
-import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
+@Suppress("UNCHECKED_CAST")
 abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
     lateinit var viewBinding: VB
         private set
@@ -25,16 +26,16 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
 
     }
 
-    @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class)
-    private fun reflectViewBinding(): VB {
+    private fun <VB : ViewBinding> reflectViewBinding(): VB {
         try {
             val type = javaClass.genericSuperclass as ParameterizedType
             val cls = type.actualTypeArguments[0] as Class<*>
             val inflate = cls.getDeclaredMethod("inflate", LayoutInflater::class.java)
-            return inflate.invoke(this, layoutInflater) as VB
+            return inflate.invoke(null, layoutInflater) as VB
         } catch (e: Exception) {
-            Log.log(e)
+            L.log(e)
+
         }
         throw IllegalStateException("reflectViewBinding fail")
     }

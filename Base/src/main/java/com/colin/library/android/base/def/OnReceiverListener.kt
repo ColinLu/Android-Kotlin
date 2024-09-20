@@ -1,5 +1,7 @@
 package com.colin.library.android.base.def
 
+import android.content.Context
+
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
@@ -7,6 +9,6 @@ package com.colin.library.android.base.def
  *
  * Des   :TODO
  */
-interface OnReceiverListener : ILife {
-
+interface OnReceiverListener {
+    fun getContext(): Context
 }

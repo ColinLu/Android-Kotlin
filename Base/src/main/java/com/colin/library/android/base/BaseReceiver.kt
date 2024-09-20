@@ -1,6 +1,5 @@
 package com.colin.library.android.base
 
-import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.IntentFilter
 import androidx.lifecycle.DefaultLifecycleObserver
@@ -19,7 +18,6 @@ abstract class BaseReceiver(private val listener: OnReceiverListener) : Broadcas
     DefaultLifecycleObserver {
     val listenerRef: SoftReference<out OnReceiverListener> = SoftReference(listener)
 
-    @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onCreate(owner: LifecycleOwner) {
         listenerRef.get()?.getContext()?.registerReceiver(this, getIntentFilter())
     }

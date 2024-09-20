@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseFragment
 import java.lang.reflect.ParameterizedType
@@ -50,5 +51,14 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
             e.printStackTrace()
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error")
+    }
+
+    /**
+     * 获取[ViewModel]
+     */
+    fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
+        return ViewModelProvider(
+            viewModelStore, defaultViewModelProviderFactory, defaultViewModelCreationExtras
+        )[clazz]
     }
 }

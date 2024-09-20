@@ -142,12 +142,7 @@ class BaseViewHolder(private val itemView: View) : RecyclerView.ViewHolder(itemV
     }
 
     fun setTypeFace(vararg @IdRes ids: Int, typeface: Typeface?) = apply {
-        ids.forEach {
-            getTextView(it).apply {
-                this.typeface = typeface
-                this.paintFlags = this.paintFlags or Paint.SUBPIXEL_TEXT_FLAG
-            }
-        }
+        ids.forEach { setTypeFace(it, typeface) }
     }
 
 

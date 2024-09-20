@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
-import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.L
 
 
 class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
@@ -19,8 +19,8 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun initData(bundle: Bundle?) {
         viewModel.text.observe(this) {
-            Log.i(it)
-            Log.i(it)
+            L.i(it)
+            L.i(it)
             viewBinding.text.text = it
         }
 //        requestMultiplePermissions.launch(

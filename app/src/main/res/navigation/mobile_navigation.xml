@@ -5,10 +5,11 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_home">
 
+
     <fragment
         android:id="@+id/nav_home"
         android:name="com.colin.android.demo.kotlin.ui.home.HomeFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_gallery"
         tools:layout="@layout/fragment" />
 
     <fragment
@@ -22,4 +23,21 @@
         android:name="com.colin.android.demo.kotlin.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment" />
+
+    <fragment
+        android:id="@+id/nav_method"
+        android:name="com.colin.android.demo.kotlin.ui.method.MethodFragment"
+        android:label="@string/menu_method"
+        tools:layout="@layout/layout_refresh_list">
+        <action
+            android:id="@+id/action_to_log"
+            app:destination="@+id/LogFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/LogFragment"
+        android:name="com.colin.android.demo.kotlin.ui.method.LogFragment"
+        android:label="@string/menu_log"
+        tools:layout="@layout/layout_refresh_list" />
+
 </navigation>

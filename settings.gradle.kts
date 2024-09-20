@@ -30,5 +30,6 @@ dependencyResolutionManagement {
 rootProject.name = "Android-Kotlin"
 include(":app")
 include(":Base")
-include(":Map")
+//include(":Map")
 include(":Utils")
+include(":Http")
