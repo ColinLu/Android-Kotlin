@@ -18,10 +18,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-//        EdgeToEdgeUtils.applyEdgeToEdge(window, true)
-        super.onCreate(savedInstanceState)
-    }
 
     override fun initView(savedInstanceState: Bundle?) {
         setSupportActionBar(viewBinding.appBarMain.toolbar)
@@ -38,7 +34,8 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.nav_method, R.id.nav_gallery, R.id.nav_slideshow), drawerLayout
+            setOf(R.id.nav_method, R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow),
+            drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)

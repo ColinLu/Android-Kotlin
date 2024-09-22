@@ -43,6 +43,7 @@ dependencies {
 //    implementation("com.github.ColinLu:Android-Java:0.2.3")
     implementation(project(":Utils"))
     implementation(project(":Base"))
+    implementation(project(":Widgets"))
 
 //    implementation(libs.dagger.hilt.android)
 //    kapt(libs.dagger.hilt.compiler)

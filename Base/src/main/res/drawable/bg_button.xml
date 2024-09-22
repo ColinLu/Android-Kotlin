@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="@color/bt_ripple">
-
     <item>
         <selector>
             <item android:state_pressed="true">
@@ -16,8 +15,7 @@
                     <solid android:color="@color/bt_bg_checked" />
                 </shape>
             </item>
-            <item
-                android:state_enabled="false">
+            <item android:state_enabled="false">
                 <shape android:shape="rectangle">
                     <solid android:color="@color/bt_bg_disable" />
                 </shape>
@@ -30,4 +28,5 @@
             </item>
         </selector>
     </item>
+
 </ripple>

@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.colin.library.android.utils"
+    namespace = "com.colin.library.android.widgets"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -29,21 +29,16 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 
 }
 
 dependencies {
+    compileOnly(project(":Utils"))
     compileOnly(libs.androidx.core.ktx)
     compileOnly(libs.androidx.appcompat)
+    compileOnly(libs.androidx.recyclerview)
+    compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
 }
-
-
-//plugins {
-//    id("java-library")
-//    alias(libs.plugins.jetbrains.kotlin.jvm)
-//}
-//
-//java {
-//    sourceCompatibility = JavaVersion.VERSION_21
-//    targetCompatibility = JavaVersion.VERSION_21
-//}

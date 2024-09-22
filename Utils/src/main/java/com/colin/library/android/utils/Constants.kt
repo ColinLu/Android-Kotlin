@@ -10,6 +10,7 @@ package com.colin.library.android.utils
 interface Constants {
     companion object {
         const val INVALID = -1
+        const val ZERO = 0
         const val ONE_SECOND = 1000
         const val VIEW_CLICK_DEF = 500
     }

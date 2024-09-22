@@ -3,14 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_method">
+    app:startDestination="@+id/nav_home">
 
 
     <fragment
         android:id="@+id/nav_home"
         android:name="com.colin.android.demo.kotlin.ui.home.HomeFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment" />
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment">
+        <action
+            android:id="@+id/action_to_log"
+            app:destination="@+id/LogFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_gallery"

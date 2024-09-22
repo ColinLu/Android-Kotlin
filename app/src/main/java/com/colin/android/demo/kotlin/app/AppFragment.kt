@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseFragment
 import java.lang.reflect.ParameterizedType
@@ -19,7 +18,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
-        _viewBinding = createViewBinding(inflater, container)
+        _viewBinding = reflectViewBinding(inflater, container)
         return _viewBinding!!.root
     }
 
@@ -29,11 +28,10 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
     }
 
     override fun loadData(refresh: Boolean) {
-
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <VB : ViewBinding> createViewBinding(
+    private fun <VB : ViewBinding> reflectViewBinding(
         inflater: LayoutInflater, container: ViewGroup?
     ): VB {
         val type = javaClass.genericSuperclass as ParameterizedType
@@ -45,19 +43,10 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
                 ViewGroup::class.java,
                 Boolean::class.javaPrimitiveType
             )
-            return inflate.invoke(this, inflater, container, false) as VB
+            return inflate.invoke(null, inflater, container, false) as VB
         } catch (e: Exception) {
             e.printStackTrace()
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error")
-    }
-
-    /**
-     * 获取[ViewModel]
-     */
-    fun <T : ViewModel> createViewModel(clazz: Class<T>): T {
-        return ViewModelProvider(
-            viewModelStore, defaultViewModelProviderFactory, defaultViewModelCreationExtras
-        )[clazz]
     }
 }

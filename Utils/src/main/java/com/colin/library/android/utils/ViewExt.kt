@@ -18,6 +18,7 @@ fun Array<View>.onClick(block: (View) -> Unit) {
 /*按钮防抖机制，默认500ms*/
 fun View.onClick(time: Int = Constants.VIEW_CLICK_DEF, block: (View) -> Unit) {
     setOnClickListener {
+        L.e("setOnClickListener")
         val nowTime = System.currentTimeMillis()
         if (nowTime - lastClickTime > time) {
             lastClickTime = nowTime

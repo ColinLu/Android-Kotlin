@@ -11,14 +11,15 @@ import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.android.demo.kotlin.toNavigate
 import com.colin.library.android.utils.L
+import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
 class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
-
     override val viewModel: MethodViewModel by lazy { createModel(this) }
-    val adapter by lazy { StringAdapter() }
+    private val adapter by lazy { StringAdapter() }
+
     override fun initView(savedInstanceState: Bundle?) {
         viewBinding.apply {
             refresh.setColorSchemeResources(
@@ -29,6 +30,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
             layoutList.list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = this@MethodFragment.adapter
+                this.addItemDecoration(SpaceItemDecoration(space = 5))
             }
             adapter.onItemClickListener = { _, item ->
                 when (item) {

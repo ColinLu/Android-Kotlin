@@ -10,6 +10,7 @@ import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.library.android.utils.L
+import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -21,7 +22,6 @@ import kotlinx.coroutines.launch
  * Des   :Log日志打印
  */
 class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
-    private val TAG = "LogFragment"
     override val viewModel: LogViewModel by lazy { createModel(this) }
 
     val JSON: String =
@@ -41,6 +41,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
             layoutList.list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = this@LogFragment.adapter
+                this.addItemDecoration(SpaceItemDecoration(space = 5))
             }
             adapter.onItemClickListener = { _, item ->
                 when (item) {

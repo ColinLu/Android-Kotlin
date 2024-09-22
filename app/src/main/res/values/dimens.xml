@@ -7,7 +7,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dp_0">0dp</dimen>
     <dimen name="margin_default">8dp</dimen>
-    <dimen name="button_height_normal">45dp</dimen>
+    <dimen name="button_height_normal">50dp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
 </resources>
