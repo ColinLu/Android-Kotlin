@@ -4,13 +4,16 @@ import android.os.Bundle
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentBinding
+import com.colin.library.android.utils.onClick
 
 class GalleryFragment : AppFragment<FragmentBinding, GalleryViewModel>() {
 
     override val viewModel: GalleryViewModel by lazy { createModel(this) }
 
     override fun initView(savedInstanceState: Bundle?) {
+        viewBinding.text.onClick {
 
+        }
     }
 
     override fun initData(bundle: Bundle?) {

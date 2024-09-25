@@ -1,6 +1,7 @@
 package com.colin.library.android.utils
 
 import android.util.Log
+import androidx.annotation.IntDef
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.PrintWriter
@@ -11,6 +12,20 @@ import javax.xml.transform.TransformerFactory
 import javax.xml.transform.stream.StreamResult
 import javax.xml.transform.stream.StreamSource
 
+@IntDef(LogLevel.V, LogLevel.D, LogLevel.I, LogLevel.W, LogLevel.E, LogLevel.A)
+@Retention(
+    AnnotationRetention.SOURCE
+)
+annotation class LogLevel {
+    companion object {
+        const val V: Int = Log.VERBOSE
+        const val D: Int = Log.DEBUG
+        const val I: Int = Log.INFO
+        const val W: Int = Log.WARN
+        const val E: Int = Log.ERROR
+        const val A: Int = Log.ASSERT
+    }
+}
 
 /**
  * Author:ColinLu
@@ -34,57 +49,59 @@ object L {
     private val LINE_SEPARATOR = System.lineSeparator()
     private var logEnabled = true           // log总开关
     private var logTag: String = "Colin"    // log Tag
-    private var logLevel = Log.VERBOSE         // log Level
+
+    @LogLevel
+    private var logLevel = LogLevel.V         // log Level
     private var logThread = true            // log print thread msg
     private var logMethodCount = 1          // log print method count
     private var logMethodOffset = 0         // log print method offset
     private var logMethod = true            // log print method msg
     fun v(msg: Any?) {
-        print(Log.VERBOSE, logTag, "$msg")
+        print(LogLevel.V, logTag, "$msg")
     }
 
     fun v(tag: String, msg: Any?) {
-        print(Log.VERBOSE, tag, "$msg")
+        print(LogLevel.V, tag, "$msg")
     }
 
     fun d(msg: Any?) {
-        print(Log.DEBUG, logTag, "$msg")
+        print(LogLevel.D, logTag, "$msg")
     }
 
     fun d(tag: String, msg: Any?) {
-        print(Log.DEBUG, tag, "$msg")
+        print(LogLevel.D, tag, "$msg")
     }
 
     fun i(msg: Any?) {
-        print(Log.INFO, logTag, "$msg")
+        print(LogLevel.I, logTag, "$msg")
     }
 
     fun i(tag: String, msg: Any?) {
-        print(Log.INFO, tag, "$msg")
+        print(LogLevel.I, tag, "$msg")
     }
 
     fun a(msg: Any?) {
-        print(Log.ASSERT, logTag, "$msg")
+        print(LogLevel.A, logTag, "$msg")
     }
 
     fun a(tag: String, msg: Any?) {
-        print(Log.ASSERT, tag, "$msg")
+        print(LogLevel.A, tag, "$msg")
     }
 
     fun e(msg: Any?) {
-        print(Log.ERROR, logTag, "$msg")
+        print(LogLevel.E, logTag, "$msg")
     }
 
     fun e(tag: String, msg: Any?) {
-        print(Log.ERROR, tag, "$msg")
+        print(LogLevel.E, tag, "$msg")
     }
 
     fun w(msg: Any?) {
-        print(Log.WARN, logTag, "$msg")
+        print(LogLevel.W, logTag, "$msg")
     }
 
     fun w(tag: String, msg: Any?) {
-        print(Log.WARN, tag, "$msg")
+        print(LogLevel.W, tag, "$msg")
     }
 
     fun log(msg: Any?) {
@@ -92,7 +109,7 @@ object L {
     }
 
     fun log(error: Throwable) {
-        print(Log.ERROR, logTag, format(error))
+        print(LogLevel.E, logTag, format(error))
     }
 
     fun log(level: Int = logLevel, tag: String, error: Throwable) {
@@ -111,7 +128,7 @@ object L {
         print(logLevel, tag, formatJson(json) ?: "json is error or null")
     }
 
-    fun json(level: Int = logLevel, tag: String = logTag, json: Any?) {
+    fun json(@LogLevel level: Int = logLevel, tag: String = logTag, json: Any?) {
         print(level, tag, formatJson(json) ?: "json is error or null")
     }
 
@@ -123,7 +140,7 @@ object L {
         print(logLevel, tag, formatXml(xml) ?: "xml is error or null")
     }
 
-    fun xml(level: Int = logLevel, tag: String = logTag, xml: String?) {
+    fun xml(@LogLevel level: Int = logLevel, tag: String = logTag, xml: String?) {
         print(level, tag, formatXml(xml) ?: "xml is error or null")
     }
 
@@ -187,12 +204,12 @@ object L {
     }
 
     /**
-     * @param type
-     * @param tag
-     * @param objects
+     * @param level 打印Log Level
+     * @param tag log TAG
+     * @param msg log msg
      */
     @Synchronized
-    private fun print(level: Int, tag: String, msg: String) {/*两重设定，过滤是否需要打印log*/
+    private fun print(@LogLevel level: Int, tag: String, msg: String) {/*两重设定，过滤是否需要打印log*/
         if (!logEnabled || level < logLevel) {
             return
         }
@@ -252,7 +269,7 @@ object L {
         /**
          * 设置Log 全局 Tag
          *
-         * @param enable
+         * @param tag
          * @return
          */
         fun setTag(tag: String) = apply {
@@ -285,7 +302,7 @@ object L {
          *
          * @param level
          */
-        fun setLevel(level: Int) = apply {
+        fun setLevel(@LogLevel level: Int) = apply {
             logLevel = level
         }
 

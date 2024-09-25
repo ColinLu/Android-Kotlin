@@ -8,14 +8,14 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_picture"
+        android:id="@+id/button_method"
         style="@style/Theme.Button"
         android:layout_width="@dimen/dp_0"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/Picture"
+        android:text="@string/menu_method"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@dimen/margin_default" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_log"
@@ -25,7 +25,7 @@
         android:text="@string/log"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_picture" />
+        app:layout_constraintTop_toBottomOf="@+id/button_method" />
 
     <TextView
         android:id="@+id/text"

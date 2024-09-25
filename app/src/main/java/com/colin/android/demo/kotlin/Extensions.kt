@@ -18,12 +18,12 @@ fun <T : ViewModel> createModel(owner: ViewModelStoreOwner, clazz: Class<T>): T 
 }
 
 
-fun toNavigate(fragment: Fragment?, action: Int) {
+fun toNavigate(fragment: Fragment, action: Int) {
     toNavigate(fragment, action, null)
 }
 
-fun toNavigate(fragment: Fragment?, action: Int, bundle: Bundle?) {
-    NavHostFragment.findNavController(fragment!!).navigate(action, bundle)
+fun toNavigate(fragment: Fragment, action: Int, bundle: Bundle?) {
+    NavHostFragment.findNavController(fragment).navigate(action, bundle)
 }
 
 

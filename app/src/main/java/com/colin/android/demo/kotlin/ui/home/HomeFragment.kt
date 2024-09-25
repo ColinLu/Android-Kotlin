@@ -1,12 +1,14 @@
 package com.colin.android.demo.kotlin.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
 import com.colin.android.demo.kotlin.toNavigate
 import com.colin.library.android.utils.L
+import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.onClick
 
 
@@ -15,16 +17,15 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
     override val viewModel: HomeViewModel by lazy { createModel(this) }
 
     override fun initView(savedInstanceState: Bundle?) {
-        viewBinding.apply {
-            L.e("$this")
-            L.d(TAG, "viewBinding.apply")
-            buttonPicture.setOnClickListener {
-                L.d(TAG, "onClick buttonPicture")
-            }
-            buttonLog.onClick {
-                L.d(TAG, "onClick buttonLog")
-                toNavigate(this@HomeFragment, R.id.action_to_log)
-            }
+        Log.e(TAG, "$this")
+        viewBinding.buttonMethod.text = "$this"
+        viewBinding.buttonMethod.onClick {
+            L.d(TAG, "onClick buttonMethod")
+            ToastUtil.show("onClick buttonMethod")
+        }
+        viewBinding.buttonLog.onClick {
+            L.d(TAG, "onClick buttonLog")
+            toNavigate(this@HomeFragment, R.id.action_to_log)
         }
     }
 

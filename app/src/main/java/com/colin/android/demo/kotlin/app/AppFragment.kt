@@ -23,8 +23,8 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         _viewBinding = null
+        super.onDestroyView()
     }
 
     override fun loadData(refresh: Boolean) {
