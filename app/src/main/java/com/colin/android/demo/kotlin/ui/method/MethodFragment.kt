@@ -34,7 +34,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
             }
             adapter.onItemClickListener = { _, item ->
                 when (item) {
-                    getString(R.string.log) -> {
+                    getString(R.string.title_log) -> {
                         toNavigate(this@MethodFragment, R.id.action_to_log)
                     }
 

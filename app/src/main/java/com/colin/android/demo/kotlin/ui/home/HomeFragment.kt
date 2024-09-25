@@ -19,9 +19,6 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
             buttonMethod.onClick {
                 toNavigate(this@HomeFragment, R.id.action_to_method)
             }
-            buttonLog.onClick {
-                toNavigate(this@HomeFragment, R.id.action_to_log)
-            }
         }
     }
 
