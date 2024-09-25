@@ -12,7 +12,7 @@ import java.lang.reflect.ParameterizedType
 
 abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
     private var _viewBinding: VB? = null
-    val viewBinding: VB by lazy { _viewBinding!! }
+    val viewBinding: VB get() = _viewBinding!!
     abstract val viewModel: VM
 
     override fun onCreateView(
@@ -47,6 +47,6 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error")
+        throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
 }

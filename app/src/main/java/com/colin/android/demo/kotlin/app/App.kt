@@ -21,8 +21,6 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-
-        val build = UtilConfig.newBuilder(this).build()
-        UtilHelper.isDebug()
+        UtilHelper.init(UtilConfig.newBuilder(this, true).build())
     }
 }
