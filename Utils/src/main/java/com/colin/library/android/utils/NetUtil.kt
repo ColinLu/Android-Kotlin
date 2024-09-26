@@ -2,6 +2,8 @@ package com.colin.library.android.utils
 
 import android.Manifest.permission
 import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
 import android.net.NetworkInfo
 import android.telephony.TelephonyManager
 import androidx.annotation.IntDef
@@ -47,7 +49,7 @@ annotation class NetType {
 }
 
 object NetUtil {
-    val manager: ConnectivityManager
+    val connectivityManager: ConnectivityManager
         get() {
             return UtilHelper.getApplication().getSystemService(ConnectivityManager::class.java)
         }
@@ -57,9 +59,15 @@ object NetUtil {
         }
 
     @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    val activeNetworkInfo: NetworkInfo?
+    val activeNetwork: Network?
         get() {
-            return manager.activeNetworkInfo
+            return connectivityManager.activeNetwork
+        }
+
+    @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
+    val networkCapabilities: NetworkCapabilities?
+        get() {
+            return connectivityManager.getNetworkCapabilities(activeNetwork)
         }
 
     @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
@@ -70,29 +78,24 @@ object NetUtil {
          * @return
          */
         get() {
-            val networkInfo = activeNetworkInfo
-            return null != networkInfo && networkInfo.isConnected
+            return networkCapabilities?.let { isEthernet(it) || isWifi(it) || isCellular(it) }
+                ?: false
         }
 
-    @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    val isWifi: Boolean
-        /**
-         * 判断是否是wifi连接
-         */
-        get() = isWifi(activeNetworkInfo)
 
-    fun isWifi(networkInfo: NetworkInfo?): Boolean {
-        return null != networkInfo && networkInfo.type == ConnectivityManager.TYPE_WIFI
+    /*判断当前网络是否是以太网*/
+    fun isEthernet(network: NetworkCapabilities): Boolean {
+        return network.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)
     }
 
-    @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    private val isEthernet: Boolean
-        get() = isEthernet(manager)
+    /*判断当前网络是否是Wifi*/
+    fun isWifi(network: NetworkCapabilities): Boolean {
+        return network.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+    }
 
-    @RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    private fun isEthernet(manager: ConnectivityManager): Boolean {
-        val networkInfo = manager.getNetworkInfo(ConnectivityManager.TYPE_ETHERNET)
-        return null != networkInfo && networkInfo.isConnected
+    /*判断当前网络是否是移动网*/
+    fun isCellular(network: NetworkCapabilities): Boolean {
+        return network.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
 
     /**
@@ -124,7 +127,7 @@ object NetUtil {
          */
         get() {
             // 获取手机所有连接管理对象（包括对wi-fi,net等连接的管理）
-            val networkInfo = manager.allNetworkInfo
+            val networkInfo = connectivityManager.allNetworkInfo
             if (networkInfo.isEmpty()) return false
             for (i in networkInfo.indices) {
                 // 判断当前网络状态是否为连接状态
@@ -133,74 +136,18 @@ object NetUtil {
             return false
         }
 
-    @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    @get:NetType
-    val netType: Int
-        get() = getNetType(manager)
-
     @NetType
     @RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    fun getNetType(manager: ConnectivityManager): Int {
-        if (isEthernet(manager)) return NetType.NETWORK_ETHERNET
-        return getNetType(activeNetworkInfo)
-    }
+    fun getNetType(networkInfo: NetworkCapabilities? = networkCapabilities): Int {
 
-    @NetType
-    @RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    fun getNetType(networkInfo: NetworkInfo?): Int {
         //获取失败
-        if (null == networkInfo || !networkInfo.isAvailable) return NetType.NETWORK_NONE
-        //WIFI
-        if (networkInfo.type == ConnectivityManager.TYPE_WIFI) return NetType.NETWORK_WIFI
-        return when (networkInfo.subtype) {
-            TelephonyManager.NETWORK_TYPE_GPRS,
-            TelephonyManager.NETWORK_TYPE_EDGE,
-            TelephonyManager.NETWORK_TYPE_CDMA,
-            TelephonyManager.NETWORK_TYPE_1xRTT,
-            TelephonyManager.NETWORK_TYPE_IDEN,
-            TelephonyManager.NETWORK_TYPE_GSM -> NetType.NETWORK_2G
-
-            TelephonyManager.NETWORK_TYPE_UMTS,
-            TelephonyManager.NETWORK_TYPE_EVDO_0,
-            TelephonyManager.NETWORK_TYPE_EVDO_A,
-            TelephonyManager.NETWORK_TYPE_HSDPA,
-            TelephonyManager.NETWORK_TYPE_HSUPA,
-            TelephonyManager.NETWORK_TYPE_HSPA,
-            TelephonyManager.NETWORK_TYPE_EVDO_B,
-            TelephonyManager.NETWORK_TYPE_EHRPD,
-            TelephonyManager.NETWORK_TYPE_HSPAP,
-            TelephonyManager.NETWORK_TYPE_TD_SCDMA, 19 -> NetType.NETWORK_3G
-
-            TelephonyManager.NETWORK_TYPE_LTE,
-            TelephonyManager.NETWORK_TYPE_IWLAN -> NetType.NETWORK_4G
-
-            TelephonyManager.NETWORK_TYPE_NR -> NetType.NETWORK_5G
-            else -> getNetType(networkInfo.subtypeName)
-        }
+        if (null == networkInfo) return NetType.NETWORK_NONE
+        if (isEthernet(networkInfo)) return NetType.NETWORK_ETHERNET
+        if (isWifi(networkInfo)) return NetType.NETWORK_WIFI
+        if (isCellular(networkInfo)) return NetType.NETWORK_MOBILE
+        return NetType.NETWORK_NONE
     }
 
-    @NetType
-    private fun getNetType(subType: String?): Int {
-        if ("TD-SCDMA".equals(subType, ignoreCase = true)
-            || "WCDMA".equals(subType, ignoreCase = true)
-            || "CDMA2000".equals(subType, ignoreCase = true)
-        ) return NetType.NETWORK_3G
-        return NetType.NETWORK_MOBILE
-    }
-
-    fun getNetType(@NetType type: Int): String {
-        return when (type) {
-            NetType.NETWORK_NONE -> "无网络"
-            NetType.NETWORK_WIFI -> "WIFI"
-            NetType.NETWORK_ETHERNET -> "以太网"
-            NetType.NETWORK_2G -> "2G"
-            NetType.NETWORK_3G -> "3G"
-            NetType.NETWORK_4G -> "4G"
-            NetType.NETWORK_5G -> "5G"
-            NetType.NETWORK_MOBILE -> "未知网络"
-            else -> "未知网络"
-        }
-    }
 
     val networkOperatorName: String?
         /**

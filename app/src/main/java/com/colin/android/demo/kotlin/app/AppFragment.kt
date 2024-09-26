@@ -6,14 +6,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
+import com.colin.android.demo.kotlin.receiver.ScreenChangedReceiver
 import com.colin.library.android.base.BaseFragment
+import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
-abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
+abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
+    ScreenChangedReceiver.OnScreenChangedListener {
     private var _viewBinding: VB? = null
     val viewBinding: VB get() = _viewBinding!!
     abstract val viewModel: VM
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ScreenChangedReceiver.bind(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -29,6 +37,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
 
     override fun loadData(refresh: Boolean) {
     }
+
 
     @Suppress("UNCHECKED_CAST")
     private fun <VB : ViewBinding> reflectViewBinding(
@@ -49,4 +58,9 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment() {
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
+
+    override fun screenChanged(action: String) {
+        L.i(TAG, "screenChanged:$action")
+    }
+
 }
