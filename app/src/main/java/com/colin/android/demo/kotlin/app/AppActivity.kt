@@ -2,6 +2,7 @@ package com.colin.android.demo.kotlin.app
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseActivity
@@ -18,6 +19,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         viewBinding = reflectViewBinding()
         setContentView(viewBinding.root, savedInstanceState)
     }

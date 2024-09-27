@@ -71,10 +71,7 @@ object NetUtil {
          *
          * @return
          */
-        get() {
-            return networkCapabilities?.let { isEthernet(it) || isWifi(it) || isCellular(it) }
-                ?: false
-        }
+        get() = isConnected(networkCapabilities)
 
 
     /*判断当前网络是否是以太网*/
@@ -90,6 +87,11 @@ object NetUtil {
     /*判断当前网络是否是移动网*/
     fun isCellular(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
         return capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ?: false
+    }
+
+    /*判断是否联网*/
+    fun isConnected(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
+        return isEthernet(capabilities) || isWifi(capabilities) || isCellular(capabilities)
     }
 
     /**
@@ -130,9 +132,8 @@ object NetUtil {
          * @return 运营商名称
          */
         get() {
-            val manager = telephonyManager
-            if (manager.simState == TelephonyManager.SIM_STATE_READY) return manager.networkOperatorName
-            return null
+            return if (telephonyManager.simState == TelephonyManager.SIM_STATE_READY) telephonyManager.networkOperatorName
+            else null
         }
 
     val simOperatorName: String?
@@ -142,8 +143,7 @@ object NetUtil {
          * @return
          */
         get() {
-            val manager = telephonyManager
-            if (manager.simState == TelephonyManager.SIM_STATE_READY) return manager.simOperatorName
-            return null
+            return if (telephonyManager.simState == TelephonyManager.SIM_STATE_READY) telephonyManager.simOperatorName
+            else null
         }
 }
