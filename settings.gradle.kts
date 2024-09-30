@@ -1,9 +1,3 @@
-fun RepositoryHandler.tomtomArtifactory() {
-    maven("https://repositories.tomtom.com/artifactory/maven") {
-        content { includeGroupByRegex("com\\.tomtom\\..+") }
-    }
-}
-
 pluginManagement {
     repositories {
         google {
@@ -20,7 +14,6 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        tomtomArtifactory()
         google()
         mavenCentral()
         maven { url = uri("https://www.jitpack.io") }
@@ -30,7 +23,5 @@ dependencyResolutionManagement {
 rootProject.name = "Android-Kotlin"
 include(":app")
 include(":Base")
-//include(":Map")
 include(":Utils")
-//include(":Http")
 include(":Widgets")

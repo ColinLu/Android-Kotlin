@@ -14,7 +14,6 @@ android {
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "TOMTOM_API_KEY", "\"1234567890lll\"")
     }
 
     buildTypes {
@@ -35,18 +34,14 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        buildConfig = true
     }
 }
 
 dependencies {
-//    implementation("com.github.ColinLu:Android-Java:0.2.3")
     implementation(project(":Utils"))
     implementation(project(":Base"))
     implementation(project(":Widgets"))
 
-//    implementation(libs.dagger.hilt.android)
-//    kapt(libs.dagger.hilt.compiler)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -57,17 +52,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    //TomTom
-//    implementation(libs.locationProvider)
-//    implementation(libs.locationSimulation)
-//    implementation(libs.locationMapmatched)
-//    implementation(libs.mapsDisplay)
-//    implementation(libs.navigationOnline)
-//    implementation(libs.navigationUi)
-//    implementation(libs.routePlannerOnline)
-//    implementation(libs.routeReplannerOnline)
-    // Android dependencies.
-//    implementation(libs.bundles.androidCommon)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
