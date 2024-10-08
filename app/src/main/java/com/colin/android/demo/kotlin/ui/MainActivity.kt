@@ -2,6 +2,7 @@ package com.colin.android.demo.kotlin.ui
 
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.enableEdgeToEdge
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,6 +21,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
 
     override fun initView(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         setSupportActionBar(viewBinding.appBarMain.toolbar)
         viewBinding.appBarMain.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
