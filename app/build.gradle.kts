@@ -16,8 +16,21 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("${project.rootDir.absolutePath}\\app.jks")
+            keyAlias = "colinapp"
+            storePassword = "ludapeng31"
+            keyPassword = "ludapeng31"
+        }
+    }
+
     buildTypes {
-        release {
+        getByName("debug"){
+            signingConfig = signingConfigs.getByName("release")
+        }
+        getByName("release"){
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
