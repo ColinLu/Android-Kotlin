@@ -8,6 +8,7 @@ import android.view.View
  * Date  :2024-09-18
  *
  * Des   :View 扩展
+ * 1.单个、多个按钮点击 实现防抖机制
  */
 private var lastClickTime = 0L
 

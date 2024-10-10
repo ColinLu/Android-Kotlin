@@ -2,7 +2,12 @@ package com.colin.library.android.utils.helper
 
 import android.app.Application
 
-
+/**
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Date  :2024-10-10
+ * Des   :工具类辅助类：app初始化记得初始化次对象
+ */
 object UtilHelper {
     private lateinit var config: UtilConfig
 

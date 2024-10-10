@@ -10,11 +10,10 @@ import androidx.annotation.RequiresPermission
 import com.colin.library.android.utils.helper.UtilHelper
 
 /**
- * 作者： ColinLu
- * 时间： 2018-12-13 15:39
- *
- *
- * 描述： 网络工具类
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Date  :2024-10-10
+ * Des   :网络工具类
  */
 @IntDef(
     NetType.NETWORK_NONE,

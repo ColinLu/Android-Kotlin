@@ -8,22 +8,22 @@ import com.colin.library.android.utils.LogLevel
  * E-mail:945919945@qq.com
  * Date  :2024-09-18
  *
- * Des   :TODO
+ * Des   :工具类配置
+ * 1.app上下文、全局配置开关
+ * 2.Log配置
  */
 class UtilConfig private constructor(builder: Builder) {
     /*全局上下文*/
     private val mApplication = builder.mApplication
 
     /*环境*/
-    private val mDebug = builder.mDebug
-    private val mShowLog: Boolean
-    private val mShowLogThread: Boolean
-    private val mLogLevel: Int
-
-    /*show 指定tag log*/
-    private val mLogTag: String?
-    private val mLogMethodOffset: Int
-    private val mLogMethodCount: Int
+    private val mDebug = builder.mDebug     //是否测试环境
+    private val mShowLog: Boolean           //Log是否需要显示
+    private val mShowLogThread: Boolean     //Log是否显示线程
+    private val mLogLevel: Int              //Log默认显示Level，Level等级一下不会显示
+    private val mLogTag: String?            //Log配置全局Tag
+    private val mLogMethodOffset: Int       //Log打印方法
+    private val mLogMethodCount: Int        //Log打印方法数量
 
     init {
         this.mShowLog = builder.mShowLog
@@ -73,7 +73,6 @@ class UtilConfig private constructor(builder: Builder) {
         /*Log*/
         var mShowLog: Boolean = true
         var mShowLogThread: Boolean = true
-
         @LogLevel
         var mLogLevel: Int = LogLevel.I
         var mLogTag: String? = null
@@ -113,7 +112,6 @@ class UtilConfig private constructor(builder: Builder) {
             this.mLogMethodCount = count
             return this
         }
-
 
         fun build(): UtilConfig {
             return UtilConfig(this)
