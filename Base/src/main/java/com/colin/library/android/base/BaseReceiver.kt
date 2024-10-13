@@ -4,7 +4,8 @@ import android.annotation.SuppressLint
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.IntentFilter
-import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.Lifecycle.Event
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.colin.library.android.utils.L
 import java.lang.ref.WeakReference
@@ -16,30 +17,37 @@ import java.lang.ref.WeakReference
  *
  * Des   :仅适用于动态广播，静态广播不适用
  */
-abstract class BaseReceiver(listener: OnReceiverListener) : BroadcastReceiver(),
-    DefaultLifecycleObserver {
-    var listenerRef: WeakReference<out OnReceiverListener> = WeakReference(listener)
+abstract class BaseReceiver (listener: OnReceiverListener) : BroadcastReceiver(),
+    LifecycleEventObserver {
+    val listenerRef: WeakReference<out OnReceiverListener>
 
     init {
         listener.lifecycle.addObserver(this)
+        listenerRef = WeakReference(listener)
     }
+
 
     @SuppressLint("InlinedApi")
-    override fun onCreate(owner: LifecycleOwner) {
-        val context = listenerRef.get()?.getContext() ?: return
-        L.d("BroadcastReceiver registerReceiver $this")
-        context.registerReceiver(this, getIntentFilter(), Context.RECEIVER_NOT_EXPORTED)
-    }
+    override fun onStateChanged(source: LifecycleOwner, event: Event) {
+        L.d("BroadcastReceiver registerReceiver $event")
+        when (event) {
+            Event.ON_CREATE -> {
+                val context = listenerRef.get()?.getContext() ?: return
+                context.registerReceiver(this, getIntentFilter(), Context.RECEIVER_NOT_EXPORTED)
+            }
 
-    override fun onDestroy(owner: LifecycleOwner) {
-        val context = listenerRef.get()?.getContext() ?: return
-        L.d("BroadcastReceiver unregisterReceiver $this")
-        context.unregisterReceiver(this)
+            Event.ON_DESTROY -> {
+                val context = listenerRef.get()?.getContext() ?: return
+                context.unregisterReceiver(this)
+            }
+
+            else -> {
+            }
+        }
     }
 
     /*子类重写，进行动作捕获监听*/
-    abstract fun getIntentFilter(): IntentFilter?
-
+    abstract fun getIntentFilter(): IntentFilter
 }
 
 

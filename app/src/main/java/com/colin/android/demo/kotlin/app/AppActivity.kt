@@ -37,7 +37,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
             L.log(e)
 
         }
-        throw IllegalStateException("reflectViewBinding fail")
+        throw IllegalStateException("reflectViewBinding fail in $TAG")
     }
 }
 

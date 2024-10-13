@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -41,4 +42,17 @@ dependencies {
     compileOnly(libs.androidx.appcompat)
     compileOnly(libs.androidx.recyclerview)
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "com.colin.library.android"       // 从 version catalog 获取 groupId
+                artifactId = "Widgets"                        // 从 version catalog 获取 artifactId
+                version = "0.3.1"                           // 从 version catalog 获取 version
+                from(components["release"])                 // 发布 release 组件
+            }
+        }
+    }
 }

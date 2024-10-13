@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.colin.library.android.base.def.IBase
+import com.colin.library.android.utils.L
 
 /**
  * Author:ColinLu
@@ -12,7 +13,48 @@ import com.colin.library.android.base.def.IBase
  * Des   :Activity基类:最简单的业务逻辑定义
  */
 abstract class BaseActivity : AppCompatActivity(), IBase {
+    val TAG = this::class.simpleName!!
     var refresh: Boolean = true
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        L.d(TAG, "onCreate")
+        super.onCreate(savedInstanceState)
+    }
+
+    override fun onRestart() {
+        L.d(TAG, "onRestart")
+        super.onRestart()
+    }
+
+    override fun onStart() {
+        L.d(TAG, "onStart")
+        super.onStart()
+    }
+
+    override fun onResume() {
+        L.d(TAG, "onResume")
+        super.onResume()
+        if (refresh) {
+            refresh = false
+            loadData(true)
+        }
+    }
+
+    override fun onPause() {
+        L.d(TAG, "onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        L.d(TAG, "onStop")
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        L.d(TAG, "onDestroy")
+        super.onDestroy()
+    }
 
     open fun setContentView(layoutRes: Int, savedInstanceState: Bundle?) {
         super.setContentView(layoutRes)
@@ -26,11 +68,4 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
         initData(intent?.extras)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (refresh) {
-            refresh = false
-            loadData(true)
-        }
-    }
 }

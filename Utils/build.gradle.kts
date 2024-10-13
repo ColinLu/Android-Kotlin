@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("maven-publish")
 }
 
 android {
@@ -17,8 +18,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -37,13 +37,15 @@ dependencies {
     compileOnly(libs.androidx.appcompat)
 }
 
-
-//plugins {
-//    id("java-library")
-//    alias(libs.plugins.jetbrains.kotlin.jvm)
-//}
-//
-//java {
-//    sourceCompatibility = JavaVersion.VERSION_21
-//    targetCompatibility = JavaVersion.VERSION_21
-//}
+afterEvaluate {
+    publishing {
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "com.colin.library.android"       // 从 version catalog 获取 groupId
+                artifactId = "Utils"                        // 从 version catalog 获取 artifactId
+                version = "0.3.1"                           // 从 version catalog 获取 version
+                from(components["release"])                 // 发布 release 组件
+            }
+        }
+    }
+}

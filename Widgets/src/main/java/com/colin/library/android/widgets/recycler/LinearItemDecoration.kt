@@ -27,7 +27,6 @@ class LinearItemDecoration(
     private val context: Context, @Orientation orientation: Int = RecyclerView.VERTICAL
 ) : ItemDecoration() {
     private val mBounds = Rect()
-
     /**
      * @return the [Drawable] for this divider.
      */

@@ -18,9 +18,7 @@ class ScreenChangedReceiver(listener: OnScreenChangedListener) : BaseReceiver(li
     companion object {
         /*Activity 绑定广播*/
         fun bind(listener: OnScreenChangedListener): ScreenChangedReceiver {
-            val receiver = ScreenChangedReceiver(listener)
-            listener.lifecycle.addObserver(receiver)
-            return receiver
+            return ScreenChangedReceiver(listener)
         }
     }
 

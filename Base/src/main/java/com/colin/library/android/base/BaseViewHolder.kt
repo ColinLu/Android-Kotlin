@@ -53,6 +53,7 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     fun getImageView(@IdRes id: Int): ImageView = getView(id)
+
     fun getTextView(@IdRes id: Int): TextView = getView(id)
 
     fun setVisibility(@IdRes id: Int, visibility: Int) = apply {
@@ -175,7 +176,6 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         if (view is Checkable) view.isChecked = checked
     }
 
-
     fun setMax(@IdRes id: Int, max: Int) = apply {
         getView<ProgressBar>(id).max = max
     }
@@ -195,6 +195,7 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setRating(@IdRes id: Int, rating: Float) = apply {
         getView<RatingBar>(id).rating = rating
     }
+
 
     private fun <T : View> findView(@IdRes id: Int): T {
         val view = itemView.findViewById<T>(id)

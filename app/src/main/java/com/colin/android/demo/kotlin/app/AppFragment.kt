@@ -25,9 +25,9 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _viewBinding = reflectViewBinding(inflater, container)
-        return _viewBinding!!.root
+        return viewBinding.root
     }
 
     override fun onDestroyView() {
@@ -38,6 +38,9 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     override fun loadData(refresh: Boolean) {
     }
 
+    override fun screenChanged(action: String) {
+        L.i(TAG, "screenChanged:$action")
+    }
 
     @Suppress("UNCHECKED_CAST")
     private fun <VB : ViewBinding> reflectViewBinding(
@@ -54,13 +57,10 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
             )
             return inflate.invoke(null, inflater, container, false) as VB
         } catch (e: Exception) {
-            e.printStackTrace()
+            L.log(e)
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
 
-    override fun screenChanged(action: String) {
-        L.i(TAG, "screenChanged:$action")
-    }
 
 }

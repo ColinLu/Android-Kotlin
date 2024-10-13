@@ -53,4 +53,9 @@ abstract class BaseFragment : Fragment(), IBase {
         super.onDestroyView()
     }
 
+    override fun onDestroy() {
+        L.d(TAG, "onDestroy")
+        super.onDestroy()
+    }
+
 }
