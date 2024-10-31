@@ -19,7 +19,6 @@ object UtilHelper {
         this.config = config
     }
 
-
     /**
      * 获取全局应用
      */
@@ -31,4 +30,5 @@ object UtilHelper {
     fun isDebug() = config.isDebug()
 
     fun <T> getSystemService(clazz: Class<T>) = config.getApplication().getSystemService(clazz)
+
 }

@@ -1,5 +1,6 @@
 package com.colin.library.android.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -47,7 +48,7 @@ abstract class BaseAdapter<ITEM>(
     /**
      * Item长按事件监听
      */
-    var onItemLongClickListener: ((view: View, item: ITEM) -> Boolean) = { view, item -> false }
+    var onItemLongClickListener: ((view: View, item: ITEM) -> Boolean)? = { _, _ -> false }
 
     /**
      * 计算Adapter 适配器总共大小
@@ -84,14 +85,16 @@ abstract class BaseAdapter<ITEM>(
     /**
      * 清空数据
      */
+    @SuppressLint("NotifyDataSetChanged")
     fun clear() {
         items.clear()
         notifyDataSetChanged()
     }
 
-    fun setData(list: List<ITEM>?) {
+    @SuppressLint("NotifyDataSetChanged")
+    fun submitList(list: List<ITEM>?) {
         items.clear()
-        list?.apply { items.addAll(this) }
+        list?.let { items.addAll(it) }
         notifyDataSetChanged()
     }
 

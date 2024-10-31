@@ -72,7 +72,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
                 L.i("LogFragment", it)
-                it.apply { adapter.setData(it) }
+                it.apply { adapter.submitList(it) }
                 viewBinding.refresh.isRefreshing = false
             }
         }

@@ -51,7 +51,7 @@ object L {
     private var logTag: String = "Colin"    // log Tag
 
     @LogLevel
-    private var logLevel = LogLevel.V         // log Level
+    private var logLevel = LogLevel.V       // log Level
     private var logThread = true            // log print thread msg
     private var logMethodCount = 1          // log print method count
     private var logMethodOffset = 0         // log print method offset

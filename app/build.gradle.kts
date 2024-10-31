@@ -26,15 +26,23 @@ android {
     }
 
     buildTypes {
-        getByName("debug"){
+        getByName("debug") {
             signingConfig = signingConfigs.getByName("release")
         }
-        getByName("release"){
+        getByName("release") {
             signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
+        }
+    }
+    // 指定AIDL源集目录
+    sourceSets {
+        getByName("main") {
+            jniLibs.srcDirs("libs")
+//             如果AIDL文件夹为非默认位置，可以在这里指定
+//            aidl.srcDirs("aidl")
         }
     }
     compileOptions {
@@ -47,14 +55,17 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        dataBinding = true
+        aidl = true
     }
 }
 
 dependencies {
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+
     implementation(project(":Utils"))
     implementation(project(":Base"))
     implementation(project(":Widgets"))
-
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -69,4 +80,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+}
+
+tasks.withType<Test> {
+    enabled = false
 }

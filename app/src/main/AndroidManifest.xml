@@ -12,6 +12,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidKotlin.NoActionBar">
+        <service
+            android:name=".service.DemoAidlService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":remote">
+            <intent-filter>
+                <action android:name="com.colin.android.demo.kotlin.service.DemoAidlService" />
+            </intent-filter>
+        </service>
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

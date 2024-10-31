@@ -42,34 +42,22 @@ annotation class NetType {
 }
 
 object NetUtil {
-    val connectivityManager: ConnectivityManager
-        get() {
-            return UtilHelper.getApplication().getSystemService(ConnectivityManager::class.java)
-        }
+    private val connectivityManager: ConnectivityManager
+        get() = UtilHelper.getApplication().getSystemService(ConnectivityManager::class.java)
+
     private val telephonyManager: TelephonyManager
-        get() {
-            return UtilHelper.getApplication().getSystemService(TelephonyManager::class.java)
-        }
+        get() = UtilHelper.getApplication().getSystemService(TelephonyManager::class.java)
 
     @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    val activeNetwork: Network?
-        get() {
-            return connectivityManager.activeNetwork
-        }
+    private val activeNetwork: Network?
+        get() = connectivityManager.activeNetwork
 
     @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    val networkCapabilities: NetworkCapabilities?
-        get() {
-            return connectivityManager.getNetworkCapabilities(activeNetwork)
-        }
+    private val networkCapabilities: NetworkCapabilities?
+        get() = connectivityManager.getNetworkCapabilities(activeNetwork)
 
     @get:RequiresPermission(permission.ACCESS_NETWORK_STATE)
-    val isConnected: Boolean
-        /**
-         * 判断网络是否连接
-         *
-         * @return
-         */
+    private val isConnected: Boolean
         get() = isConnected(networkCapabilities)
 
 

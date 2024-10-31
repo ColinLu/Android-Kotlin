@@ -38,6 +38,7 @@ android {
 
 dependencies {
     compileOnly(project(":Utils"))
+    implementation(libs.material)
     compileOnly(libs.androidx.core.ktx)
     compileOnly(libs.androidx.appcompat)
     compileOnly(libs.androidx.recyclerview)

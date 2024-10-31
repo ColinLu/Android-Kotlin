@@ -12,7 +12,7 @@ interface Constants {
         const val INVALID = -1
         const val ZERO = 0
         const val ONE_SECOND = 1000
-        const val VIEW_CLICK_DEF = 500
-        const val TOAST_SHOW_DEF = 500
+        const val TIMEOUT_CLICK = 500L
+        const val TIMEOUT_TOAST = ONE_SECOND
     }
 }

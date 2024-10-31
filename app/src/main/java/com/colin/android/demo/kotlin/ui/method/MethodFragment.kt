@@ -50,7 +50,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
                 L.i(it)
-                adapter.setData(it)
+                adapter.submitList(it)
                 viewBinding.refresh.isRefreshing = false
             }
         }
