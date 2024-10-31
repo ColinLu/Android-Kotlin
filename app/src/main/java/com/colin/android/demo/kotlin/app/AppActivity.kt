@@ -32,7 +32,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
             val type = javaClass.genericSuperclass as ParameterizedType
             val cls = type.actualTypeArguments[0] as Class<*>
             val inflate = cls.getDeclaredMethod("inflate", LayoutInflater::class.java)
-            return inflate.invoke(null, layoutInflater) as VB
+            return inflate.invoke(null, ) as VB
         } catch (e: Exception) {
             L.log(e)
 

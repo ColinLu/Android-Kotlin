@@ -110,8 +110,9 @@ abstract class BaseDialog<out DIALOG> : DialogFragment(), IBase {
 
 
     abstract class Builder<DIALOG>(val layoutRes: Int = Resources.ID_NULL) {
-        fun title(title: CharSequence) = apply {
+        fun title(title: CharSequence): Builder<DIALOG> {
             mTitle = title
+            return this
         }
 
         abstract fun build(): DIALOG

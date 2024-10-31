@@ -13,11 +13,21 @@ import com.colin.library.android.base.BaseDialog
  */
 class TipsDialog : AppDialog<LayoutListBinding, TipsDialog>() {
 
+    companion object {
+        @JvmStatic
+        fun newBuilder() = Builder()
+    }
+
 
     class Builder() : BaseDialog.Builder<TipsDialog>() {
+        fun msg(msg: CharSequence): Builder {
+            return this
+        }
+
         override fun build(): TipsDialog {
             return TipsDialog()
         }
+
 
     }
 }

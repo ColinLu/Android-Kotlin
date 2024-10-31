@@ -5,6 +5,7 @@ import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
+import com.colin.android.demo.kotlin.dialog.TipsDialog
 import com.colin.android.demo.kotlin.toNavigate
 import com.colin.library.android.utils.L
 import com.colin.library.android.utils.onClick
@@ -26,6 +27,9 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
         viewModel.text.observe(this) {
             L.i(TAG, it)
             viewBinding.text.text = it
+
+            TipsDialog.newBuilder()
+                .title("")
         }
 
 
