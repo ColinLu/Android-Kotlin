@@ -43,6 +43,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     }
 
     @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class)
     private fun <VB : ViewBinding> reflectViewBinding(
         inflater: LayoutInflater, container: ViewGroup?
     ): VB {

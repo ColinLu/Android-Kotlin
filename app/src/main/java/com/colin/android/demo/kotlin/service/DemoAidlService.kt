@@ -6,7 +6,6 @@ import android.os.IBinder
 import android.os.RemoteCallbackList
 import com.colin.android.demo.kotlin.IAidlRemoteCallback
 import com.colin.android.demo.kotlin.IDemoAidlInterface
-import com.colin.android.demo.kotlin.def.ItemBean
 
 /**
  * Author:ColinLu

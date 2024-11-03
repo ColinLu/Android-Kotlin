@@ -9,7 +9,6 @@ import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
-@Suppress("UNCHECKED_CAST")
 abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
     lateinit var viewBinding: VB
         private set
@@ -26,13 +25,14 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class)
     private fun <VB : ViewBinding> reflectViewBinding(): VB {
         try {
             val type = javaClass.genericSuperclass as ParameterizedType
             val cls = type.actualTypeArguments[0] as Class<*>
             val inflate = cls.getDeclaredMethod("inflate", LayoutInflater::class.java)
-            return inflate.invoke(null, ) as VB
+            return inflate.invoke(null, layoutInflater) as VB
         } catch (e: Exception) {
             L.log(e)
 

@@ -38,6 +38,7 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param id view id
      * @return View
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T : View> getView(@IdRes id: Int): T {
         val view: View = arrays.get(id) ?: findView(id)
         return view as T
@@ -47,6 +48,7 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
      * @param id view id
      * @return View
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T : ViewGroup> getViewGroup(@IdRes id: Int): T {
         val view: View = arrays.get(id) ?: findView(id)
         return view as T

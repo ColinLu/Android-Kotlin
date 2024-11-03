@@ -19,7 +19,6 @@ import com.colin.android.demo.kotlin.IDemoAidlInterface
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
-import com.colin.android.demo.kotlin.def.ItemBean
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
