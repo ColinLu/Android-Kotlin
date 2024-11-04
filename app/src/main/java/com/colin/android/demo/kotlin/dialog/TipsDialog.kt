@@ -11,7 +11,7 @@ import com.colin.library.android.base.BaseDialog
  *
  * Des   :TODO
  */
-class TipsDialog : AppDialog<LayoutListBinding, TipsDialog>() {
+class TipsDialog : AppDialog<LayoutListBinding>() {
 
     companion object {
         @JvmStatic
@@ -19,7 +19,7 @@ class TipsDialog : AppDialog<LayoutListBinding, TipsDialog>() {
     }
 
 
-    class Builder() : BaseDialog.Builder<TipsDialog>() {
+    class Builder() : BaseDialog.Builder<Builder, TipsDialog>() {
         fun msg(msg: CharSequence): Builder {
             return this
         }

@@ -4,16 +4,19 @@ import android.app.Dialog
 import android.content.res.Resources
 import android.os.Bundle
 import android.os.SystemClock
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.FrameLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.colin.library.android.base.def.IBase
+import com.colin.library.android.utils.L
 
 
 /**
@@ -23,10 +26,10 @@ import com.colin.library.android.base.def.IBase
  *
  * Des   :Dialog基类:最简单的业务逻辑定义
  */
-abstract class BaseDialog<out DIALOG> : DialogFragment(), IBase {
+abstract class BaseDialog : DialogFragment(), IBase {
+    val TAG = this::class.simpleName!!
 
     init {
-        val TAG = this::class.simpleName!!
         arguments = Bundle()
     }
 
@@ -42,46 +45,69 @@ abstract class BaseDialog<out DIALOG> : DialogFragment(), IBase {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        L.d(TAG, "onCreateView layoutRes:${layoutRes()}")
         return if (layoutRes() != Resources.ID_NULL) {
             inflater.inflate(layoutRes(), container, false)
         } else createView(inflater, container, savedInstanceState)
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        L.d(TAG, "onCreateDialog")
         return createDialog(savedInstanceState) ?: super.onCreateDialog(savedInstanceState)
     }
 
     override fun onStart() {
+        L.d(TAG, "onStart")
         val window = dialog?.window ?: return
         initWindow(window)
         super.onStart()
     }
 
+    override fun onResume() {
+        L.d(TAG, "onResume")
+        super.onResume()
+    }
+
+    override fun onPause() {
+        L.d(TAG, "onPause")
+        super.onPause()
+    }
+
+    override fun onStop() {
+        L.d(TAG, "onStop")
+        super.onStop()
+    }
+
 
     fun show(activity: FragmentActivity?) {
-        if (activity?.isFinishing == false) {
-            show(activity.supportFragmentManager, activity::class.java.simpleName)
+        L.d(TAG, "show activity.isFinishing:${activity?.isFinishing}")
+        activity.takeIf { it?.isFinishing == false }?.let {
+            show(it.supportFragmentManager, it::class.java.simpleName)
         }
     }
 
     fun show(fragment: Fragment?) {
-        if (fragment?.isAdded == true) {
-            show(fragment.childFragmentManager, fragment::class.java.simpleName)
+        L.d(TAG, "show fragment.isAdded:${fragment?.isAdded}")
+        fragment.takeIf { it?.isAdded == true }?.let {
+            show(it.childFragmentManager, it::class.java.simpleName)
         }
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
-        if (!manager.isDestroyed && !isRepeatedShow(tag)) {
+        L.d(TAG, "show manager:${manager.isDestroyed} isRepeatedShow:${isRepeatedShow(tag)}")
+        manager.takeIf { it.isDestroyed.not() && isRepeatedShow(tag).not() }?.let {
             super.show(manager, tag)
         }
     }
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
-        return if (!isRepeatedShow(tag)) super.show(transaction, tag) else -1
+        L.d(TAG, "show isRepeatedShow:${isRepeatedShow(tag)}")
+        return if (isRepeatedShow(tag).not()) super.show(transaction, tag) else -1
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
-        if (!manager.isDestroyed && !isRepeatedShow(tag)) super.showNow(manager, tag)
+        L.d(TAG, "showNow manager:${manager.isDestroyed} isRepeatedShow:${isRepeatedShow(tag)}")
+        if (manager.isDestroyed.not() && isRepeatedShow(tag).not()) super.showNow(manager, tag)
     }
 
 
@@ -91,16 +117,22 @@ abstract class BaseDialog<out DIALOG> : DialogFragment(), IBase {
      * @param tag Tag标记
      */
     private fun isRepeatedShow(tag: String?): Boolean {
-        val result = tag == sShowTag && SystemClock.uptimeMillis() - sLastTime < 500
-        sShowTag = tag
-        sLastTime = SystemClock.uptimeMillis()
+        val result = tag == mShowTag && SystemClock.uptimeMillis() - mLastTime < 500
+        mShowTag = tag
+        mLastTime = SystemClock.uptimeMillis()
         return result
     }
 
     companion object {
-        private var sShowTag: String? = null
-        private var sLastTime: Long = 0
+        private var mShowTag: String? = null
+        private var mLastTime: Long = 0
         private var mTitle: CharSequence? = null
+        private var mWidth = FrameLayout.LayoutParams.WRAP_CONTENT
+        private var mHeight = FrameLayout.LayoutParams.WRAP_CONTENT
+        private var mOffsetX = 0F
+        private var mOffsetY = 0F
+        private var mGravity = Gravity.CENTER
+        private var mAnimation = android.R.style.Animation_Dialog
         private var mBuildMethod: ((Dialog?, View?) -> Unit)? = null
         private var mDismissMethod: (() -> Unit)? = null
         private var mNegativeButtonMethod: ((Dialog?, View?) -> Unit)? = null
@@ -109,10 +141,26 @@ abstract class BaseDialog<out DIALOG> : DialogFragment(), IBase {
     }
 
 
-    abstract class Builder<DIALOG>(val layoutRes: Int = Resources.ID_NULL) {
-        fun title(title: CharSequence): Builder<DIALOG> {
+    @Suppress("UNCHECKED_CAST")
+    abstract class Builder<Returner, DIALOG>(
+        val theme: Int = android.R.style.Theme_Dialog, val layoutRes: Int = Resources.ID_NULL
+    ) {
+        fun setTitle(title: CharSequence): Returner {
             mTitle = title
-            return this
+            return this as Returner
+        }
+
+        fun setSize(width: Int, height: Int): Returner {
+            mWidth = width
+            mHeight = height
+            return this as Returner
+        }
+
+        fun setOffset(offsetX: Float, offsetY: Float, gravity: Int = Gravity.CENTER): Returner {
+            mOffsetX = offsetX
+            mOffsetY = offsetY
+            mGravity = gravity
+            return this as Returner
         }
 
         abstract fun build(): DIALOG

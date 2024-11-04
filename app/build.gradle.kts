@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("kotlin-parcelize")
 }
 
 android {
@@ -42,7 +43,6 @@ android {
         getByName("main") {
             jniLibs.srcDirs("libs")
 //             如果AIDL文件夹为非默认位置，可以在这里指定
-//            aidl.srcDirs("aidl")
         }
     }
     compileOptions {
@@ -55,7 +55,6 @@ android {
     }
     buildFeatures {
         viewBinding = true
-        dataBinding = true
         aidl = true
     }
 }
@@ -67,9 +66,9 @@ dependencies {
     implementation(project(":Base"))
     implementation(project(":Widgets"))
 
+    implementation(libs.material)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.swiperefreshlayout)
     implementation(libs.androidx.lifecycle.livedata.ktx)

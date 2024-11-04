@@ -12,7 +12,7 @@ import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
-open class AppDialog<VB : ViewBinding, DIALOG> : BaseDialog<DIALOG>() {
+open class AppDialog<VB : ViewBinding> : BaseDialog() {
     private var _viewBinding: VB? = null
     val viewBinding: VB get() = _viewBinding!!
 
