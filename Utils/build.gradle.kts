@@ -33,8 +33,7 @@ android {
 }
 
 dependencies {
-    compileOnly(libs.androidx.core.ktx)
-    compileOnly(libs.androidx.appcompat)
+    compileOnly(libs.bundles.androidCommon)
 }
 
 afterEvaluate {

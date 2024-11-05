@@ -10,9 +10,9 @@ import java.lang.reflect.ParameterizedType
 
 
 abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
-    lateinit var viewBinding: VB
+    internal lateinit var viewBinding: VB
         private set
-    lateinit var viewModel: VM
+    internal lateinit var viewModel: VM
         private set
 
     override fun onCreate(savedInstanceState: Bundle?) {

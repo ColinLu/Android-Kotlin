@@ -38,12 +38,7 @@ android {
 
 dependencies {
     compileOnly(project(":Utils"))
-    implementation(libs.material)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.recyclerview)
-//    compileOnly(libs.material)
-//    compileOnly(libs.androidx.lifecycle.livedata.ktx)
-//    compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.bundles.androidCommon)
 }
 
 afterEvaluate {
@@ -51,7 +46,7 @@ afterEvaluate {
         publications {
             create<MavenPublication>("maven") {
                 groupId = "com.colin.library.android"       // 从 version catalog 获取 groupId
-                artifactId = "Base"                        // 从 version catalog 获取 artifactId
+                artifactId = "Base"                         // 从 version catalog 获取 artifactId
                 version = "0.3.1"                           // 从 version catalog 获取 version
                 from(components["release"])                 // 发布 release 组件
             }

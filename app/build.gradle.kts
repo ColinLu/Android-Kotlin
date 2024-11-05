@@ -19,7 +19,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("${project.rootDir.absolutePath}\\app.jks")
+            storeFile = file("${project.rootDir.absolutePath}/app.jks")
             keyAlias = "colinapp"
             storePassword = "ludapeng31"
             keyPassword = "ludapeng31"
@@ -42,7 +42,6 @@ android {
     sourceSets {
         getByName("main") {
             jniLibs.srcDirs("libs")
-//             如果AIDL文件夹为非默认位置，可以在这里指定
         }
     }
     compileOptions {
@@ -66,15 +65,10 @@ dependencies {
     implementation(project(":Base"))
     implementation(project(":Widgets"))
 
-    implementation(libs.material)
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.swiperefreshlayout)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.bundles.lifecycle)
+    implementation(libs.bundles.androidCommon)
+    implementation(libs.bundles.androidNavigation)
+    implementation(libs.bundles.androidWidgets)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

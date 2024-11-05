@@ -15,8 +15,8 @@ import java.lang.reflect.ParameterizedType
 abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     ScreenChangedReceiver.OnScreenChangedListener {
     private var _viewBinding: VB? = null
-    val viewBinding: VB get() = _viewBinding!!
-    abstract val viewModel: VM
+    internal val viewBinding: VB get() = _viewBinding!!
+    internal abstract val viewModel: VM
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +62,5 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
-
 
 }

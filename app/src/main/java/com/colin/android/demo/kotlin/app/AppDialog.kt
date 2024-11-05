@@ -5,16 +5,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseDialog
 import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
-open class AppDialog<VB : ViewBinding> : BaseDialog() {
+open class AppDialog<VB : ViewBinding>(builder: Builder<*, *>) : BaseDialog(builder) {
+
     private var _viewBinding: VB? = null
-    val viewBinding: VB get() = _viewBinding!!
+    internal val viewBinding: VB get() = _viewBinding!!
 
     override fun createView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -23,24 +23,12 @@ open class AppDialog<VB : ViewBinding> : BaseDialog() {
         return viewBinding.root
     }
 
-    override fun initWindow(window: Window) {
-        TODO("Not yet implemented")
-    }
-
     override fun createDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState)
     }
 
-    override fun initView(savedInstanceState: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
-    override fun initData(bundle: Bundle?) {
-        TODO("Not yet implemented")
-    }
-
     override fun loadData(refresh: Boolean) {
-        TODO("Not yet implemented")
+
     }
 
 

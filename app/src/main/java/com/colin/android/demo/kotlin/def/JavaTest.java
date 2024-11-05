@@ -13,12 +13,8 @@ public class JavaTest {
 
     public void tips(){
         TipsDialog.newBuilder()
-                .msg("")
-                .setTitle("")
-                .
                 .title("")
                 .title("")
-                .
                 .build();
     }
 }

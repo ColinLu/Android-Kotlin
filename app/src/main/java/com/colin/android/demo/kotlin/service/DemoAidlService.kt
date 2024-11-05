@@ -4,6 +4,7 @@ import android.app.Service
 import android.content.Intent
 import android.os.IBinder
 import android.os.RemoteCallbackList
+import android.os.RemoteException
 import com.colin.android.demo.kotlin.IAidlRemoteCallback
 import com.colin.android.demo.kotlin.IDemoAidlInterface
 import com.colin.android.demo.kotlin.def.ItemBean
@@ -13,7 +14,7 @@ import com.colin.android.demo.kotlin.def.ItemBean
  * E-mail:945919945@qq.com
  * Date  :2024-10-29
  *
- * Des   :TODO
+ * Des   :AIDL 实现
  */
 class DemoAidlService : Service() {
 
@@ -23,14 +24,17 @@ class DemoAidlService : Service() {
 
     private val callbackList = RemoteCallbackList<IAidlRemoteCallback>()
     private val bind = object : IDemoAidlInterface.Stub() {
+        @Throws(RemoteException::class)
         override fun register(callback: IAidlRemoteCallback?) {
             callback?.let { callbackList.register(it) }
         }
 
+        @Throws(RemoteException::class)
         override fun unregister(callback: IAidlRemoteCallback?) {
             callback?.let { callbackList.unregister(it) }
         }
 
+        @Throws(RemoteException::class)
         override fun stringChanged(string: String?) {
             string?.let {
                 val size = callbackList.beginBroadcast()
@@ -41,8 +45,9 @@ class DemoAidlService : Service() {
             }
         }
 
-        override fun itemChanged(itembean: ItemBean?) {
-            itembean?.let {
+        @Throws(RemoteException::class)
+        override fun itemChanged(item: ItemBean?) {
+            item?.let {
                 val size = callbackList.beginBroadcast()
                 for (i in 0 until size) {
                     callbackList.getBroadcastItem(i).itemChanged(it)

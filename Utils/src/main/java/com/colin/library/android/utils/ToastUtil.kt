@@ -29,7 +29,5 @@ object ToastUtil {
         if (current - lastToastTime < Constants.TIMEOUT_TOAST) return
         lastToastTime = current
         Toast.makeText(context, text, duration).show()
-
     }
-
 }
