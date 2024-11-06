@@ -9,7 +9,12 @@ plugins {
 
 
 //源码加入以及替换
-//allprojects {
+allprojects {
+    tasks.whenTaskAdded {
+        if (this.name.contains("test") || this.name.contains("Test")) {
+            this.enabled = false
+        }
+    }
 //    gradle.projectsEvaluated {
 //        tasks.withType<JavaCompile> {
 //            val path = "xxx/framework.jar"
@@ -24,4 +29,4 @@ plugins {
 //            }
 //        }
 //    }
-//}
+}

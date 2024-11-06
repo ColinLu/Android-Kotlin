@@ -20,7 +20,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
     override val viewModel: MethodViewModel by lazy { createModel(this) }
     private val adapter by lazy { StringAdapter() }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?,savedInstanceState: Bundle?) {
         viewBinding.apply {
             refresh.setColorSchemeResources(
                 R.color.purple_200, R.color.purple_500, R.color.purple_700
@@ -46,7 +46,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
         }
     }
 
-    override fun initData(bundle: Bundle?) {
+    override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
                 L.i(it)

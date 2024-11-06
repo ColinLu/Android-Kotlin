@@ -9,11 +9,11 @@ class SlideshowFragment : AppFragment<FragmentBinding, SlideshowViewModel>() {
 
     override val viewModel: SlideshowViewModel by lazy { createModel(this) }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
 
     }
 
-    override fun initData(bundle: Bundle?) {
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewModel.text.observe(this) {
             viewBinding.text.text = it
         }

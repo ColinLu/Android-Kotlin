@@ -19,7 +19,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("${project.rootDir.absolutePath}/app.jks")
+            storeFile = file("${rootDir.absolutePath}/app.jks")
             keyAlias = "colinapp"
             storePassword = "ludapeng31"
             keyPassword = "ludapeng31"
@@ -73,8 +73,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-}
-
-tasks.withType<Test> {
-    enabled = false
 }

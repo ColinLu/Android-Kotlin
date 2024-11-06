@@ -16,10 +16,10 @@ interface IBase {
     fun layoutRes() = Resources.ID_NULL
 
     /*init default view(findView、listener)*/
-    fun initView(savedInstanceState: Bundle?)
+    fun initView(bundle: Bundle?, savedInstanceState: Bundle?)
 
     /*Previous interface data*/
-    fun initData(bundle: Bundle?)
+    fun initData(bundle: Bundle?, savedInstanceState: Bundle?)
 
     /*load data by sqlite、http等耗时动作*/
     fun loadData(refresh: Boolean)

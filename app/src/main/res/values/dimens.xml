@@ -10,4 +10,7 @@
     <dimen name="button_height_normal">50dp</dimen>
     <dimen name="text_size">20sp</dimen>
     <dimen name="button_text_size">22sp</dimen>
+    <!--z轴高度-->
+    <dimen name="app_elevation_default">4dp</dimen>
+    <dimen name="app_radius_default">4dp</dimen>
 </resources>

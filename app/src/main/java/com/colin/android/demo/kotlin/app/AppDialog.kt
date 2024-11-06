@@ -1,6 +1,6 @@
 package com.colin.android.demo.kotlin.app
 
-import android.app.Dialog
+import android.content.res.Resources
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +11,8 @@ import com.colin.library.android.utils.L
 import java.lang.reflect.ParameterizedType
 
 
-open class AppDialog<VB : ViewBinding>(builder: Builder<*, *>) : BaseDialog(builder) {
+abstract class AppDialog<VB : ViewBinding>(builder: Builder<*, *>? = null) :
+    BaseDialog(builder?.layoutRes ?: Resources.ID_NULL, builder) {
 
     private var _viewBinding: VB? = null
     internal val viewBinding: VB get() = _viewBinding!!
@@ -23,12 +24,7 @@ open class AppDialog<VB : ViewBinding>(builder: Builder<*, *>) : BaseDialog(buil
         return viewBinding.root
     }
 
-    override fun createDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
-    }
-
     override fun loadData(refresh: Boolean) {
-
     }
 
 

@@ -37,9 +37,29 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="Text.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">@dimen/app_text_title</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Text.Button" parent="Text">
         <item name="android:textSize">@dimen/button_text_size</item>
         <item name="android:textColor">@color/purple_700</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!--默认文本框样式-->
+    <style name="Theme.App.CardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">?attr/actionBarSize</item>
+        <item name="cardCornerRadius">@dimen/app_radius_default</item>
+        <item name="cardElevation">@dimen/app_elevation_default</item>
+        <item name="cardMaxElevation">@dimen/app_elevation_default</item>
+        <item name="cardUseCompatPadding">false</item>
+        <item name="cardPreventCornerOverlap">true</item>
+        <item name="cardBackgroundColor">@color/app_background_color</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
 </resources>

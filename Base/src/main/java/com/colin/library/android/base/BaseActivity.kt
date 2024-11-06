@@ -58,14 +58,14 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
 
     open fun setContentView(layoutRes: Int, savedInstanceState: Bundle?) {
         super.setContentView(layoutRes)
-        initView(savedInstanceState)
-        initData(intent?.extras)
+        initView(intent?.extras, savedInstanceState)
+        initData(intent?.extras, savedInstanceState)
     }
 
     fun setContentView(view: View, savedInstanceState: Bundle?) {
         super.setContentView(view)
-        initView(savedInstanceState)
-        initData(intent?.extras)
+        initView(intent?.extras, savedInstanceState)
+        initData(intent?.extras, savedInstanceState)
     }
 
 }

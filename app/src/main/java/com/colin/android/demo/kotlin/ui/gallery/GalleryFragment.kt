@@ -10,13 +10,13 @@ class GalleryFragment : AppFragment<FragmentBinding, GalleryViewModel>() {
 
     override val viewModel: GalleryViewModel by lazy { createModel(this) }
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.text.onClick {
 
         }
     }
 
-    override fun initData(bundle: Bundle?) {
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewModel.text.observe(this) {
             viewBinding.text.text = it
         }

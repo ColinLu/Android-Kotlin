@@ -1,6 +1,6 @@
 package com.colin.android.demo.kotlin.def;
 
-import com.colin.android.demo.kotlin.dialog.TipsDialog;
+import com.colin.android.demo.kotlin.dialog.DialogTips;
 
 /**
  * Author:ColinLu
@@ -12,7 +12,7 @@ import com.colin.android.demo.kotlin.dialog.TipsDialog;
 public class JavaTest {
 
     public void tips(){
-        TipsDialog.newBuilder()
+        DialogTips.newBuilder()
                 .title("")
                 .title("")
                 .build();

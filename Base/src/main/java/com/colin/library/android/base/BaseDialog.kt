@@ -10,11 +10,11 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams
 import android.view.Window
-import androidx.annotation.AnimRes
+import android.view.WindowManager
 import androidx.annotation.Dimension
 import androidx.annotation.LayoutRes
+import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -31,14 +31,18 @@ import com.colin.library.android.utils.L
  *
  * Des   :Dialog基类:最简单的业务逻辑定义
  */
-abstract class BaseDialog protected constructor(private val builder: Builder<*, *>) :
-    DialogFragment(builder.layoutRes), IBase {
-    internal val TAG = this::class.simpleName!!
+abstract class BaseDialog @JvmOverloads constructor(
+    private val layoutRes: Int, private val builder: Builder<*, *>? = null
+) : DialogFragment(layoutRes), IBase {
 
-    @LayoutRes
-    internal var layoutRes = Resources.ID_NULL
+    constructor() : this(Resources.ID_NULL, null)
 
-    @AnimRes
+    constructor(@LayoutRes layoutRes: Int) : this(layoutRes, null)
+
+
+    val TAG = this::class.simpleName!!
+
+    @StyleRes
     internal var animation: Int = android.R.style.Animation_Dialog
 
     @Dimension
@@ -52,31 +56,31 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
 
     @Dimension
     internal var offsetY: Int = DEFAULT_DIALOG_WINDOW_OFFSET
+
     internal var gravity: Int = DEFAULT_DIALOG_WINDOW_GRAVITY
-    internal var title: CharSequence? = null
-    internal var message: CharSequence? = null
 
     init {
         arguments = Bundle().apply {
-            putCharSequence(EXTRAS_BASE_TITLE, builder.title)
-            putCharSequence(EXTRAS_BASE_MESSAGE, builder.message)
-            putInt(EXTRAS_BASE_WIDTH, builder.width)
-            putInt(EXTRAS_BASE_HEIGHT, builder.height)
-            putInt(EXTRAS_BASE_OFFSET_X, builder.offsetX)
-            putInt(EXTRAS_BASE_OFFSET_Y, builder.offsetY)
-            putInt(EXTRAS_BASE_GRAVITY, builder.gravity)
-            putInt(EXTRAS_BASE_ANIMATION, builder.animation)
+            putInt(EXTRAS_BASE_WIDTH, builder?.width ?: DEFAULT_DIALOG_WINDOW_WIDTH)
+            putInt(EXTRAS_BASE_HEIGHT, builder?.height ?: DEFAULT_DIALOG_WINDOW_HEIGHT)
+            putInt(EXTRAS_BASE_OFFSET_X, builder?.offsetX ?: DEFAULT_DIALOG_WINDOW_OFFSET)
+            putInt(EXTRAS_BASE_OFFSET_Y, builder?.offsetY ?: DEFAULT_DIALOG_WINDOW_OFFSET)
+            putInt(EXTRAS_BASE_GRAVITY, builder?.gravity ?: DEFAULT_DIALOG_WINDOW_GRAVITY)
+            putInt(EXTRAS_BASE_ANIMATION, builder?.animation ?: android.R.style.Animation_Dialog)
         }
     }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        L.d(TAG, "onCreate style:${builder.style} theme:${builder.theme} cancelable:${builder.cancelable}")
-        setStyle(builder.style, builder.theme)
-        isCancelable = builder.cancelable
-        layoutRes = builder.layoutRes
+        builder?.let {
+            L.d(TAG, "onCreate style:${it.style} theme:${it.theme} cancelable:${it.cancelable}")
+        }
+        setStyle(builder?.style ?: DEFAULT_DIALOG_STYLE, builder?.theme ?: R.style.Base_Dialog)
+        isCancelable = builder?.cancelable ?: DEFAULT_DIALOG_CANCELABLE
+        parse(savedInstanceState ?: arguments)
         super.onCreate(savedInstanceState)
     }
+
 
     /**
      * dialog 布局两种实现方式
@@ -101,14 +105,8 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         L.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        initView(savedInstanceState)
-        initData(arguments)
-    }
-
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        L.d(TAG, "onCreateDialog")
-        return createDialog(savedInstanceState) ?: super.onCreateDialog(savedInstanceState)
+        initView(arguments, savedInstanceState)
+        initData(arguments, savedInstanceState)
     }
 
     override fun onStart() {
@@ -147,75 +145,44 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
     }
 
     override fun show(manager: FragmentManager, tag: String?) {
-        L.d(TAG, "show manager:${manager.isDestroyed} isRepeatedShow:${isRepeatedShow(tag)}")
-        manager.takeIf { it.isDestroyed.not() && isRepeatedShow(tag).not() }?.let {
+        val show = isRepeatedShow(tag)
+        L.d(TAG, "show manager:${manager.isDestroyed} isRepeatedShow:$show")
+        manager.takeIf { it.isDestroyed.not() && show.not() }?.let {
             super.show(manager, tag)
         }
     }
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
-        L.d(TAG, "show isRepeatedShow:${isRepeatedShow(tag)}")
-        return if (isRepeatedShow(tag).not()) super.show(transaction, tag) else -1
+        val show = isRepeatedShow(tag)
+        L.d(TAG, "show isRepeatedShow:$show")
+        return if (show.not()) super.show(transaction, tag) else -1
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
-        L.d(TAG, "showNow manager:${manager.isDestroyed} isRepeatedShow:${isRepeatedShow(tag)}")
-        if (manager.isDestroyed.not() && isRepeatedShow(tag).not()) super.showNow(manager, tag)
+        val show = isRepeatedShow(tag)
+        L.d(TAG, "showNow manager:${manager.isDestroyed} isRepeatedShow:$show")
+        if (manager.isDestroyed.not() && show.not()) super.showNow(manager, tag)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
-        initData(savedInstanceState)
+        parse(savedInstanceState ?: arguments)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.apply {
-            title?.let { putCharSequence(EXTRAS_BASE_TITLE, it) }
-            message?.let { putCharSequence(EXTRAS_BASE_MESSAGE, it) }
-            putInt(EXTRAS_BASE_ANIMATION, animation)
-            putInt(EXTRAS_BASE_LAYOUT, layoutRes)
             putInt(EXTRAS_BASE_WIDTH, width)
             putInt(EXTRAS_BASE_HEIGHT, height)
             putInt(EXTRAS_BASE_OFFSET_X, offsetX)
             putInt(EXTRAS_BASE_OFFSET_Y, offsetY)
+            putInt(EXTRAS_BASE_GRAVITY, gravity)
+            putInt(EXTRAS_BASE_ANIMATION, animation)
         }
     }
 
     override fun layoutRes() = layoutRes
 
-    override fun initView(savedInstanceState: Bundle?) {
-
-    }
-
-    override fun initData(bundle: Bundle?) {
-        bundle?.let {
-            if (it.containsKey(EXTRAS_BASE_LAYOUT)) {
-                layoutRes = it.getInt(EXTRAS_BASE_LAYOUT, layoutRes)
-            }
-            if (it.containsKey(EXTRAS_BASE_ANIMATION)) {
-                animation = it.getInt(EXTRAS_BASE_ANIMATION, animation)
-            }
-            if (it.containsKey(EXTRAS_BASE_TITLE)) {
-                title = it.getCharSequence(EXTRAS_BASE_TITLE, null)
-            }
-            if (it.containsKey(EXTRAS_BASE_MESSAGE)) {
-                message = it.getCharSequence(EXTRAS_BASE_MESSAGE, null)
-            }
-            if (it.containsKey(EXTRAS_BASE_WIDTH)) {
-                width = it.getInt(EXTRAS_BASE_WIDTH, width)
-            }
-            if (it.containsKey(EXTRAS_BASE_HEIGHT)) {
-                height = it.getInt(EXTRAS_BASE_HEIGHT, height)
-            }
-            if (it.containsKey(EXTRAS_BASE_OFFSET_X)) {
-                offsetX = it.getInt(EXTRAS_BASE_OFFSET_X, offsetX)
-            }
-            if (it.containsKey(EXTRAS_BASE_OFFSET_Y)) {
-                offsetY = it.getInt(EXTRAS_BASE_OFFSET_Y, offsetY)
-            }
-        }
-    }
 
     /*设置dialog window 属性*/
     open fun initWindow(dialog: Dialog, window: Window) {
@@ -243,8 +210,28 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View
 
-    /*重新创建dialog*/
-    abstract fun createDialog(savedInstanceState: Bundle?): Dialog?
+    private fun parse(bundle: Bundle?) {
+        bundle?.let {
+            if (it.containsKey(EXTRAS_BASE_ANIMATION)) {
+                animation = it.getInt(EXTRAS_BASE_ANIMATION, animation)
+            }
+            if (it.containsKey(EXTRAS_BASE_WIDTH)) {
+                width = it.getInt(EXTRAS_BASE_WIDTH, width)
+            }
+            if (it.containsKey(EXTRAS_BASE_HEIGHT)) {
+                height = it.getInt(EXTRAS_BASE_HEIGHT, height)
+            }
+            if (it.containsKey(EXTRAS_BASE_OFFSET_X)) {
+                offsetX = it.getInt(EXTRAS_BASE_OFFSET_X, offsetX)
+            }
+            if (it.containsKey(EXTRAS_BASE_OFFSET_Y)) {
+                offsetY = it.getInt(EXTRAS_BASE_OFFSET_Y, offsetY)
+            }
+            if (it.containsKey(EXTRAS_BASE_GRAVITY)) {
+                gravity = it.getInt(EXTRAS_BASE_GRAVITY, DEFAULT_DIALOG_WINDOW_GRAVITY)
+            }
+        }
+    }
 
     /**
      * 根据 tag 判断这个 Dialog 是否重复显示了
@@ -260,37 +247,33 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
 
     companion object {
         const val DEFAULT_DIALOG_STYLE = STYLE_NO_TITLE
-        const val DEFAULT_DIALOG_CANCELABLE = true
-        const val DEFAULT_DIALOG_WINDOW_WIDTH = LayoutParams.MATCH_PARENT
-        const val DEFAULT_DIALOG_WINDOW_HEIGHT = LayoutParams.MATCH_PARENT
+        const val DEFAULT_DIALOG_WINDOW_WIDTH = WindowManager.LayoutParams.MATCH_PARENT
+        const val DEFAULT_DIALOG_WINDOW_HEIGHT = WindowManager.LayoutParams.MATCH_PARENT
         const val DEFAULT_DIALOG_WINDOW_OFFSET = 0
         const val DEFAULT_DIALOG_WINDOW_GRAVITY = Gravity.CENTER
-        const val EXTRAS_BASE_LAYOUT = "EXTRAS_BASE_LAYOUT"
-        const val EXTRAS_BASE_ANIMATION = "EXTRAS_BASE_ANIMATION"
-        const val EXTRAS_BASE_TITLE = "EXTRAS_BASE_TITLE"
-        const val EXTRAS_BASE_MESSAGE = "EXTRAS_BASE_MESSAGE"
+        const val DEFAULT_DIALOG_CANCELABLE = true
+
         const val EXTRAS_BASE_WIDTH = "EXTRAS_BASE_WIDTH"
         const val EXTRAS_BASE_HEIGHT = "EXTRAS_BASE_HEIGHT"
         const val EXTRAS_BASE_OFFSET_X = "EXTRAS_BASE_OFFSET_X"
         const val EXTRAS_BASE_OFFSET_Y = "EXTRAS_BASE_OFFSET_Y"
         const val EXTRAS_BASE_GRAVITY = "EXTRAS_BASE_GRAVITY"
+        const val EXTRAS_BASE_ANIMATION = "EXTRAS_BASE_ANIMATION"
+
         private var mShowTag: String? = null
         private var mLastTime: Long = 0
     }
 
 
     @Suppress("UNCHECKED_CAST")
-    abstract class Builder<Returner, DIALOG>(
+    abstract class Builder<Returner, Dialog>(
         val layoutRes: Int = Resources.ID_NULL,
         val style: Int = DEFAULT_DIALOG_STYLE,
         val theme: Int = R.style.Base_Dialog,
         val cancelable: Boolean = DEFAULT_DIALOG_CANCELABLE
     ) {
-        @AnimRes
+        @StyleRes
         internal var animation = android.R.style.Animation_Dialog
-
-        internal var title: CharSequence? = null
-        internal var message: CharSequence? = null
 
         @Dimension
         internal var width = DEFAULT_DIALOG_WINDOW_WIDTH
@@ -307,18 +290,8 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
         internal var gravity = DEFAULT_DIALOG_WINDOW_GRAVITY
 
 
-        fun animation(@AnimRes animation: Int): Returner {
+        fun animation(@StyleRes animation: Int): Returner {
             this.animation = animation
-            return this as Returner
-        }
-
-        fun title(title: CharSequence?): Returner {
-            this.title = title
-            return this as Returner
-        }
-
-        fun message(message: CharSequence?): Returner {
-            this.message = message
             return this as Returner
         }
 
@@ -339,7 +312,7 @@ abstract class BaseDialog protected constructor(private val builder: Builder<*, 
             return this as Returner
         }
 
-        abstract fun build(): DIALOG
+        abstract fun build(): Dialog
     }
 
 

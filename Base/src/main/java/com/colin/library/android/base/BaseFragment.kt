@@ -20,8 +20,8 @@ abstract class BaseFragment : Fragment(), IBase {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         L.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
-        initView(savedInstanceState)
-        initData(arguments)
+        initView(arguments,savedInstanceState)
+        initData(arguments,savedInstanceState)
     }
 
     override fun onStart() {

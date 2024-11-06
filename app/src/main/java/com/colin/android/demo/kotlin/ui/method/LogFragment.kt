@@ -31,7 +31,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
         "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + "<sites>\n" + "    <site>\n" + "        <id>1</id>\n" + "        <name>菜鸟教程</name>\n" + "        <url>www.runoob.com</url>\n" + "    </site>\n" + "    <site>\n" + "        <id>2</id>\n" + "        <name>菜鸟工具</name>\n" + "        <url>www.jyshare.com</url>\n" + "    </site>\n" + "    <site>\n" + "        <id>3</id>\n" + "        <name>Google</name>\n" + "        <url>www.google.com</url>\n" + "    </site>\n" + "</sites>\n"
 
     val adapter by lazy { StringAdapter() }
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?,savedInstanceState: Bundle?) {
         viewBinding.apply {
             refresh.setColorSchemeResources(
                 R.color.purple_200, R.color.purple_500, R.color.purple_700
@@ -68,7 +68,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
         }
     }
 
-    override fun initData(bundle: Bundle?) {
+    override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
                 L.i("LogFragment", it)

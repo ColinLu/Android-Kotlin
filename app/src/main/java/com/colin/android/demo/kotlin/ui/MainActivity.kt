@@ -49,7 +49,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private var aidlService: IDemoAidlInterface? = null
 
 
-    override fun initView(savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         setSupportActionBar(viewBinding.appBarMain.toolbar)
         viewBinding.appBarMain.fab.setOnClickListener { view ->
@@ -60,7 +60,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun initData(bundle: Bundle?) {
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         val drawerLayout: DrawerLayout = viewBinding.drawerLayout
         val navView: NavigationView = viewBinding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -73,6 +73,11 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         navView.setupWithNavController(navController)
         val intent = Intent().apply {
             action = "com.colin.android.demo.kotlin.service.DemoAidlService"
+            setComponent(
+                ComponentName.createRelative(
+                    "com.colin.android.demo.kotlin", ".service.DemoAidlService"
+                )
+            )
         }
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
