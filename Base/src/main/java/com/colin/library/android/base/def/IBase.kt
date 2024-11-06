@@ -18,7 +18,7 @@ interface IBase {
     /*init default view(findView、listener)*/
     fun initView(bundle: Bundle?, savedInstanceState: Bundle?)
 
-    /*Previous interface data*/
+    /*Previous interface data、bind liveData*/
     fun initData(bundle: Bundle?, savedInstanceState: Bundle?)
 
     /*load data by sqlite、http等耗时动作*/

@@ -1,3 +1,4 @@
 <resources>
     <dimen name="fab_margin">200dp</dimen>
+    <dimen name="margin_default">100dp</dimen>
 </resources>

@@ -144,6 +144,7 @@ object L {
         print(level, tag, formatXml(xml) ?: "xml is error or null")
     }
 
+    @JvmStatic
     fun format(error: Throwable): String {
         var t: Throwable? = error
         while (t != null) t = t.cause
@@ -154,6 +155,7 @@ object L {
         return sw.toString()
     }
 
+    @JvmStatic
     fun formatJson(any: Any?): String? {
         if (any == null) return null
         try {
@@ -173,6 +175,7 @@ object L {
         return null
     }
 
+    @JvmStatic
     fun formatXml(xml: String?): String? {
         if (xml.isNullOrEmpty()) return null
         try {
@@ -189,19 +192,6 @@ object L {
         return xml
     }
 
-    /**
-     * 设置入口
-     * <code>
-     * L.getSettings()
-     * .setLogLevel(Log.WARN)
-     * .setLogEnable(true);
-     * </code>
-     *
-     * @return
-     */
-    fun getSettings(): Settings {
-        return Settings()
-    }
 
     /**
      * @param level 打印Log Level
@@ -210,9 +200,10 @@ object L {
      */
     @Synchronized
     private fun print(@LogLevel level: Int, tag: String, msg: String) {/*两重设定，过滤是否需要打印log*/
-        if (!logEnabled || level < logLevel) {
-            return
-        }
+        //系统拦截不打印
+        if (!Log.isLoggable(tag, level)) return
+        //自定义配置不打印
+        if (!logEnabled || level < logLevel) return
         //打印上面边框线
         Log.println(level, tag, TOP_BORDER)
         //打印线程信息
@@ -230,11 +221,7 @@ object L {
                 val index = i + offset
                 if (index >= trace.size) continue
                 val element = trace[index]
-                Log.println(
-                    level,
-                    tag,
-                    "$HORIZONTAL_LINE$space${element.className}.${element.methodName}(${element.fileName}:${element.lineNumber})"
-                )
+                Log.println(level, tag, "$HORIZONTAL_LINE$space${classInfo(element)}")
                 space.append("\t")
             }
             Log.println(level, tag, MIDDLE_BORDER)
@@ -250,7 +237,23 @@ object L {
     private fun getMethodCount() = logMethodCount
     private fun getMethodOffset() = logMethodOffset
     private fun printMethod() = logMethod && getMethodCount() > 0
+    private fun classInfo(element: StackTraceElement): String {
+        return "${element.className}.${element.methodName}(${element.fileName}:${element.lineNumber})"
+    }
 
+    /**
+     * 设置入口
+     * <code>
+     * L.getSettings()
+     * .setLogLevel(Log.WARN)
+     * .setLogEnable(true);
+     * </code>
+     *
+     * @return
+     */
+    fun getSettings(): Settings {
+        return Settings()
+    }
 
     /**
      * Log设置类
@@ -262,8 +265,9 @@ object L {
          * @param enable
          * @return
          */
-        fun setEnabled(enable: Boolean) = apply {
+        fun setEnabled(enable: Boolean): Settings {
             logEnabled = enable
+            return this
         }
 
         /**
@@ -272,8 +276,9 @@ object L {
          * @param tag
          * @return
          */
-        fun setTag(tag: String) = apply {
+        fun setTag(tag: String): Settings {
             logTag = tag
+            return this
         }
 
         /**
@@ -282,8 +287,9 @@ object L {
          * @param enable
          * @return
          */
-        fun setThread(enable: Boolean) = apply {
+        fun setThread(enable: Boolean): Settings {
             logThread = enable
+            return this
         }
 
         /**
@@ -292,8 +298,9 @@ object L {
          * @param enable
          * @return
          */
-        fun setMethod(enable: Boolean) = apply {
+        fun setMethod(enable: Boolean): Settings {
             logMethod = enable
+            return this
         }
 
         /**
@@ -302,16 +309,25 @@ object L {
          *
          * @param level
          */
-        fun setLevel(@LogLevel level: Int) = apply {
+        fun setLevel(@LogLevel level: Int): Settings {
             logLevel = level
+            return this
         }
 
-        fun setMethodCount(count: Int) = apply {
+        /**
+         * 打印log方法数量，大于0->显示;小于0->不显示
+         */
+        fun setMethodCount(count: Int): Settings {
             logMethodCount = count
+            return this
         }
 
-        fun setMethodOffset(offset: Int) = apply {
+        /**
+         * 打印log方法上下偏移个数
+         */
+        fun setMethodOffset(offset: Int): Settings {
             logMethodOffset = offset
+            return this
         }
 
     }

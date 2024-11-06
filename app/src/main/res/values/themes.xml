@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.AndroidKotlin" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.AndroidKotlin" parent="Base.Activity">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -30,24 +30,6 @@
         <item name="android:background">@drawable/bg_button</item>
     </style>
 
-    <style name="Text" parent="TextAppearance.AppCompat.Body1">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_size</item>
-        <item name="android:textColor">@color/text_normal</item>
-        <item name="android:textAlignment">center</item>
-    </style>
-
-    <style name="Text.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textSize">@dimen/app_text_title</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="Text.Button" parent="Text">
-        <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:textColor">@color/purple_700</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <!--默认文本框样式-->
     <style name="Theme.App.CardView">
         <item name="android:layout_width">match_parent</item>
@@ -62,4 +44,21 @@
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
+    <style name="Text" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="Text.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.Button" parent="Text">
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textStyle">bold</item>
+    </style>
 </resources>
