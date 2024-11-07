@@ -102,7 +102,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
         return true
