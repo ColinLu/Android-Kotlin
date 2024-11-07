@@ -19,7 +19,7 @@ import java.util.Collections
  *
  * Des   :Android RecyclerView 适配器基类
  */
-abstract class BaseAdapter<ITEM> @JvmOverloads constructor(
+abstract class BaseAdapter<ITEM>(
     private val items: ArrayList<ITEM> = arrayListOf(), @LayoutRes private val layoutRes: Int
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 

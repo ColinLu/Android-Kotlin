@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_dialog_content"
-    style="@style/Theme.App.CardView">
+    style="@style/Theme.AndroidKotlin.CardView">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_dialog"

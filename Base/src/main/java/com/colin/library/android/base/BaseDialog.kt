@@ -31,7 +31,7 @@ import com.colin.library.android.utils.L
  *
  * Des   :Dialog基类:最简单的业务逻辑定义
  */
-abstract class BaseDialog @JvmOverloads constructor(
+abstract class BaseDialog(
     private val layoutRes: Int, private val builder: Builder<*, *>? = null
 ) : DialogFragment(layoutRes), IBase {
 

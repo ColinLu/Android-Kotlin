@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.colin.android.demo.kotlin.receiver.ScreenChangedReceiver
@@ -63,4 +64,10 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
 
+    /**
+     * add an observer within the [ViewLifecycleOwner] lifespan
+     */
+    inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
+        observe(viewLifecycleOwner) { it?.let(observer) }
+    }
 }

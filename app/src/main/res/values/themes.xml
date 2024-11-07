@@ -31,7 +31,7 @@
     </style>
 
     <!--默认文本框样式-->
-    <style name="Theme.App.CardView">
+    <style name="Theme.AndroidKotlin.CardView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:minHeight">?attr/actionBarSize</item>

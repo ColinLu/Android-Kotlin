@@ -20,6 +20,7 @@ import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
 import com.colin.android.demo.kotlin.def.ItemBean
+import com.colin.library.android.utils.L
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -47,7 +48,23 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
     private var aidlService: IDemoAidlInterface? = null
+    override fun onResume() {
+        super.onResume()
+        viewModel.update(true)
+    }
 
+    override fun onPause() {
+        super.onPause()
+        viewModel.update(false)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        aidlService?.let {
+            it.unregister(callback)
+            unbindService(connection)
+        }
+    }
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -58,9 +75,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
                 }.setAnchorView(R.id.fab).show()
         }
-    }
-
-    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         val drawerLayout: DrawerLayout = viewBinding.drawerLayout
         val navView: NavigationView = viewBinding.navView
         val navController = findNavController(R.id.nav_host_fragment_content_main)
@@ -82,6 +96,12 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
+        viewModel.status.observe {
+            L.i(TAG, "status:$it")
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -92,14 +112,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        aidlService?.let {
-            it.unregister(callback)
-            unbindService(connection)
-        }
     }
 
 

@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FF3F51B5</color>
-    <color name="purple_500">#FF303F9F</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="translucence">#88000000</color>
 
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
@@ -20,7 +17,7 @@
     <color name="color_FFE7E7E7">#FFE7E7E7</color>
 
     <color name="status_bar_bg">#27000000</color>
-    <!--Button颜色-->
+    <!--Button颜色定义样例-->
     <color name="bt_ripple">@color/color_FFE7E7E7</color>
     <color name="bt_bg_default">@color/purple_700</color>
     <color name="bt_bg_disable">#414778</color>
@@ -95,8 +92,5 @@
     <color name="purple_A200">#7C4DFF</color>
     <color name="purple_A400">#651FFF</color>
     <color name="purple_A700">#6200EF</color>
-    <!--全透明-->
-    <color name="transparent">#00000000</color>
-    <!--半透明-->
-    <color name="translucence">#88000000</color>
+
 </resources>

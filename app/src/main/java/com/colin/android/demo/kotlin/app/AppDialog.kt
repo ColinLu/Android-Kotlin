@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseDialog
 import com.colin.library.android.utils.L
@@ -46,5 +47,12 @@ abstract class AppDialog<VB : ViewBinding>(builder: Builder<*, *>? = null) :
             L.log(e)
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
+    }
+
+    /**
+     * add an observer within the [ViewLifecycleOwner] lifespan
+     */
+    inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
+        observe(viewLifecycleOwner) { it?.let(observer) }
     }
 }
