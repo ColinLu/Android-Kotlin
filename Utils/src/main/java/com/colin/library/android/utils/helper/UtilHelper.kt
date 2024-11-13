@@ -29,6 +29,9 @@ object UtilHelper {
      */
     fun isDebug() = config.isDebug()
 
-    fun <T> getSystemService(clazz: Class<T>) = config.getApplication().getSystemService(clazz)
+    fun <T> getSystemService(clazz: Class<T>): T = config.getApplication().getSystemService(clazz)
+
+    fun getSp(name: String, mode: Int) = config.getApplication().getSharedPreferences(name, mode)
+
 
 }

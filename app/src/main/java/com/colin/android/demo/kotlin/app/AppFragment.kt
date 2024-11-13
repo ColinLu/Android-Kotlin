@@ -43,6 +43,13 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
         L.i(TAG, "screenChanged:$action")
     }
 
+    /**
+     * add an observer within the [ViewLifecycleOwner] lifespan
+     */
+    inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
+        observe(viewLifecycleOwner) { it?.let(observer) }
+    }
+
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class)
     private fun <VB : ViewBinding> reflectViewBinding(
@@ -64,10 +71,11 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }
 
-    /**
-     * add an observer within the [ViewLifecycleOwner] lifespan
-     */
-    inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
-        observe(viewLifecycleOwner) { it?.let(observer) }
+    @Suppress("UNCHECKED_CAST")
+    @Throws(IllegalStateException::class)
+    private fun <T> getActualClass(index: Int): Class<T> {
+        return (javaClass.genericSuperclass as ParameterizedType).actualTypeArguments[index] as Class<T>
     }
+
+
 }

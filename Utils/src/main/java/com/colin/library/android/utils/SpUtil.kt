@@ -1,7 +1,9 @@
 package com.colin.library.android.utils
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.SharedPreferences.Editor
 import android.util.SparseArray
 import androidx.collection.ArrayMap
 import com.colin.library.android.utils.helper.UtilHelper
@@ -22,88 +24,53 @@ class SpUtil private constructor() {
         private const val SP_NAME = "app_sp"
         private val SP_MAP = ArrayMap<String, SparseArray<SharedPreferences>>()
 
-        fun put(key: String, value: Any): Boolean {
-            return put(SP_NAME, Context.MODE_PRIVATE, key, value, false)
+        fun commit(key: String, value: Any): Boolean {
+            return commit(SP_NAME, Context.MODE_PRIVATE, key, value)
         }
 
-        fun put(key: String, value: Any, commit: Boolean): Boolean {
-            return put(SP_NAME, Context.MODE_PRIVATE, key, value, commit)
-        }
-
-        fun put(
-            spName: String = SP_NAME, mode: Int = Context.MODE_PRIVATE, key: String, value: Any
-        ): Boolean {
-            return put(spName, mode, key, value, false)
-        }
-
-        fun put(key: String, value: Set<String?>) {
-            put(SP_NAME, Context.MODE_PRIVATE, key, value, false)
-        }
-
-        fun put(key: String, value: Set<String?>, commit: Boolean) {
-            put(SP_NAME, Context.MODE_PRIVATE, key, value, commit)
-        }
-
-        private fun put(
-            spName: String = SP_NAME,
-            mode: Int = Context.MODE_PRIVATE,
-            key: String,
-            value: Set<String>,
-            commit: Boolean = false
-        ): Boolean {
-            if (commit) return getSp(spName, mode).edit().putStringSet(key, value).commit()
-            else getSp(spName, mode).edit().putStringSet(key, value).apply()
-            return false
+        fun apply(key: String, value: Any) {
+            apply(SP_NAME, Context.MODE_PRIVATE, key, value)
         }
 
         /**
-         * 存值
+         * sp 存值 commit 提交方式-->>主线程，返回设置结果
          *
-         * @param spName SP 本地保存文件名
+         * @param name SP 本地保存文件名
          * @param mode   SP 保存模式
          * @param key    关键字
          * @param value  存值 一定要区分Number 类型
-         * @param commit 提交方式
+         * @return 设置结果
          */
-        private fun put(
-            spName: String,
-            mode: Int = Context.MODE_PRIVATE,
-            key: String,
-            value: Any,
-            commit: Boolean = false
+        @SuppressLint("ApplySharedPref")
+        public fun commit(
+            name: String, mode: Int = Context.MODE_PRIVATE, key: String, value: Any
         ): Boolean {
+            return when (value) {
+                is Int -> getSp(name, mode).edit().putInt(key, value).commit()
+                is Long -> getSp(name, mode).edit().putLong(key, value).commit()
+                is Float -> getSp(name, mode).edit().putFloat(key, value).commit()
+                is String -> getSp(name, mode).edit().putString(key, value).commit()
+                is Boolean -> getSp(name, mode).edit().putBoolean(key, value).commit()
+                else -> throw UnsupportedOperationException("not support about any $value")
+            }
+        }
+
+        /**
+         * sp 存值 apply 提交方式-->>子线程，不返回设置结果
+         *
+         * @param name SP 本地保存文件名
+         * @param mode   SP 保存模式
+         * @param key    关键字
+         * @param value  存值 一定要区分Number 类型
+         */
+        public fun apply(name: String, mode: Int = Context.MODE_PRIVATE, key: String, value: Any) {
             when (value) {
-                is Boolean -> {
-                    if (commit) return getSp(spName, mode).edit().putBoolean(key, value).commit()
-                    else getSp(spName, mode).edit().putBoolean(key, value).apply()
-                    return true
-                }
-
-                is Int -> {
-                    if (commit) return getSp(spName, mode).edit().putInt(key, value).commit()
-                    else getSp(spName, mode).edit().putInt(key, value).apply()
-                    return true
-                }
-
-                is Float -> {
-                    if (commit) return getSp(spName, mode).edit().putFloat(key, value).commit()
-                    else getSp(spName, mode).edit().putFloat(key, value).apply()
-                    return true
-                }
-
-                is Long -> {
-                    if (commit) return getSp(spName, mode).edit().putLong(key, value).commit()
-                    else getSp(spName, mode).edit().putLong(key, value).apply()
-                    return true
-                }
-
-                is String -> {
-                    if (commit) return getSp(spName, mode).edit().putString(key, value).commit()
-                    else getSp(spName, mode).edit().putString(key, value).apply()
-                    return true
-                }
-
-                else -> return false
+                is Int -> getSp(name, mode).edit().putInt(key, value).apply()
+                is Long -> getSp(name, mode).edit().putLong(key, value).apply()
+                is Float -> getSp(name, mode).edit().putFloat(key, value).apply()
+                is String -> getSp(name, mode).edit().putString(key, value).apply()
+                is Boolean -> getSp(name, mode).edit().putBoolean(key, value).apply()
+                else -> throw UnsupportedOperationException("not support about any $value")
             }
         }
 
@@ -167,29 +134,9 @@ class SpUtil private constructor() {
             return getSp(spName, mode).getLong(key, def)
         }
 
-
-        /*set*/
-        fun getSet(key: String, def: Set<String> = emptySet()): Set<String> {
-            return getSp(SP_NAME, Context.MODE_PRIVATE).getStringSet(key, def) ?: emptySet()
-        }
-
-        fun getSet(
-            spName: String = SP_NAME,
-            mode: Int = Context.MODE_PRIVATE,
-            key: String,
-            def: Set<String> = emptySet()
-        ): Set<String> {
-            return getSp(spName, mode).getStringSet(key, def) ?: emptySet()
-        }
-
-
         /*set*/
         fun contains(key: String): Boolean {
             return contains(SP_NAME, Context.MODE_PRIVATE, key)
-        }
-
-        fun contains(spName: String, key: String): Boolean {
-            return contains(spName, Context.MODE_PRIVATE, key)
         }
 
         /**
@@ -200,59 +147,61 @@ class SpUtil private constructor() {
          * @param key    关键字
          * @return 返回 true 含有 关键词  false  不含有 也可能 获取失败
          */
-        fun contains(spName: String, mode: Int, key: String): Boolean {
-            return getSp(spName, mode).contains(key)
+        fun contains(
+            name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE, key: String
+        ): Boolean {
+            return getSp(name, mode).contains(key)
         }
 
-
+        @JvmStatic
         fun remove(key: String) {
             remove(SP_NAME, Context.MODE_PRIVATE, key)
-        }
-
-        fun remove(spName: String, key: String) {
-            remove(spName, Context.MODE_PRIVATE, key)
         }
 
         /**
          * 移除
          *
-         * @param spName SP 本地保存文件名
+         * @param name SP 本地保存文件名
          * @param mode   SP 保存模式
          * @param key    移除关键字
          */
         @JvmStatic
-        fun remove(spName: String, mode: Int, key: String) {
-            getSp(spName, mode).edit().remove(key).apply()
+        fun remove(name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE, key: String) {
+            getSp(name, mode).edit().remove(key).apply()
         }
 
         /**
          * 清除
          *
-         * @param spName SP 本地保存文件名
+         * @param name SP 本地保存文件名
          * @param mode   SP 保存模式
          */
         @JvmStatic
-        fun clear(spName: String = SP_NAME, mode: Int = Context.MODE_PRIVATE) {
-            getSp(spName, mode).edit().clear().apply()
+        fun clear(name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE) {
+            getSp(name, mode).edit().clear().apply()
         }
 
         @JvmStatic
-        fun getSp(spName: String, mode: Int): SharedPreferences {
-            var sparseArray = SP_MAP[spName]
-            if (sparseArray == null) {
-                sparseArray = SparseArray()
-                val preferences = UtilHelper.getApplication().getSharedPreferences(spName, mode)
-                sparseArray.put(mode, preferences)
-                SP_MAP[spName] = sparseArray
-                return preferences
-            } else {
-                var preferences = sparseArray[mode]
-                if (null == preferences) {
-                    preferences = UtilHelper.getApplication().getSharedPreferences(spName, mode)
-                    sparseArray.put(mode, preferences)
-                }
-                return preferences
+        fun getSp(name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE): SharedPreferences {
+            val sparseArray = SP_MAP[name] ?: SparseArray<SharedPreferences>().also {
+                SP_MAP[name] = it
             }
+            val preferences = sparseArray[mode] ?: UtilHelper.getSp(name, mode).also {
+                sparseArray.put(mode, it)
+            }
+            return preferences
         }
+
+        /**
+         * 获取Editor
+         *
+         * @param name SP 本地保存文件名
+         * @param mode   SP 保存模式
+         */
+        @JvmStatic
+        fun getEdit(name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE): Editor =
+            getSp(name, mode).edit()
+
+
     }
 }

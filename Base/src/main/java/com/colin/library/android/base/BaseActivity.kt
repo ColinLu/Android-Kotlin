@@ -1,10 +1,14 @@
 package com.colin.library.android.base
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.colin.library.android.base.def.IBase
 import com.colin.library.android.utils.L
+import com.colin.library.android.utils.helper.LanguageHelper
+import java.util.Locale
+import java.util.Objects
 
 /**
  * Author:ColinLu
@@ -16,6 +20,16 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
     val TAG = this::class.simpleName!!
     var refresh: Boolean = true
 
+    override fun attachBaseContext(newBase: Context) {
+        if (checkLanguage()) {
+            val locale = LanguageHelper.getCurrentLocal()
+            if (Objects.equals(Locale.getDefault(), locale).not()) {
+                val config = newBase.resources.configuration
+                config.setLocale(locale)
+                super.attachBaseContext(newBase.createConfigurationContext(config))
+            } else super.attachBaseContext(newBase)
+        } else super.attachBaseContext(newBase)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         L.d(TAG, "onCreate")
@@ -68,4 +82,6 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
         initData(intent?.extras, savedInstanceState)
     }
 
+    /*界面初始化的时候，是否需要检查语言*/
+    open fun checkLanguage() = false
 }

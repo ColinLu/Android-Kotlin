@@ -1,3 +1,4 @@
+include(":Network")
 
 pluginManagement {
     repositories {
