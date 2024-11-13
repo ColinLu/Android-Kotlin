@@ -2,15 +2,10 @@ package com.colin.library.android.utils
 
 import android.util.Log
 import androidx.annotation.IntDef
-import org.json.JSONArray
-import org.json.JSONObject
+import com.colin.library.android.utils.FormatUtil.formatJson
+import com.colin.library.android.utils.FormatUtil.formatXml
 import java.io.PrintWriter
-import java.io.StringReader
 import java.io.StringWriter
-import javax.xml.transform.OutputKeys
-import javax.xml.transform.TransformerFactory
-import javax.xml.transform.stream.StreamResult
-import javax.xml.transform.stream.StreamSource
 
 @IntDef(LogLevel.V, LogLevel.D, LogLevel.I, LogLevel.W, LogLevel.E, LogLevel.A)
 @Retention(
@@ -43,7 +38,7 @@ object L {
     private const val TOP_BORDER: String = "$TOP_CORNER$DOUBLE_DIVIDER$DOUBLE_DIVIDER"
     private const val MIDDLE_BORDER: String = "$MIDDLE_CORNER$SINGLE_DIVIDER$SINGLE_DIVIDER"
     private const val BOTTOM_BORDER: String = "$BOTTOM_CORNER$DOUBLE_DIVIDER$DOUBLE_DIVIDER"
-    private const val INDENT_SPACES = 4
+
 
     //解决windows和linux换行不一致的问题 功能和"\n"是一致的,但是此种写法屏蔽了 Windows和Linux的区别 更保险.
     private val LINE_SEPARATOR = System.lineSeparator()
@@ -155,42 +150,9 @@ object L {
         return sw.toString()
     }
 
-    @JvmStatic
-    fun formatJson(any: Any?): String? {
-        if (any == null) return null
-        try {
-            if (any is JSONObject) return any.toString(INDENT_SPACES)
-            if (any is JSONArray) return any.toString(INDENT_SPACES)
-            val json = "$any"
-            if (json.startsWith('{') && json.endsWith('}')) return JSONObject(json).toString(
-                INDENT_SPACES
-            )
-            if (json.startsWith('[') && json.endsWith(']')) return JSONArray(json).toString(
-                INDENT_SPACES
-            )
-            return json
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return null
-    }
 
-    @JvmStatic
-    fun formatXml(xml: String?): String? {
-        if (xml.isNullOrEmpty()) return null
-        try {
-            val xmlInput = StreamSource(StringReader(xml))
-            val xmlOutput = StreamResult(StringWriter())
-            val transformer = TransformerFactory.newInstance().newTransformer()
-            transformer.setOutputProperty(OutputKeys.INDENT, "yes")
-            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4")
-            transformer.transform(xmlInput, xmlOutput)
-            return xmlOutput.writer.toString().replaceFirst((">").toRegex(), ">$LINE_SEPARATOR")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return xml
-    }
+
+
 
 
     /**

@@ -8,6 +8,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.colin.library.android.utils.L
 import com.colin.library.android.utils.helper.UtilConfig
 import com.colin.library.android.utils.helper.UtilHelper
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 /**
  * Author:ColinLu
@@ -26,6 +28,9 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        GlobalScope.launch{
+
+        }
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver())
     }
@@ -38,5 +43,7 @@ class App : Application() {
                 L.e("background")
             }
         }
+
+
     }
 }

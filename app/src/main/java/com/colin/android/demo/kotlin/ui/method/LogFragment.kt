@@ -10,6 +10,7 @@ import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,7 +32,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
         "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" + "<sites>\n" + "    <site>\n" + "        <id>1</id>\n" + "        <name>菜鸟教程</name>\n" + "        <url>www.runoob.com</url>\n" + "    </site>\n" + "    <site>\n" + "        <id>2</id>\n" + "        <name>菜鸟工具</name>\n" + "        <url>www.jyshare.com</url>\n" + "    </site>\n" + "    <site>\n" + "        <id>3</id>\n" + "        <name>Google</name>\n" + "        <url>www.google.com</url>\n" + "    </site>\n" + "</sites>\n"
 
     val adapter by lazy { StringAdapter() }
-    override fun initView(bundle: Bundle?,savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
             refresh.setColorSchemeResources(
                 R.color.purple_200, R.color.purple_500, R.color.purple_700
@@ -45,30 +46,30 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
             }
             adapter.onItemClickListener = { _, item ->
                 when (item) {
-                    "Log V" -> L.v(item)
-                    "Log V with Tag" -> L.v(TAG, item)
-                    "Log D" -> L.d(item)
-                    "Log D with Tag" -> L.d(TAG, item)
+                    "Log V" -> Log.v(item)
+                    "Log V with Tag" -> Log.v(TAG, item)
+                    "Log D" -> Log.d(item)
+                    "Log D with Tag" -> Log.d(TAG, item)
                     "Log I" -> L.i(item)
-                    "Log I with Tag" -> L.i(TAG, item)
+                    "Log I with Tag" -> Log.i(TAG, item)
                     "Log W" -> L.w(item)
-                    "Log W with Tag" -> L.w(TAG, item)
+                    "Log W with Tag" -> Log.w(TAG, item)
                     "Log E" -> L.e(item)
-                    "Log E with Tag" -> L.e(TAG, item)
+                    "Log E with Tag" -> Log.e(TAG, item)
                     "Log A" -> L.a(item)
-                    "Log A with Tag" -> L.a(TAG, item)
-                    "Log Json" -> L.json(json = JSON)
+                    "Log A with Tag" -> Log.a(TAG, item)
+                    "Log Json" -> Log.json(json = JSON)
                     "Log Json with Tag" -> L.json(TAG, JSON)
-                    "Log Xml" -> L.xml(xml = XML)
-                    "Log Xml with Tag" -> L.xml(TAG, XML)
-                    "Log Error" -> L.log(Throwable("is error"))
-                    else -> L.log(item)
+                    "Log Xml" -> Log.xml(xml = XML)
+                    "Log Xml with Tag" -> Log.xml(TAG, XML)
+                    "Log Error" -> Log.log(Throwable("is error"))
+                    else -> Log.log(item)
                 }
             }
         }
     }
 
-    override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
                 L.i("LogFragment", it)
