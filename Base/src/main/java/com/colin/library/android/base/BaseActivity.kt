@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.colin.library.android.base.def.IBase
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.helper.LanguageHelper
 import java.util.Locale
 import java.util.Objects
@@ -22,7 +22,7 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
 
     override fun attachBaseContext(newBase: Context) {
         if (checkLanguage()) {
-            val locale = LanguageHelper.getCurrentLocal()
+            val locale = LanguageHelper.instance.getCurrentLocal()
             if (Objects.equals(Locale.getDefault(), locale).not()) {
                 val config = newBase.resources.configuration
                 config.setLocale(locale)
@@ -32,22 +32,22 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        L.d(TAG, "onCreate")
+        Log.d(TAG, "onCreate")
         super.onCreate(savedInstanceState)
     }
 
     override fun onRestart() {
-        L.d(TAG, "onRestart")
+        Log.d(TAG, "onRestart")
         super.onRestart()
     }
 
     override fun onStart() {
-        L.d(TAG, "onStart")
+        Log.d(TAG, "onStart")
         super.onStart()
     }
 
     override fun onResume() {
-        L.d(TAG, "onResume")
+        Log.d(TAG, "onResume")
         super.onResume()
         if (refresh) {
             refresh = false
@@ -56,17 +56,17 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
     }
 
     override fun onPause() {
-        L.d(TAG, "onPause")
+        Log.d(TAG, "onPause")
         super.onPause()
     }
 
     override fun onStop() {
-        L.d(TAG, "onStop")
+        Log.d(TAG, "onStop")
         super.onStop()
     }
 
     override fun onDestroy() {
-        L.d(TAG, "onDestroy")
+        Log.d(TAG, "onDestroy")
         super.onDestroy()
     }
 

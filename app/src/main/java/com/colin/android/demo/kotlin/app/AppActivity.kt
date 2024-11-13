@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.base.BaseActivity
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import java.lang.reflect.ParameterizedType
 
 
@@ -27,6 +27,10 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
 
     }
 
+    /*如果想修改Store 可以重写此方法*/
+    open fun bindViewModelStore() = viewModelStore
+
+
     @Suppress("UNCHECKED_CAST")
     @Throws(IllegalStateException::class)
     private fun <VB : ViewBinding> reflectViewBinding(): VB {
@@ -35,7 +39,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
             val inflate = clazz.getDeclaredMethod("inflate", LayoutInflater::class.java)
             return inflate.invoke(null, layoutInflater) as VB
         } catch (e: Exception) {
-            L.log(e)
+            Log.log(e)
         }
         throw IllegalStateException("reflectViewBinding fail in $TAG")
     }
@@ -43,9 +47,9 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
     @Throws(IllegalStateException::class)
     private fun <VM : ViewModel> reflectViewModel(): VM {
         try {
-            return ViewModelProvider.create(viewModelStore)[getActualClass(1)]
+            return ViewModelProvider.create(bindViewModelStore())[getActualClass(1)]
         } catch (e: Exception) {
-            L.log(e)
+            Log.log(e)
         }
         throw IllegalStateException("reflectViewModel fail in $TAG")
     }
@@ -60,7 +64,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
      * add an observer within the [ViewModelStoreOwner] lifespan
      */
     inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
-        observe(this@AppActivity){it?.let(observer)}
+        observe(this@AppActivity) { it?.let(observer) }
     }
 }
 

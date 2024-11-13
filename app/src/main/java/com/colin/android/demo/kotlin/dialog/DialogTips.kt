@@ -1,9 +1,9 @@
 package com.colin.android.demo.kotlin.dialog
 
 import android.os.Bundle
-import com.colin.android.demo.kotlin.app.AppDialog
+import com.colin.android.demo.kotlin.app.AppDialogFragment
 import com.colin.android.demo.kotlin.databinding.DialogTipsBinding
-import com.colin.library.android.base.BaseDialog
+import com.colin.library.android.base.BaseDialogFragment
 
 /**
  * Author:ColinLu
@@ -13,7 +13,7 @@ import com.colin.library.android.base.BaseDialog
  * Des   :提示弹框
  */
 class DialogTips private constructor(private val builder: Builder) :
-    AppDialog<DialogTipsBinding>(builder) {
+    AppDialogFragment<DialogTipsBinding>(builder) {
 
     companion object {
         @JvmStatic
@@ -26,7 +26,7 @@ class DialogTips private constructor(private val builder: Builder) :
     }
 
 
-    class Builder : BaseDialog.Builder<Builder, DialogTips>() {
+    class Builder : BaseDialogFragment.Builder<Builder, DialogTips>() {
         internal var title: CharSequence? = null
         internal var message: CharSequence? = null
         fun title(title: CharSequence?): Builder {

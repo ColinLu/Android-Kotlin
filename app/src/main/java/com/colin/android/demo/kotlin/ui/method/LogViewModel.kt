@@ -3,7 +3,7 @@ package com.colin.android.demo.kotlin.ui.method
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.App
 import com.colin.android.demo.kotlin.app.AppViewModel
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 
@@ -21,7 +21,7 @@ class LogViewModel : AppViewModel() {
 
     suspend fun loadData() {
         val list = App.getInstance().resources.getStringArray(R.array.log_list).asList()
-        L.i("LogViewModel", "$list")
+        Log.i("LogViewModel", "$list")
         _list.emit(list)
     }
 }

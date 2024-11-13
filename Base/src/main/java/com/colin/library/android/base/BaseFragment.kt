@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import com.colin.library.android.base.def.IBase
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 
 /**
  * Author:ColinLu
@@ -18,19 +18,19 @@ abstract class BaseFragment : Fragment(), IBase {
     var refresh: Boolean = true
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        L.d(TAG, "onViewCreated")
+        Log.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         initView(arguments,savedInstanceState)
         initData(arguments,savedInstanceState)
     }
 
     override fun onStart() {
-        L.d(TAG, "onStart")
+        Log.d(TAG, "onStart")
         super.onStart()
     }
 
     override fun onResume() {
-        L.d(TAG, "onResume")
+        Log.d(TAG, "onResume")
         super.onResume()
         if (refresh) {
             refresh = false
@@ -39,22 +39,22 @@ abstract class BaseFragment : Fragment(), IBase {
     }
 
     override fun onPause() {
-        L.d(TAG, "onPause")
+        Log.d(TAG, "onPause")
         super.onPause()
     }
 
     override fun onStop() {
-        L.d(TAG, "onStop")
+        Log.d(TAG, "onStop")
         super.onStop()
     }
 
     override fun onDestroyView() {
-        L.d(TAG, "onDestroyView")
+        Log.d(TAG, "onDestroyView")
         super.onDestroyView()
     }
 
     override fun onDestroy() {
-        L.d(TAG, "onDestroy")
+        Log.d(TAG, "onDestroy")
         super.onDestroy()
     }
 

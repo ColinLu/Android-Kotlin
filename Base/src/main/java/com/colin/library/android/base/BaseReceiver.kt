@@ -7,7 +7,7 @@ import android.content.IntentFilter
 import androidx.lifecycle.Lifecycle.Event
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import java.lang.ref.WeakReference
 
 /**
@@ -29,7 +29,7 @@ abstract class BaseReceiver (listener: OnReceiverListener) : BroadcastReceiver()
 
     @SuppressLint("InlinedApi")
     override fun onStateChanged(source: LifecycleOwner, event: Event) {
-        L.d("BroadcastReceiver registerReceiver $event")
+        Log.d("BroadcastReceiver registerReceiver $event")
         when (event) {
             Event.ON_CREATE -> {
                 val context = listenerRef.get()?.getContext() ?: return

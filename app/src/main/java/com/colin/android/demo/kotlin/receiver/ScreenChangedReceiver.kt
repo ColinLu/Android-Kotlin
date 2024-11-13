@@ -5,7 +5,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import com.colin.library.android.base.BaseReceiver
 import com.colin.library.android.base.OnReceiverListener
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 
 /**
  * Author:ColinLu
@@ -23,7 +23,7 @@ class ScreenChangedReceiver(listener: OnScreenChangedListener) : BaseReceiver(li
     }
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        L.d("ScreenChangedReceiver", "onReceive:${intent?.action}")
+        Log.d("ScreenChangedReceiver", "onReceive:${intent?.action}")
         val action = intent?.action ?: return
         val listener = listenerRef.get() ?: return
         (listener as OnScreenChangedListener).screenChanged(action)

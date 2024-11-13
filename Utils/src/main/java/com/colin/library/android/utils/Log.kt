@@ -94,17 +94,17 @@ class Log {
 
 
         private fun print(level: Int, tag: String?, msg: Any?): Int {
-            val logTag = tag ?: getTag(Thread.currentThread().stackTrace)
+            val logTag = getTag(tag, Thread.currentThread().stackTrace)
             return Log.println(level, logTag, "$msg")
         }
 
-        private fun getTag(traces: Array<StackTraceElement>): String {
+        private fun getTag(tag: String?, traces: Array<StackTraceElement>): String {
             val index = if (traces.getOrNull(0)?.fileName == VM_STACK) 4 else 3
-            return classInfo(traces.getOrElse(index) { traces[3] })
+            return classInfo(tag, traces.getOrElse(index) { traces[3] })
         }
 
-        private fun classInfo(element: StackTraceElement): String {
-            return "$(${element.fileName}:${element.lineNumber})"
+        private fun classInfo(tag: String?, element: StackTraceElement): String {
+            return "${tag ?: ""}${element.fileName}:${element.lineNumber}"
         }
     }
 

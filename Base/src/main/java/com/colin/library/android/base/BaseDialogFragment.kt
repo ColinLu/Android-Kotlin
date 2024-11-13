@@ -21,7 +21,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.colin.library.android.base.def.IBase
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 
 
 /**
@@ -31,7 +31,7 @@ import com.colin.library.android.utils.L
  *
  * Des   :Dialog基类:最简单的业务逻辑定义
  */
-abstract class BaseDialog(
+abstract class BaseDialogFragment(
     private val layoutRes: Int, private val builder: Builder<*, *>? = null
 ) : DialogFragment(layoutRes), IBase {
 
@@ -73,7 +73,7 @@ abstract class BaseDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         builder?.let {
-            L.d(TAG, "onCreate style:${it.style} theme:${it.theme} cancelable:${it.cancelable}")
+            Log.d(TAG, "onCreate style:${it.style} theme:${it.theme} cancelable:${it.cancelable}")
         }
         setStyle(builder?.style ?: DEFAULT_DIALOG_STYLE, builder?.theme ?: R.style.Base_Dialog)
         isCancelable = builder?.cancelable ?: DEFAULT_DIALOG_CANCELABLE
@@ -96,49 +96,49 @@ abstract class BaseDialog(
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        L.d(TAG, "onCreateView layoutRes:${layoutRes()}")
+        Log.d(TAG, "onCreateView layoutRes:${layoutRes()}")
         return if (layoutRes() != Resources.ID_NULL) {
             inflater.inflate(layoutRes(), container, false)
         } else createView(inflater, container, savedInstanceState)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        L.d(TAG, "onViewCreated")
+        Log.d(TAG, "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
         initView(arguments, savedInstanceState)
         initData(arguments, savedInstanceState)
     }
 
     override fun onStart() {
-        L.d(TAG, "onStart")
+        Log.d(TAG, "onStart")
         dialog?.window?.let { initWindow(dialog!!, it) }
         super.onStart()
     }
 
     override fun onResume() {
-        L.d(TAG, "onResume")
+        Log.d(TAG, "onResume")
         super.onResume()
     }
 
     override fun onPause() {
-        L.d(TAG, "onPause")
+        Log.d(TAG, "onPause")
         super.onPause()
     }
 
     override fun onStop() {
-        L.d(TAG, "onStop")
+        Log.d(TAG, "onStop")
         super.onStop()
     }
 
     fun show(activity: FragmentActivity?) {
-        L.d(TAG, "show activity.isFinishing:${activity?.isFinishing}")
+        Log.d(TAG, "show activity.isFinishing:${activity?.isFinishing}")
         activity.takeIf { it?.isFinishing == false }?.let {
             show(it.supportFragmentManager, it::class.java.simpleName)
         }
     }
 
     fun show(fragment: Fragment?) {
-        L.d(TAG, "show fragment.isAdded:${fragment?.isAdded}")
+        Log.d(TAG, "show fragment.isAdded:${fragment?.isAdded}")
         fragment.takeIf { it?.isAdded == true }?.let {
             show(it.childFragmentManager, it::class.java.simpleName)
         }
@@ -146,7 +146,7 @@ abstract class BaseDialog(
 
     override fun show(manager: FragmentManager, tag: String?) {
         val show = isRepeatedShow(tag)
-        L.d(TAG, "show manager:${manager.isDestroyed} isRepeatedShow:$show")
+        Log.d(TAG, "show manager:${manager.isDestroyed} isRepeatedShow:$show")
         manager.takeIf { it.isDestroyed.not() && show.not() }?.let {
             super.show(manager, tag)
         }
@@ -154,13 +154,13 @@ abstract class BaseDialog(
 
     override fun show(transaction: FragmentTransaction, tag: String?): Int {
         val show = isRepeatedShow(tag)
-        L.d(TAG, "show isRepeatedShow:$show")
+        Log.d(TAG, "show isRepeatedShow:$show")
         return if (show.not()) super.show(transaction, tag) else -1
     }
 
     override fun showNow(manager: FragmentManager, tag: String?) {
         val show = isRepeatedShow(tag)
-        L.d(TAG, "showNow manager:${manager.isDestroyed} isRepeatedShow:$show")
+        Log.d(TAG, "showNow manager:${manager.isDestroyed} isRepeatedShow:$show")
         if (manager.isDestroyed.not() && show.not()) super.showNow(manager, tag)
     }
 
@@ -192,15 +192,15 @@ abstract class BaseDialog(
             decorView.setPadding(0, 0, 0, 0)
             attributes.apply {
                 //window 宽度
-                width = this@BaseDialog.width
-                height = this@BaseDialog.height
+                width = this@BaseDialogFragment.width
+                height = this@BaseDialogFragment.height
                 //设置偏移量
-                x = this@BaseDialog.offsetX
-                y = this@BaseDialog.offsetY
+                x = this@BaseDialogFragment.offsetX
+                y = this@BaseDialogFragment.offsetY
                 //设置对齐方式
-                gravity = this@BaseDialog.gravity
+                gravity = this@BaseDialogFragment.gravity
                 //设置动画
-                windowAnimations = this@BaseDialog.animation
+                windowAnimations = this@BaseDialogFragment.animation
             }
         }
     }

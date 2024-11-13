@@ -6,10 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
 import com.colin.android.demo.kotlin.receiver.ScreenChangedReceiver
 import com.colin.library.android.base.BaseFragment
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import java.lang.reflect.ParameterizedType
 
 
@@ -40,8 +41,10 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     }
 
     override fun screenChanged(action: String) {
-        L.i(TAG, "screenChanged:$action")
+        Log.i(TAG, "screenChanged:$action")
     }
+    /*如果想修改Store 可以重写此方法*/
+    open fun bindViewModelStore() = viewModelStore
 
     /**
      * add an observer within the [ViewLifecycleOwner] lifespan
@@ -66,9 +69,19 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
             )
             return inflate.invoke(null, inflater, container, false) as VB
         } catch (e: Exception) {
-            L.log(e)
+            Log.log(e)
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
+    }
+
+    @Throws(IllegalStateException::class)
+    private fun <VM : ViewModel> reflectViewModel(): VM {
+        try {
+            return ViewModelProvider.create(bindViewModelStore())[getActualClass(1)]
+        } catch (e: Exception) {
+            Log.log(e)
+        }
+        throw IllegalStateException("reflectViewModel fail in $TAG")
     }
 
     @Suppress("UNCHECKED_CAST")

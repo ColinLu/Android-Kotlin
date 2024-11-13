@@ -1,7 +1,7 @@
 package com.colin.android.demo.kotlin.dialog
 
 import android.os.Bundle
-import com.colin.android.demo.kotlin.app.AppDialog
+import com.colin.android.demo.kotlin.app.AppDialogFragment
 import com.colin.android.demo.kotlin.databinding.DialogLoadingBinding
 
 /**
@@ -11,7 +11,7 @@ import com.colin.android.demo.kotlin.databinding.DialogLoadingBinding
  *
  * Des   :Loading
  */
-class DialogLoading : AppDialog<DialogLoadingBinding>() {
+class DialogLoading : AppDialogFragment<DialogLoadingBinding>() {
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
     }
 

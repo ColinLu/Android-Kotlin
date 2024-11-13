@@ -7,13 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.viewbinding.ViewBinding
-import com.colin.library.android.base.BaseDialog
-import com.colin.library.android.utils.L
+import com.colin.library.android.base.BaseDialogFragment
+import com.colin.library.android.utils.Log
 import java.lang.reflect.ParameterizedType
 
 
-abstract class AppDialog<VB : ViewBinding>(builder: Builder<*, *>? = null) :
-    BaseDialog(builder?.layoutRes ?: Resources.ID_NULL, builder) {
+abstract class AppDialogFragment<VB : ViewBinding>(builder: Builder<*, *>? = null) :
+    BaseDialogFragment(builder?.layoutRes ?: Resources.ID_NULL, builder) {
 
     private var _viewBinding: VB? = null
     internal val viewBinding: VB get() = _viewBinding!!
@@ -44,7 +44,7 @@ abstract class AppDialog<VB : ViewBinding>(builder: Builder<*, *>? = null) :
             )
             return inflate.invoke(null, inflater, container, false) as VB
         } catch (e: Exception) {
-            L.log(e)
+            Log.log(e)
         }
         throw IllegalArgumentException("ViewBinding.inflate(inflater, container, false) error:$this")
     }

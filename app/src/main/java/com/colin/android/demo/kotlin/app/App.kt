@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.helper.UtilConfig
 import com.colin.library.android.utils.helper.UtilHelper
 import kotlinx.coroutines.GlobalScope
@@ -38,9 +38,9 @@ class App : Application() {
     private inner class AppLifeObserver : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (Lifecycle.Event.ON_START == event) {
-                L.e("foreground")
+                Log.e("foreground")
             } else if (Lifecycle.Event.ON_STOP == event) {
-                L.e("background")
+                Log.e("background")
             }
         }
 
