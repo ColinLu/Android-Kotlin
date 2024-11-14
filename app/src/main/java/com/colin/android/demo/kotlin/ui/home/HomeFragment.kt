@@ -7,7 +7,7 @@ import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
 import com.colin.android.demo.kotlin.dialog.DialogTips
 import com.colin.android.demo.kotlin.toNavigate
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.onClick
 
 
@@ -25,7 +25,7 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
         viewModel.text.observe(this) {
-            L.i(TAG, it)
+            Log.i(TAG, it)
             viewBinding.text.text = it
 
             DialogTips.newBuilder()

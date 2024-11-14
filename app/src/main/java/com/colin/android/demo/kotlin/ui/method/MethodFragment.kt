@@ -10,7 +10,7 @@ import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.android.demo.kotlin.toNavigate
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -20,7 +20,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
     override val viewModel: MethodViewModel by lazy { createModel(this) }
     private val adapter by lazy { StringAdapter() }
 
-    override fun initView(bundle: Bundle?,savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
             refresh.setColorSchemeResources(
                 R.color.purple_200, R.color.purple_500, R.color.purple_700
@@ -39,17 +39,17 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
                     }
 
                     else -> {
-                        L.i(item)
+                        Log.i(item)
                     }
                 }
             }
         }
     }
 
-    override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
-                L.i(it)
+                Log.i(it)
                 adapter.submitList(it)
                 viewBinding.refresh.isRefreshing = false
             }

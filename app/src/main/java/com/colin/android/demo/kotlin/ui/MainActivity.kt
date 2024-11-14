@@ -20,7 +20,7 @@ import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
 import com.colin.android.demo.kotlin.def.ItemBean
-import com.colin.library.android.utils.L
+import com.colin.library.android.utils.Log
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -98,7 +98,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewModel.status.observe {
-            L.i(TAG, "status:$it")
+            Log.i(TAG, "status:$it")
         }
     }
 

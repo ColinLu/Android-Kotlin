@@ -9,7 +9,6 @@ import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
-import com.colin.library.android.utils.L
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 import kotlinx.coroutines.Dispatchers
@@ -59,7 +58,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
                     "Log A" -> Log.a(item)
                     "Log A with Tag" -> Log.a(TAG, item)
                     "Log Json" -> Log.json(json = JSON)
-                    "Log Json with Tag" -> L.json(TAG, JSON)
+                    "Log Json with Tag" -> Log.json(TAG, JSON)
                     "Log Xml" -> Log.xml(xml = XML)
                     "Log Xml with Tag" -> Log.xml(TAG, XML)
                     "Log Error" -> Log.log(Throwable("is error"))
@@ -72,7 +71,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
-                L.i("LogFragment", it)
+                Log.i("LogFragment", it)
                 it.apply { adapter.submitList(it) }
                 viewBinding.refresh.isRefreshing = false
             }
