@@ -8,11 +8,11 @@ package com.colin.library.android.utils
  * Des   :Kotlin常用扩展方法
  */
 
-inline fun tryCatch(invoke: () -> Unit) {
-    try {
-        invoke()
-    } catch (e: Exception) {
-        Log.e(android.util.Log.getStackTraceString(e))
-    }
-}
+//inline fun tryCatch(invoke: () -> Unit) {
+//    try {
+//        invoke()
+//    } catch (e: Exception) {
+//        Log.e(android.util.Log.getStackTraceString(e))
+//    }
+//}
 

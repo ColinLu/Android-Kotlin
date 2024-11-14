@@ -1,7 +1,7 @@
 package com.colin.library.android.utils.helper
 
 import android.app.Application
-import com.colin.library.android.utils.LogLevel
+import android.util.Log
 
 /**
  * Author:ColinLu
@@ -58,7 +58,6 @@ class UtilConfig private constructor(builder: Builder) {
         return mLogMethodCount
     }
 
-    @LogLevel
     fun getLogLevel(): Int {
         return mLogLevel
     }
@@ -73,8 +72,7 @@ class UtilConfig private constructor(builder: Builder) {
         /*Log*/
         var mShowLog: Boolean = true
         var mShowLogThread: Boolean = true
-        @LogLevel
-        var mLogLevel: Int = LogLevel.I
+        var mLogLevel: Int = Log.INFO
         var mLogTag: String? = null
         var mLogMethodOffset: Int = 0
         var mLogMethodCount: Int = 3
@@ -93,7 +91,7 @@ class UtilConfig private constructor(builder: Builder) {
             return this
         }
 
-        fun setLogLevel(@LogLevel level: Int): Builder {
+        fun setLogLevel(level: Int): Builder {
             this.mLogLevel = level
             return this
         }
