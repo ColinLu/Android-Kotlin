@@ -13,7 +13,7 @@ import com.colin.library.android.utils.Log
  * Des   :BaseFragment基类:最简单的业务逻辑定义
  */
 abstract class BaseFragment : Fragment(), IBase {
-    val TAG = this::class.java.simpleName
+    val TAG = this::class.simpleName!!
 
     var refresh: Boolean = true
 

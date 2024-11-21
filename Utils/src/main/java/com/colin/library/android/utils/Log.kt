@@ -11,7 +11,7 @@ import android.util.Log
  */
 class Log {
 
-    internal companion object {
+    companion object {
         private const val VM_STACK = "VMStack.java"
         private var mEnabled: Boolean = true
         private var mLevel: Int = Log.INFO

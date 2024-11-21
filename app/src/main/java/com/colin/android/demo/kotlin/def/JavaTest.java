@@ -13,7 +13,6 @@ import com.colin.library.android.utils.Log;
 public class JavaTest {
 
     public void tips(){
-        Log.
         DialogTips.newBuilder()
                 .title("")
                 .title("")
