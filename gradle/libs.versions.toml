@@ -80,6 +80,7 @@ androidCommon = ["material", "androidx-appcompat", "androidx-core-ktx"]
 androidWidgets = ["androidx-constraintlayout", "androidx-swiperefreshlayout", "androidx-recyclerview"]
 androidNavigation = ["androidx-navigation-ui-ktx", "androidx-navigation-fragment-ktx"]
 lifecycle = ["androidx-lifecycle-process", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-ktx"]
+okhttp = ["squareup-okhttp", "squareup-retrofit2"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gap" }

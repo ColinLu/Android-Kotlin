@@ -10,7 +10,7 @@ import com.colin.library.android.utils.onClick
  * E-mail:945919945@qq.com
  * Date  :2024-09-13
  *
- * Des   :TODO
+ * Des   :字符串 adapter
  */
 class StringAdapter(layoutRes: Int = R.layout.item_text) :
     BaseAdapter<String>(layoutRes = layoutRes) {

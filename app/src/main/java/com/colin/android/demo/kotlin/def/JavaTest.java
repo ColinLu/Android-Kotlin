@@ -8,7 +8,7 @@ import com.colin.library.android.utils.Log;
  * E-mail:945919945@qq.com
  * Date  :2024-11-01
  * <p>
- * Des   :TODO
+ * Des   :用于Java 自测
  */
 public class JavaTest {
 

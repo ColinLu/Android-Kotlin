@@ -14,7 +14,7 @@ class Log {
     companion object {
         private const val VM_STACK = "VMStack.java"
         private var mEnabled: Boolean = true
-        private var mLevel: Int = Log.INFO
+        private var mLevel: Int = Log.VERBOSE
         private var mTag: String? = null
 
         @JvmStatic
@@ -109,7 +109,7 @@ class Log {
 
 
         private fun print(level: Int, tag: String?, msg: Any?): Int {
-            if (mEnabled || level < mLevel) return Constants.INVALID
+            if (!mEnabled || level < mLevel) return Constants.INVALID
             val logTag = tag ?: getTag(Thread.currentThread().stackTrace)
             return Log.println(level, logTag, "$msg")
         }

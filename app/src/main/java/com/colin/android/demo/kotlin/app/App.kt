@@ -14,7 +14,7 @@ import com.colin.library.android.utils.helper.UtilHelper
  * E-mail:945919945@qq.com
  * Date  :2024-09-13
  *
- * Des   :TODO
+ * Des   :项目 Android 全局App，配置初始化
  */
 class App : Application() {
 

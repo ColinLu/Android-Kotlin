@@ -44,9 +44,9 @@ class LanguageHelper private constructor() {
     }
 
     fun getSystemLanguage() = Locale.getDefault().language
-
-    fun getCurrentLocal(): Locale {
-        return getCurrent()?.let { Locale(it) } ?: Locale.getDefault()
+    fun getSystemLanguages() = Locale.getAvailableLocales()
+    fun getCurrentLocal(): Locale? {
+        return getCurrent()?.let { Locale(it) }
     }
 
 }

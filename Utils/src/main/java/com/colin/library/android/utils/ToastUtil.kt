@@ -11,7 +11,7 @@ import com.colin.library.android.utils.helper.UtilHelper
  * E-mail:945919945@qq.com
  * Date  :2024-10-10
  * Des   :Toast工具类
- * 1.防抖，去重
+ * Toast 防抖，去重
  */
 object ToastUtil {
     private var lastToastTime = 0L
