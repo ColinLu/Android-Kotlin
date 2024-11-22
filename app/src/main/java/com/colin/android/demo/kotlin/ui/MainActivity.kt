@@ -29,11 +29,11 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private val callback = object : IAidlRemoteCallback.Stub() {
 
         override fun aidlChanged(data: String?) {
-
+            data?.let { Log.i("data:$it") }
         }
 
         override fun itemChanged(itembean: ItemBean?) {
-
+            itembean?.let { Log.i("itemBean:$it") }
         }
 
     }
