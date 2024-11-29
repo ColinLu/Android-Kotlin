@@ -8,5 +8,5 @@ java {
     targetCompatibility = JavaVersion.VERSION_21
 }
 dependencies {
-    compileOnly(libs.bundles.okhttp)
+//    compileOnly(libs.bundles.okhttp)
 }

@@ -19,7 +19,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("${rootDir.absolutePath}/app.jks")
+            storeFile = file("${rootDir.absolutePath}/config/app.jks")
             keyAlias = "colinapp"
             storePassword = "ludapeng31"
             keyPassword = "ludapeng31"
@@ -45,12 +45,12 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
         allWarningsAsErrors = true
-        jvmTarget = "1.8"
+        jvmTarget = "21"
     }
     buildFeatures {
         viewBinding = true

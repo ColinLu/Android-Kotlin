@@ -24,11 +24,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
     buildFeatures {
         viewBinding = true
@@ -41,15 +41,15 @@ dependencies {
     implementation(libs.bundles.androidCommon)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.colin.library.android"       // 从 version catalog 获取 groupId
-                artifactId = "Base"                         // 从 version catalog 获取 artifactId
-                version = "0.3.1"                           // 从 version catalog 获取 version
-                from(components["release"])                 // 发布 release 组件
-            }
-        }
-    }
-}
+//afterEvaluate {
+//    publishing {
+//        publications {
+//            create<MavenPublication>("maven") {
+//                groupId = "com.colin.library.android"       // 从 version catalog 获取 groupId
+//                artifactId = "Base"                         // 从 version catalog 获取 artifactId
+//                version = "0.3.1"                           // 从 version catalog 获取 version
+//                from(components["release"])                 // 发布 release 组件
+//            }
+//        }
+//    }
+//}
