@@ -88,8 +88,7 @@ object NetUtil {
      * `false`: 关闭
      */
     fun setDataEnabled(enabled: Boolean) {
-        val manager: TelephonyManager =
-            UtilHelper.getSystemService(TelephonyManager::class.java) ?: return
+        val manager: TelephonyManager = UtilHelper.getSystemService(TelephonyManager::class.java)
         try {
             val setMobileDataEnabledMethod = manager.javaClass.getDeclaredMethod(
                 "setDataEnabled", Boolean::class.javaPrimitiveType
