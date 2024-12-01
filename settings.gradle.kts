@@ -8,7 +8,7 @@ pluginManagement {
 //        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/maven/repository/") }
 //        maven { url = uri("https://mirrors.ustc.edu.cn/maven/repository/") }
         maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
-        maven { url = uri("https://www.jitpack.io") }
+        maven { url = uri("https://jitpack.io") }
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -29,7 +29,7 @@ dependencyResolutionManagement {
 //        maven { url = uri("https://mirrors.tuna.tsinghua.edu.cn/maven/repository/") }
 //        maven { url = uri("https://mirrors.ustc.edu.cn/maven/repository/") }
         maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
-        maven { url = uri("https://www.jitpack.io") }
+        maven { url = uri("https://jitpack.io") }
         google()
         mavenCentral()
     }

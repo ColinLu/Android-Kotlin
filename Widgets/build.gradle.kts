@@ -18,8 +18,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -44,15 +43,17 @@ dependencies {
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.colin.library.android.kotlin"
-                artifactId = "Widgets"
-                version = "0.3.0"
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.colin.library.android.kotlin"
+            artifactId = "Widgets"
+            version = "0.3.0"
+
+            afterEvaluate {
                 from(components["release"])
             }
         }
     }
 }
+

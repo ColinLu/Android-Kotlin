@@ -39,19 +39,31 @@ dependencies {
     compileOnly(libs.bundles.androidCommon)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.colin.library.android.kotlin"
-                artifactId = "Utils"
-                version = "0.3.0"
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.colin.library.android.kotlin"
+            artifactId = "Utils"
+            version = "0.3.0"
+
+            afterEvaluate {
                 from(components["release"])
             }
         }
-
-        repositories {
-            mavenLocal() // 发布到本地 Maven 仓库
+    }
+    repositories {
+        maven {
+            name = "publish"
+            url = uri(layout.buildDirectory.dir("publish"))
         }
     }
 }
+
+//tasks.register<Zip>("generatePublish") {
+//    val publishTask = tasks.named(
+//        "publishReleasePublicationToMavenLocalRepository", PublishToMavenRepository::class.java
+//    )
+//    from(publishTask.map { it.repository.url })
+//    into("Utils")
+//    archiveFileName.set("Utils.zip")
+//}

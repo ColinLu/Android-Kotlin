@@ -40,13 +40,14 @@ dependencies {
     implementation(libs.bundles.androidCommon)
 }
 
-afterEvaluate {
-    publishing {
-        publications {
-            create<MavenPublication>("maven") {
-                groupId = "com.colin.library.android.kotlin"
-                artifactId = "Base"
-                version = "0.3.0"
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.colin.library.android.kotlin"
+            artifactId = "Base"
+            version = "0.3.0"
+
+            afterEvaluate {
                 from(components["release"])
             }
         }
