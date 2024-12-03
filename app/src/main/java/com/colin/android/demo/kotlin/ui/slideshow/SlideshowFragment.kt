@@ -7,8 +7,6 @@ import com.colin.android.demo.kotlin.databinding.FragmentBinding
 
 class SlideshowFragment : AppFragment<FragmentBinding, SlideshowViewModel>() {
 
-    override val viewModel: SlideshowViewModel by lazy { createModel(this) }
-
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
 
     }

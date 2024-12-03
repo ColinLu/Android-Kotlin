@@ -27,7 +27,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
             )
             refresh.setOnRefreshListener { loadData(true) }
 
-            layoutList.list.apply {
+            list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = this@MethodFragment.adapter
                 this.addItemDecoration(SpaceItemDecoration(space = 5))

@@ -22,7 +22,6 @@ import kotlinx.coroutines.launch
  * Des   :Log日志打印
  */
 class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
-    override val viewModel: LogViewModel by lazy { createModel(this) }
 
     val JSON: String =
         "{\n" + "  \"sites\": {\n" + "    \"site\": [\n" + "      {\n" + "        \"id\": \"1\",\n" + "        \"name\": \"菜鸟教程\",\n" + "        \"url\": \"www.runoob.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"2\",\n" + "        \"name\": \"菜鸟工具\",\n" + "        \"url\": \"www.jyshare.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"3\",\n" + "        \"name\": \"Google\",\n" + "        \"url\": \"www.google.com\"\n" + "      }\n" + "    ]\n" + "  }\n" + "}"
@@ -38,7 +37,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
             )
             refresh.setOnRefreshListener { loadData(true) }
 
-            layoutList.list.apply {
+            list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = this@LogFragment.adapter
                 this.addItemDecoration(SpaceItemDecoration(space = 5))

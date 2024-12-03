@@ -8,8 +8,6 @@ import com.colin.library.android.utils.onClick
 
 class GalleryFragment : AppFragment<FragmentBinding, GalleryViewModel>() {
 
-    override val viewModel: GalleryViewModel by lazy { createModel(this) }
-
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.text.onClick {
 

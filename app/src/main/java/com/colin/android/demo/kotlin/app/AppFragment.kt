@@ -18,7 +18,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     ScreenChangedReceiver.OnScreenChangedListener {
     private var _viewBinding: VB? = null
     internal val viewBinding: VB get() = _viewBinding!!
-    internal abstract val viewModel: VM
+    internal val viewModel: VM by lazy { reflectViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,10 +58,9 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     private fun <VB : ViewBinding> reflectViewBinding(
         inflater: LayoutInflater, container: ViewGroup?
     ): VB {
-        val type = javaClass.genericSuperclass as ParameterizedType
-        val cls = type.actualTypeArguments[0] as Class<*>
         try {
-            val inflate = cls.getDeclaredMethod(
+            val clazz = getActualClass<VB>(0)
+            val inflate = clazz.getDeclaredMethod(
                 "inflate",
                 LayoutInflater::class.java,
                 ViewGroup::class.java,

@@ -11,7 +11,7 @@
 
     <style name="Theme.AndroidKotlin.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Theme.AndroidKotlin.Button" parent="Widget.MaterialComponents.Button">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/button_height_normal</item>
         <item name="android:textAppearance">@style/Text.Button</item>
@@ -30,6 +30,11 @@
         <item name="cardPreventCornerOverlap">true</item>
         <item name="cardBackgroundColor">@color/app_background_color</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
+    </style>
+
+    <style name="Theme.AndroidKotlin.RecyclerView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <style name="Text" parent="TextAppearance.AppCompat.Body1">

@@ -1,36 +1,34 @@
 package com.colin.android.demo.kotlin.ui.home
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import com.colin.android.demo.kotlin.R
+import com.colin.android.demo.kotlin.adapter.FragmentAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
-import com.colin.android.demo.kotlin.createModel
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
-import com.colin.android.demo.kotlin.dialog.DialogTips
-import com.colin.android.demo.kotlin.toNavigate
-import com.colin.library.android.utils.Log
-import com.colin.library.android.utils.onClick
+import com.colin.android.demo.kotlin.ui.list.ListFragment
+import com.google.android.material.tabs.TabLayoutMediator
 
 
 class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
 
-    override val viewModel: HomeViewModel by lazy { createModel(this) }
-
-    override fun initView(bundle: Bundle?,savedInstanceState: Bundle?) {
+    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
-            buttonMethod.onClick {
-                toNavigate(this@HomeFragment, R.id.action_to_method)
+            val array = resources.getStringArray(R.array.flow_data)
+            val list: MutableList<Fragment> = mutableListOf()
+            array.forEachIndexed { index, test ->
+                list.add(ListFragment.newInstance(index, test))
             }
+            page.apply {
+                adapter = FragmentAdapter(this@HomeFragment, list)
+            }
+            TabLayoutMediator(tabLayout, page, true, true) { tab, position ->
+                tab.text = array[position]
+            }.attach()
         }
     }
 
-    override fun initData(bundle: Bundle?,savedInstanceState: Bundle?) {
-        viewModel.text.observe(this) {
-            Log.i(TAG, it)
-            viewBinding.text.text = it
-
-            DialogTips.newBuilder()
-                .title("")
-        }
+    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
 
 
     }
