@@ -22,11 +22,10 @@ import kotlinx.coroutines.launch
 class ListFragment : AppFragment<LayoutRefreshListBinding, ListViewModel>() {
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
-            refresh.setColorSchemeResources(
-                R.color.purple_200, R.color.purple_500, R.color.purple_700
-            )
-            refresh.setOnRefreshListener { loadData(true) }
-
+            refresh.apply {
+                setColorSchemeResources(R.color.purple_200, R.color.purple_500, R.color.purple_700)
+                setOnRefreshListener { loadData(true) }
+            }
             list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = ItemAdapter().apply {
@@ -39,14 +38,11 @@ class ListFragment : AppFragment<LayoutRefreshListBinding, ListViewModel>() {
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewModel.apply {
-            setId(bundle?.getInt(EXTRAS_ID) ?: R.array.path_list)
-
             list.observe {
                 Log.i("list observe :$it")
                 (viewBinding.list.adapter as ItemAdapter).submitList(it)
                 loadStatus(false)
             }
-
             refresh.observe {
                 Log.i("refresh observe:$it")
                 viewBinding.refresh.isRefreshing = it

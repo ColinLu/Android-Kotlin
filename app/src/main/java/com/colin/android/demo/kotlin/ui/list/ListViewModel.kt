@@ -1,5 +1,6 @@
 package com.colin.android.demo.kotlin.ui.list
 
+import android.content.res.Resources
 import androidx.annotation.ArrayRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,6 +16,9 @@ import kotlinx.coroutines.launch
 class ListViewModel : ViewModel() {
     @ArrayRes
     var id = R.array.path_list
+        set(value) {
+            if (field != value && value != Resources.ID_NULL) field = value
+        }
 
     private val _refresh = MutableLiveData(false)
     val refresh = _refresh
@@ -27,10 +31,6 @@ class ListViewModel : ViewModel() {
     fun loadData() {
         val newData = ItemBean.initList(id)
         _list.postValue(newData)
-    }
-
-    fun setId(@ArrayRes id: Int) {
-        this.id = id
     }
 
     fun loadStatus(refresh: Boolean) {

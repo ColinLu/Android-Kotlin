@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 
 
 class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
-    override val viewModel: MethodViewModel by lazy { createModel(this) }
     private val adapter by lazy { StringAdapter() }
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
