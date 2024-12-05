@@ -21,11 +21,11 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
     var refresh: Boolean = true
 
     override fun attachBaseContext(newBase: Context) {
-        if (checkLanguage()) {
-            val locale = LanguageHelper.instance.getCurrentLocal()
-            if (Objects.equals(Locale.getDefault(), locale).not()) {
-                val config = newBase.resources.configuration
-                config.setLocale(locale)
+        if (updateLocal()) {
+            val app = LanguageHelper.getAppLocale()
+            val system = LanguageHelper.getSystemLocale()
+            if (Objects.equals(app, system).not()) {
+                val config = newBase.resources.configuration.apply { setLocale(app) }
                 super.attachBaseContext(newBase.createConfigurationContext(config))
             } else super.attachBaseContext(newBase)
         } else super.attachBaseContext(newBase)
@@ -83,5 +83,5 @@ abstract class BaseActivity : AppCompatActivity(), IBase {
     }
 
     /*界面初始化的时候，是否需要检查语言*/
-    open fun checkLanguage() = false
+    open fun updateLocal() = false
 }

@@ -2,6 +2,7 @@ package com.colin.android.demo.kotlin.def;
 
 import com.colin.android.demo.kotlin.dialog.DialogTips;
 import com.colin.library.android.utils.Log;
+import com.colin.library.android.utils.helper.LanguageHelper;
 
 /**
  * Author:ColinLu

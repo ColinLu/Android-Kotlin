@@ -51,7 +51,19 @@
 
     <style name="Text.Button" parent="Text">
         <item name="android:textSize">@dimen/button_text_size</item>
-        <item name="android:textColor">@color/purple_700</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Text.TabDefault" parent="Widget.AppCompat.Light.ActionBar.TabText">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_normal</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="Text.TabSelected" parent="Widget.AppCompat.Light.ActionBar.TabText.Inverse">
+        <item name="android:textSize">@dimen/button_text_size</item>
+        <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 </resources>

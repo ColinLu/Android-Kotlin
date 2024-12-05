@@ -19,9 +19,13 @@ import java.util.Collections
  *
  * Des   :Android RecyclerView 适配器基类
  */
+
+
 abstract class BaseAdapter<ITEM>(
-    private val items: ArrayList<ITEM> = arrayListOf(), @LayoutRes private val layoutRes: Int
+    private val items: ArrayList<ITEM> = arrayListOf(),
+    @LayoutRes private val layoutRes: Int
 ) : RecyclerView.Adapter<BaseViewHolder>() {
+
 
     constructor(@LayoutRes layoutRes: Int) : this(arrayListOf(), layoutRes)
 
@@ -214,5 +218,6 @@ abstract class BaseAdapter<ITEM>(
     abstract fun bindListViewHolder(
         holder: BaseViewHolder, item: ITEM, payloads: MutableList<Any>
     )
+
 
 }
