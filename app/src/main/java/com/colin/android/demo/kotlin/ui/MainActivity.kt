@@ -21,7 +21,9 @@ import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
 import com.colin.android.demo.kotlin.def.ItemBean
+import com.colin.android.demo.kotlin.ui.dialog.ListPopupWindow
 import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.ToastUtil
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -110,7 +112,11 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
-
+            ListPopupWindow.Builder(this).apply {
+                layoutRes = R.layout.layout_list
+            }.setItemListener { view, s ->
+                ToastUtil.show(s)
+            }.build().show(item.actionView!!)
             return true
         }
         return super.onOptionsItemSelected(item)

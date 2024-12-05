@@ -143,7 +143,6 @@
     <string name="span_touch_fix_2">\@Colin:默认情况下，如果textView添加了clickSpan,#Colin#那么textView的事件将无法冒泡到父级。
         但在某些场景（例如微博评论需要整条可点），我们需要将事件冒泡给父元素进行处理。#qmui#</string>
     <string-array name="flow_data">
-        <item>Touch</item>
         <item>C语言</item>
         <item>Java语言</item>
         <item>Objective-C语言</item>

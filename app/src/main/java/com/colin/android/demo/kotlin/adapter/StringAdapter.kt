@@ -12,8 +12,8 @@ import com.colin.library.android.utils.onClick
  *
  * Des   :字符串 adapter
  */
-class StringAdapter(layoutRes: Int = R.layout.item_text) :
-    BaseAdapter<String>(layoutRes = layoutRes) {
+class StringAdapter(array: ArrayList<String> = arrayListOf(), layoutRes: Int = R.layout.item_text) :
+    BaseAdapter<String>(array,layoutRes = layoutRes) {
 
     override fun bindListViewHolder(
         holder: BaseViewHolder, item: String, payloads: MutableList<Any>

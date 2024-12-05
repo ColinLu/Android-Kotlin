@@ -26,7 +26,6 @@ abstract class BaseAdapter<ITEM>(
     @LayoutRes private val layoutRes: Int
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 
-
     constructor(@LayoutRes layoutRes: Int) : this(arrayListOf(), layoutRes)
 
     lateinit var context: Context
