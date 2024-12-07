@@ -14,7 +14,6 @@ import java.lang.reflect.ParameterizedType
 
 abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
     internal lateinit var viewBinding: VB
-        private set
     internal val viewModel: VM by lazy { reflectViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup.LayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.library.android.base.BasePopupWindow
-import com.colin.library.android.widgets.recycler.SpaceItemDecoration
 
 /**
  * Author:ColinLu
@@ -18,52 +18,47 @@ import com.colin.library.android.widgets.recycler.SpaceItemDecoration
  * Des   :ListPopupWindow
  */
 class ListPopupWindow(
-    context: Context, private val builder: Builder
-) : BasePopupWindow(
-    context, builder.getView(), builder.width, builder.height, builder.focusable
-) {
-    override fun show(anchor: View) {
-        val view = contentView as RecyclerView
-        view.apply {
-            this.layoutManager = LinearLayoutManager(this@ListPopupWindow.context)
-            this.adapter = StringAdapter().apply {
-                submitList(builder.list)
-                onItemClickListener = builder.itemListener
-            }
-            this.addItemDecoration(SpaceItemDecoration(space = 5))
+    private val builder: Builder
+) : BasePopupWindow(builder) {
+    override fun show(anchor: View, xoff: Int, yoff: Int, gravity: Int) {
+        val list = builder.getView() as RecyclerView
+        list.apply {
+            layoutManager = LinearLayoutManager(builder.context)
+            adapter = StringAdapter()
         }
-        super.show(anchor)
+        super.show(anchor, xoff, yoff, gravity)
     }
 
-    class Builder(context: Context) : BasePopupWindow.Builder<Builder, ListPopupWindow>(context) {
-        internal var layoutRes: Int = Resources.ID_NULL
-        internal var list: List<String> = emptyList()
-        internal var itemListener: ((View, String) -> Unit)? = null
+    class Builder(
+        context: Context,
+        width: Int = LayoutParams.WRAP_CONTENT,
+        height: Int = LayoutParams.WRAP_CONTENT
+    ) : BasePopupWindow.Builder<Builder, ListPopupWindow>(context, width, height) {
+        private var layoutRes: Int = Resources.ID_NULL
+        private var view: View? = null
+        private var array: Array<String>? = null
+
         override fun getView(): View {
-            return LayoutInflater.from(context).inflate(layoutRes, null, false)
+            return view ?: LayoutInflater.from(context).inflate(layoutRes, null, false)
         }
 
-        fun setData(list: List<String>): Builder {
-            this.list = list
+        fun setView(layoutRes: Int): Builder {
+            this.layoutRes = layoutRes
             return this
         }
 
-        fun setItemListener(listener: ((View, String) -> Unit)?): Builder {
-            this.itemListener = listener
+        fun setView(view: View): Builder {
+            this.view = view
+            return this
+        }
+
+        fun setArray(array: Array<String>): Builder {
+            this.array = array
             return this
         }
 
         override fun build(): ListPopupWindow {
-            val popupWindow = ListPopupWindow(context, this)
-            popupWindow.contentView = getView()
-            popupWindow.setBackgroundDrawable(background)
-            popupWindow.width = width
-            popupWindow.height = height
-            popupWindow.isOutsideTouchable = outsideTouchable
-            popupWindow.isFocusable = focusable
-            popupWindow.setOnDismissListener(dismissListener)
-            popupWindow.isClippingEnabled = clippingEnable
-            return popupWindow
+            return ListPopupWindow(this)
         }
 
     }

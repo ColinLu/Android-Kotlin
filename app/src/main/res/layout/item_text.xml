@@ -7,7 +7,9 @@
     android:layout_height="?attr/actionBarSize"
     android:background="?android:selectableItemBackground"
     android:gravity="start|center_vertical"
+    android:layoutDirection="ltr"
     android:paddingHorizontal="@dimen/margin_default"
     android:textAppearance="@style/Text"
+    android:textDirection="ltr"
     tools:text="@string/app_name" />
 

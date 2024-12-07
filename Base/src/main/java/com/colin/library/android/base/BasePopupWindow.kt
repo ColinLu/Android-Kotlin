@@ -18,25 +18,26 @@ import androidx.core.widget.PopupWindowCompat
  * Des   :BasePopupWindow
  */
 abstract class BasePopupWindow(
-    val context: Context, view: View, width: Int, height: Int, focusable: Boolean
-) : PopupWindow(view, width, height, focusable) {
+    private val builder: Builder<*, *>
+) : PopupWindow(builder.getView(), builder.width, builder.height, builder.focusable) {
 
-    open fun show(anchor: View) {
-        val location = intArrayOf(0, 0)
-        anchor.getLocationOnScreen(location)
-        PopupWindowCompat.showAsDropDown(this, anchor, 0, 0, Gravity.BOTTOM or Gravity.START)
-    }
-
-    open fun show(anchor: View, gravity: Int) {
-        PopupWindowCompat.showAsDropDown(this, anchor, 0, 0, gravity)
+    open fun show(anchor: View, xoff: Int = 0, yoff: Int = 0, gravity: Int = Gravity.BOTTOM) {
+        this.setBackgroundDrawable(builder.background)
+        this.isOutsideTouchable = builder.outsideTouchable
+        this.isClippingEnabled = builder.clippingEnable
+        this.animationStyle = builder.animStyle
+        this.setOnDismissListener(builder.dismissListener)
+        PopupWindowCompat.showAsDropDown(this, anchor, xoff, yoff, gravity)
     }
 
     @Suppress("UNCHECKED_CAST")
     abstract class Builder<Returner, PopupWindow>(
         val context: Context,
         val width: Int = LayoutParams.WRAP_CONTENT,
-        val height: Int = LayoutParams.WRAP_CONTENT,
+        val height: Int = LayoutParams.WRAP_CONTENT
     ) {
+        constructor(context: Context) : this(context, 0, 0)
+
         //设置背景为透明，以解决点击外部区域无法关闭的问题。
         var background: Drawable = ColorDrawable(Color.TRANSPARENT)
 

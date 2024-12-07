@@ -13,6 +13,10 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/title_gallery" />
         <item
+            android:id="@+id/fragment_method"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="@string/title_method" />
+        <item
             android:id="@+id/fragment_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/title_slideshow" />

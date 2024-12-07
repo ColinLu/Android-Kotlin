@@ -5,7 +5,6 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/fragment_home">
 
-
     <fragment
         android:id="@+id/fragment_home"
         android:name="com.colin.android.demo.kotlin.ui.home.HomeFragment"
@@ -23,26 +22,16 @@
         android:name="com.colin.android.demo.kotlin.ui.slideshow.SlideshowFragment"
         android:label="@string/title_slideshow"
         tools:layout="@layout/fragment" />
-
     <fragment
         android:id="@+id/fragment_method"
         android:name="com.colin.android.demo.kotlin.ui.method.MethodFragment"
-        android:label="@string/title_method"
+        android:label="@string/title_log"
         tools:layout="@layout/layout_refresh_list" />
-
     <fragment
         android:id="@+id/fragment_log"
         android:name="com.colin.android.demo.kotlin.ui.method.LogFragment"
         android:label="@string/title_log"
         tools:layout="@layout/layout_refresh_list" />
-    <action
-        android:id="@+id/action_to_method"
-        app:destination="@+id/fragment_method"
-        app:enterAnim="@android:animator/fade_in"
-        app:exitAnim="@android:animator/fade_out"
-        app:popEnterAnim="@android:animator/fade_in"
-        app:popExitAnim="@android:animator/fade_out"
-        app:popUpTo="@+id/fragment_method" />
     <action
         android:id="@+id/action_to_log"
         app:destination="@+id/fragment_log"
@@ -51,4 +40,5 @@
         app:popEnterAnim="@android:animator/fade_in"
         app:popExitAnim="@android:animator/fade_out"
         app:popUpTo="@+id/fragment_log" />
+
 </navigation>
