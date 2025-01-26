@@ -32,6 +32,11 @@
         android:name="com.colin.android.demo.kotlin.ui.method.LogFragment"
         android:label="@string/title_log"
         tools:layout="@layout/layout_refresh_list" />
+    <fragment
+        android:id="@+id/fragment_webIndex"
+        android:name="com.colin.android.demo.kotlin.ui.web.WebIndexFragment"
+        android:label="@string/title_log"
+        tools:layout="@layout/layout_refresh_list" />
     <action
         android:id="@+id/action_to_log"
         app:destination="@+id/fragment_log"

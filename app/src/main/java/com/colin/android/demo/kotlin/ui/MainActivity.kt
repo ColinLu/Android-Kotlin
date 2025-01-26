@@ -12,6 +12,7 @@ import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.IdRes
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -136,6 +137,16 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    fun setMenuVisible(@IdRes res: Int, visible: Boolean) {
+        setMenuVisible(viewBinding.appBarMain.toolbar.menu, res, visible)
+    }
+
+    fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
+        val menuItem =  menu?.findItem(res)?:return
+        menuItem.setVisible(visible)
+    }
+
+
     private fun createPopupWindow(): ListPopupWindow {
         return ListPopupWindow(this).apply {
             setAdapter(ArrayAdapter(
@@ -160,4 +171,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         LanguageHelper.saveLocale(Locale(languages[position], countries[position]))
         onCreate(null)
     }
+
+
 }
