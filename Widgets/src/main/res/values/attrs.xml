@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ShimmerLayout">
+        <attr name="shimmer_color" format="color|reference" />
+        <attr name="shimmer_animation_duration" format="integer|reference" />
+        <attr name="shimmer_auto_start" format="boolean|reference" />
+        <attr name="shimmer_angle" format="integer|reference" />
+        <attr name="shimmer_mask_width" format="fraction|reference" />
+        <attr name="shimmer_gradient_width" format="fraction|reference" />
+        <attr name="shimmer_reverse_animation" format="boolean|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="SquareImageView">
+        <attr name="byWidth" format="boolean|reference" />
+        <attr name="ratio" format="fraction|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="RoundImageView">
+        <attr name="android:scaleType" />
+        <attr name="round_radius" format="dimension" />
+        <attr name="round_radius_top_left" format="dimension" />
+        <attr name="round_radius_top_right" format="dimension" />
+        <attr name="round_radius_bottom_left" format="dimension" />
+        <attr name="round_radius_bottom_right" format="dimension" />
+        <attr name="round_border_width" format="dimension" />
+        <attr name="round_border_color" format="color|reference" />
+        <attr name="round_mutate_background" format="boolean" />
+        <attr name="round_oval" format="boolean" />
+        <attr name="round_filter" format="integer" />
+        <attr name="round_tile_mode" format="integer">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+        <attr name="round_tile_mode_x" format="integer">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+        <attr name="round_tile_mode_y" format="integer">
+            <enum name="clamp" value="0" />
+            <enum name="repeat" value="1" />
+            <enum name="mirror" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="MotionImageView">
+        <attr name="motion_type">
+            <enum name="grey" value="0" />
+            <enum name="scale" value="1" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="WheelView">
+        <!--文字大小-->
+        <attr name="wheel_textSize" format="dimension|reference" />
+        <!--是否自适应文字大小以完全显示过长的文字-->
+        <attr name="wheel_autoSizeText" format="boolean|reference" />
+        <!--自适应文字大小时最小缩放字体大小-->
+        <attr name="wheel_textSizeMin" format="dimension|reference" />
+        <!--文字对齐方式-->
+        <attr name="wheel_textAlign" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <!--文本距离padding的外边距-->
+        <attr name="wheel_textPadding" format="dimension|reference" />
+        <attr name="wheel_textPaddingLeft" format="dimension|reference" />
+        <attr name="wheel_textPaddingRight" format="dimension|reference" />
+        <attr name="android:gravity" />
+        <!--左右附加文本相关-->
+        <attr name="wheel_leftText" format="string|reference" />
+        <attr name="wheel_leftTextSize" format="dimension" />
+        <attr name="wheel_leftTextColor" format="color" />
+        <attr name="wheel_leftTextMarginRight" format="dimension" />
+        <attr name="wheel_leftTextGravity" format="enum">
+            <enum name="center" value="0x11" />
+            <enum name="top" value="0x30" />
+            <enum name="bottom" value="0x50" />
+        </attr>
+        <attr name="wheel_rightText" format="string|reference" />
+        <attr name="wheel_rightTextSize" format="dimension|reference" />
+        <attr name="wheel_rightTextMarginLeft" format="dimension|reference" />
+        <attr name="wheel_rightTextColor" format="color|reference" />
+        <attr name="wheel_rightTextGravity" format="enum">
+            <enum name="center" value="17" />
+            <enum name="top" value="48" />
+            <enum name="bottom" value="80" />
+        </attr>
+        <!--左右附加文本相关-->
+
+        <!--未选中文字颜色-->
+        <attr name="wheel_normalTextColor" format="color|reference" />
+        <!--被选中的文字颜色-->
+        <attr name="wheel_selectedTextColor" format="color|reference" />
+        <!--行间距-->
+        <attr name="wheel_lineSpacing" format="dimension|reference" />
+
+        <!--可见item数-->
+        <attr name="wheel_visibleItems" format="integer|reference" />
+        <!--当前选中下标-->
+        <attr name="wheel_selected" format="integer|reference" />
+        <!--最大选中下标-->
+        <attr name="wheel_selectedMax" format="integer|reference" />
+        <!--最小选中下标-->
+        <attr name="wheel_selectedMin" format="integer|reference" />
+        <!--是否循环滚动-->
+        <attr name="wheel_cyclic" format="boolean" />
+
+        <!--是否显示分割线-->
+        <attr name="wheel_showDivider" format="boolean" />
+        <!--分割线类型-->
+        <attr name="wheel_dividerType" format="enum">
+            <enum name="fill" value="0" />
+            <enum name="wrap" value="1" />
+            <enum name="wrap_all" value="2" />
+        </attr>
+        <!--分割线颜色-->
+        <attr name="wheel_dividerColor" format="color" />
+        <!--分割线高度-->
+        <attr name="wheel_dividerHeight" format="dimension" />
+        <!--wrap类型下分割线内边距-->
+        <attr name="wheel_dividerPadding" format="dimension" />
+
+
+        <!--是否是弯曲（3D）效果-->
+        <attr name="wheel_curved" format="boolean" />
+        <!--弯曲（3D）效果左右圆弧偏移效果方向 可向指定方向偏移-->
+        <attr name="wheel_curvedArcDirection" format="enum">
+            <enum name="left" value="0" />
+            <enum name="center" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+        <!--弯曲（3D）效果左右圆弧偏移效果方向系数 偏移系数-->
+        <attr name="wheel_curvedArcDirectionFactor" format="float" />
+        <!--选中后折射的偏移(弯曲（3D）效果和普通效果都适用) 与字体大小的比值，1为不偏移 越小偏移越明显-->
+        <attr name="wheel_refractRatio" format="float" />
+
+        <!--是否绘制选中区域-->
+        <attr name="wheel_isShowCurtain" format="boolean" />
+        <!--选中区域颜色-->
+        <attr name="wheel_curtainColor" format="color" />
+        <!--选中区域/分割线上下偏移，通过移动分割线上下限制的位置来实现扩大/缩小显示区域-->
+        <attr name="wheel_dividerOffsetY" format="dimension" />
+    </declare-styleable>
+
+
+    <declare-styleable name="IndicatorView">
+        <attr name="banner_indicator_slider_checked_color" format="color" />
+        <attr name="banner_indicator_slider_normal_color" format="color" />
+        <attr name="banner_indicator_slider_radius" format="dimension" />
+        <attr name="banner_indicator_rtl" format="boolean" />
+        <attr name="banner_indicator_orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+            <enum name="rtl" value="3" />
+        </attr>
+
+        <attr name="banner_indicator_slide_mode" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="smooth" value="2" />
+            <enum name="worm" value="3" />
+            <enum name="scale" value="4" />
+            <enum name="color" value="5" />
+        </attr>
+
+        <attr name="banner_indicator_style" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="dash" value="2" />
+            <enum name="round_rect" value="4" />
+        </attr>
+
+    </declare-styleable>
+    <declare-styleable name="BannerViewPager">
+        <!--页面切换时间间隔-->
+        <attr name="bvp_interval" format="integer" />
+        <attr name="bvp_scroll_duration" format="integer" />
+        <attr name="bvp_can_loop" format="boolean" />
+        <attr name="bvp_auto_play" format="boolean" />
+        <attr name="bvp_indicator_checked_color" format="color" />
+        <attr name="bvp_indicator_normal_color" format="color" />
+        <attr name="bvp_indicator_radius" format="dimension" />
+        <attr name="bvp_round_corner" format="dimension" />
+        <attr name="bvp_page_margin" format="dimension" />
+        <attr name="bvp_reveal_width" format="dimension" />
+        <attr name="bvp_indicator_style" format="enum">
+            <enum name="circle" value="0" />
+            <enum name="dash" value="2" />
+            <enum name="round_rect" value="4" />
+        </attr>
+        <attr name="bvp_indicator_slide_mode" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="smooth" value="2" />
+            <enum name="worm" value="3" />
+            <enum name="scale" value="4" />
+            <enum name="color" value="5" />
+        </attr>
+        <attr name="bvp_indicator_gravity" format="enum">
+            <enum name="center" value="0" />
+            <enum name="start" value="2" />
+            <enum name="end" value="4" />
+        </attr>
+        <attr name="bvp_page_style" format="enum">
+            <enum name="normal" value="0" />
+            <enum name="multi_page" value="2" />
+            <enum name="multi_page_overlap" value="4" />
+            <enum name="multi_page_scale" value="8" />
+        </attr>
+        <attr name="bvp_indicator_visibility" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="invisible" value="4" />
+            <enum name="gone" value="8" />/>
+        </attr>
+
+    </declare-styleable>
+</resources>

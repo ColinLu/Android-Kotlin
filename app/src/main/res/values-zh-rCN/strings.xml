@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_drawer_open">打开侧边栏</string>
+    <string name="navigation_drawer_close">关闭侧边栏</string>
+    <string name="settings">设置</string>
+    <string name="language">语言</string>
+    <string name="title_home">主页</string>
+    <string name="title_method">方法</string>
+    <string name="title_gallery">阅览</string>
+    <string name="title_slideshow">分享</string>
+    <string name="method_contact">联系人</string>
+    <string name="method_next">下一步</string>
+    <string name="method_permission">权限</string>
+    <string name="method_path">路径</string>
+    <string name="search">搜索</string>
+    <string name="picture">选择图片</string>
+</resources>
