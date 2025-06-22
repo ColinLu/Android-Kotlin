@@ -47,22 +47,16 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
         allWarningsAsErrors = true
-        jvmTarget = "11"
+        jvmTarget = "21"
     }
     buildFeatures {
         viewBinding = true
         aidl = true
-    }
-    lint {
-        checkTestSources = false //禁用 UnitTest Lint 检查
-        abortOnError = false  // 遇到 lint 错误时不中断构建
-        warningsAsErrors = false
-        checkReleaseBuilds = false  // 不对 release 构建进行 lint 检查
     }
 }
 

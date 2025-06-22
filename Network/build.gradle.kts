@@ -23,17 +23,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = "11"
-    }
-    lint {
-        checkTestSources = false //禁用 UnitTest Lint 检查
-        abortOnError = false  // 遇到 lint 错误时不中断构建
-        warningsAsErrors = false
-        checkReleaseBuilds = false  // 不对 release 构建进行 lint 检查
+        jvmTarget = "21"
     }
 }
 
@@ -42,4 +36,21 @@ dependencies {
     compileOnly(libs.bundles.androidCommon)
     compileOnly(libs.bundles.squareup)
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
+}
+publishing {
+    publications {
+        create<MavenPublication>("release") {
+            groupId = libs.versions.publishGroup.get()
+            artifactId = libs.versions.publishNetwork.get()
+            version = libs.versions.publishVersion.get()
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+    publishing.repositories {
+        maven {
+            url = uri("/Users/Colin/Projects/Maven/Repository")
+        }
+    }
 }
