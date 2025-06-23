@@ -1,13 +1,14 @@
 package com.colin.library.android.widget.web
 
 import android.content.Context
-import android.text.TextUtils
 import android.util.AttributeSet
 import android.webkit.JavascriptInterface
+import androidx.core.content.withStyledAttributes
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.colin.library.android.utils.Log
+import com.colin.library.android.widget.R
 import com.colin.library.android.widget.web.client.DefaultWebChromeClient
 import com.colin.library.android.widget.web.client.DefaultWebViewClient
 import com.google.gson.GsonBuilder
@@ -26,9 +27,13 @@ class CustomWebView @JvmOverloads constructor(
     private val gson by lazy {
         GsonBuilder().setStrictness(Strictness.LENIENT).create()
     }
+    private var useJavascript = false
 
     init {
-        WebServiceConnection.instance.initAIDLConnection(context)
+        context.withStyledAttributes(attrs, R.styleable.CustomWebView, defStyleAttr, 0) {
+            useJavascript = getBoolean(R.styleable.CustomWebView_useJavascript, useJavascript)
+        }
+        if (useJavascript) WebServiceConnection.instance.bindAIDL(context)
     }
 
     fun bind(lifecycle: Lifecycle, callback: IWebViewCallback) {
@@ -54,6 +59,7 @@ class CustomWebView @JvmOverloads constructor(
 
             Lifecycle.Event.ON_STOP -> {}
             Lifecycle.Event.ON_DESTROY -> {
+                updateUseJavascript(false)
                 clearCache(true)
                 clearHistory()
                 clearFormData()
@@ -69,21 +75,29 @@ class CustomWebView @JvmOverloads constructor(
 
     }
 
+    fun updateUseJavascript(use: Boolean) {
+        if (useJavascript == use) return
+        useJavascript = use
+        if (use) WebServiceConnection.instance.bindAIDL(context)
+        else WebServiceConnection.instance.unbindAIDL(context)
+    }
+
     @JavascriptInterface
     fun takeNativeAction(json: String?) {
+        Log.w("useJavascript:$useJavascript")
         Log.json(json)
-        if (!TextUtils.isEmpty(json)) {
-            val jsParamObject: JsParam = gson.fromJson(json, JsParam::class.java)
+        val param = gson.fromJson(json, JsParam::class.java)
+        if (useJavascript && param.name.isNotEmpty()) {
             WebServiceConnection.instance.executeCommand(
-                jsParamObject.name, gson.toJson(jsParamObject.json), this
+                param.name, gson.toJson(param.json), this
             )
         }
     }
 
 
-    fun handleCallback(callbackname: String?, response: String?) {
-        Log.w("callbackname:$callbackname response:$response")
-        if (callbackname.isNullOrEmpty().not() && response.isNullOrEmpty().not()) {
+    fun handleCallback(callbackname: String, response: String?) {
+        Log.w("useJavascript:$useJavascript callbackname:$callbackname response:$response")
+        if (useJavascript && callbackname.isNotEmpty() && response.isNullOrEmpty().not()) {
             post {
                 val jscode = "javascript:myjs.callback('$callbackname',$response)"
                 evaluateJavascript(jscode, null)

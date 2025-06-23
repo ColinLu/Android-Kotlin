@@ -23,9 +23,13 @@ class WebServiceConnection private constructor() : ServiceConnection {
         }
     }
 
-    fun initAIDLConnection(context: Context) {
+    fun bindAIDL(context: Context) {
         val intent = Intent(context, WebProcessService::class.java)
         context.bindService(intent, this, Context.BIND_AUTO_CREATE)
+    }
+
+    fun unbindAIDL(context: Context) {
+        context.unbindService(this)
     }
 
     override fun onServiceConnected(name: ComponentName?, service: IBinder?) {

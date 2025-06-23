@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import java.util.ServiceLoader
 
 data class JsParam(
-    val name: String, val json: JsonObject
+    val name: String = "", val json: JsonObject
 )
 
 interface Command {

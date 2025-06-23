@@ -214,4 +214,7 @@
         </attr>
 
     </declare-styleable>
+    <declare-styleable name="CustomWebView">
+        <attr name="useJavascript" format="boolean|reference" />
+    </declare-styleable>
 </resources>
