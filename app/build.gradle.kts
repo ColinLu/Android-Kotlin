@@ -63,9 +63,11 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 
-    implementation(project(":Utils"))
+
+//    implementation(project(":Utils"))
     implementation(project(":Widgets"))
     implementation(project(":Network"))
+    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
 
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)

@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
+        maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
         maven { url = uri("https://jitpack.io") }
         google {
             content {
@@ -17,6 +18,7 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
+        maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
         maven { url = uri("https://jitpack.io") }
         google()
         mavenCentral()

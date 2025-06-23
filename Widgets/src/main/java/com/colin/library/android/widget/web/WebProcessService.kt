@@ -1,5 +1,9 @@
 package com.colin.library.android.widget.web
 
+import android.app.Service
+import android.content.Intent
+import android.os.IBinder
+
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
@@ -7,8 +11,8 @@ package com.colin.library.android.widget.web
  *
  * Des   :WebProcessService
  */
-//class WebProcessService : Service() {
-//    override fun onBind(intent: Intent?): IBinder? {
-//        return WebProcessManager.Companion.instance
-//    }
-//}
+class WebProcessService : Service() {
+    override fun onBind(intent: Intent?): IBinder? {
+        return WebProcessManager.Companion.instance
+    }
+}
