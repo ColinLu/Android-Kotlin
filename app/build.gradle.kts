@@ -1,3 +1,7 @@
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,7 +23,7 @@ android {
     }
 
     signingConfigs {
-        create("release") {
+        create("sign") {
             storeFile = file("${rootDir.absolutePath}/config/app.jks")
             keyAlias = "colinapp"
             storePassword = "ludapeng31"
@@ -29,11 +33,11 @@ android {
 
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("sign")
             isMinifyEnabled = false
         }
         getByName("release") {
-            signingConfig = signingConfigs.getByName("release")
+            signingConfig = signingConfigs.getByName("sign")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
@@ -58,16 +62,28 @@ android {
         viewBinding = true
         aidl = true
     }
+    android.applicationVariants.all {
+        val app_name = rootProject.name
+        val buildType = this.buildType.name
+        outputs.all {
+            if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
+                val date = SimpleDateFormat("yy-MM-dd-HH_mm_ss", Locale.CHINA).format(Date())
+                val version = android.defaultConfig.versionName ?: "unknown"
+                val fileName = "${app_name}_${buildType}_${version}_${date}.apk"
+                println("build apk:$${fileName}")
+                this.outputFileName = fileName
+            }
+        }
+    }
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 
-
-//    implementation(project(":Utils"))
+    implementation(project(":Utils"))
     implementation(project(":Widgets"))
     implementation(project(":Network"))
-    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
+//    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
 
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)

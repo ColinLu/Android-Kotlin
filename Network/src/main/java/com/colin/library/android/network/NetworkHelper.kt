@@ -55,7 +55,7 @@ object NetworkHelper {
 
     private val interceptors = mutableListOf<Interceptor>()
 
-    private val networkInterceptors = mutableListOf<Interceptor>(createLoggingInterceptor())
+    private val networkInterceptors = mutableListOf<Interceptor>()
 
     val retrofit: Retrofit by lazy {
         Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create(gson))
