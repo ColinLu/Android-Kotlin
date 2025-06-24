@@ -21,6 +21,7 @@
                 <action android:name="com.colin.android.demo.kotlin.service.DemoAidlService" />
             </intent-filter>
         </service>
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

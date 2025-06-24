@@ -21,7 +21,7 @@ import com.google.gson.Strictness
  *
  * Des   :CustomWebView
  */
-class CustomWebView @JvmOverloads constructor(
+open class CustomWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : com.tencent.smtt.sdk.WebView(context, attrs, defStyleAttr), LifecycleEventObserver {
     private val gson by lazy {

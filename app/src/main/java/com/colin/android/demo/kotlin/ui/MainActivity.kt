@@ -23,7 +23,7 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import java.util.Locale
+import com.tencent.smtt.sdk.QbSdk
 
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -64,6 +64,17 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
+            override fun onCoreInitFinished() {
+                Log.i("onCoreInitFinished:x5")
+            }
+
+            override fun onViewInitFinished(isX5: Boolean) {
+                Log.i("onViewInitFinished:isX5:$isX5")
+            }
+
+        })
+        QbSdk.setDownloadWithoutWifi(true)
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -96,7 +107,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
         val menuItem = menu?.findItem(res) ?: return
-        menuItem.setVisible(visible)
+        menuItem.isVisible = visible
     }
 
 

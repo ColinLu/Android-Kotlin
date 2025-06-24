@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/fragment_method"
         android:name="com.colin.android.demo.kotlin.ui.method.MethodFragment"
-        android:label="@string/title_log"
+        android:label="@string/title_method"
         tools:layout="@layout/layout_refresh_list" />
     <fragment
         android:id="@+id/fragment_log"
@@ -35,8 +35,22 @@
     <fragment
         android:id="@+id/fragment_webIndex"
         android:name="com.colin.android.demo.kotlin.ui.web.WebIndexFragment"
-        android:label="@string/title_log"
+        android:label="@string/title_web"
         tools:layout="@layout/layout_refresh_list" />
+    <fragment
+        android:id="@+id/fragment_web"
+        android:name="com.colin.android.demo.kotlin.ui.web.WebViewFragment"
+        android:label="@string/title_web"
+        tools:layout="@layout/fragment_web_view">
+        <argument
+            android:name="type"
+            android:defaultValue="0"
+            app:argType="integer" />
+        <argument
+            android:name="url"
+            android:defaultValue="www.baidu.com"
+            app:argType="string" />
+    </fragment>
     <action
         android:id="@+id/action_to_log"
         app:destination="@+id/fragment_log"
@@ -45,5 +59,11 @@
         app:popEnterAnim="@android:animator/fade_in"
         app:popExitAnim="@android:animator/fade_out"
         app:popUpTo="@+id/fragment_log" />
+    <action
+        android:id="@+id/action_webIndex"
+        app:destination="@+id/fragment_webIndex" />
+    <action
+        android:id="@+id/action_web"
+        app:destination="@+id/fragment_web" />
 
 </navigation>

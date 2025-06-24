@@ -11,7 +11,6 @@ import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.android.demo.kotlin.toNavigate
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widget.recycler.SpaceItemDecoration
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 
@@ -36,6 +35,10 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
                         toNavigate(this@MethodFragment, R.id.action_to_log)
                     }
 
+                    getString(R.string.title_web) -> {
+                        toNavigate(this@MethodFragment, R.id.action_webIndex)
+                    }
+
                     else -> {
                         Log.i(item)
                     }
@@ -56,9 +59,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
     }
 
     override fun loadData(refresh: Boolean) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadData()
-        }
+        viewModel.loadData()
     }
 
 

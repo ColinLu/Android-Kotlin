@@ -4,6 +4,8 @@ import android.os.Bundle
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.FragmentWebViewBinding
+import com.colin.library.android.widget.web.IWebViewCallback
+import com.colin.library.android.widget.web.client.DefaultWebSetting
 
 /**
  * Author:ColinLu
@@ -29,7 +31,11 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         val url = bundle?.getString(EXTRAS_URL) ?: getString(R.string.query_web_hint_link)
+        DefaultWebSetting.updateSetting(viewBinding.webView)
+        viewBinding.webView.bind(lifecycle, object : IWebViewCallback {
 
+        })
+        viewBinding.webView.loadUrl(url)
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -38,11 +44,11 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        viewBinding.mWebView.onResume()
+        viewBinding.webView.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        viewBinding.mWebView.onPause()
+        viewBinding.webView.onPause()
     }
 }

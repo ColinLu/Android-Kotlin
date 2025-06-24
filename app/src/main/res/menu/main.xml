@@ -11,6 +11,7 @@
         android:id="@+id/action_language"
         android:orderInCategory="100"
         android:title="@string/language"
+        android:visible="false"
         app:showAsAction="ifRoom" />
 
     <item

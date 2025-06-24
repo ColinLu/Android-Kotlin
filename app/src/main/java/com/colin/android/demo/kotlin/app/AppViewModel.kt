@@ -26,9 +26,6 @@ open class AppViewModel : ViewModel() {
     val showLoading: Flow<Boolean> = _showLoading.asStateFlow()
 
 
-    /*加载状态*/
-
-
     /**
      * 公共异常消息处理
      */

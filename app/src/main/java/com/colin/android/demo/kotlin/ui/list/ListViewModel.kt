@@ -4,11 +4,11 @@ import android.content.res.Resources
 import androidx.annotation.ArrayRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.colin.android.demo.kotlin.R
+import com.colin.android.demo.kotlin.app.AppViewModel
 import com.colin.android.demo.kotlin.def.ItemBean
 
-class ListViewModel : ViewModel() {
+class ListViewModel : AppViewModel() {
     @ArrayRes
     var id = R.array.path_list
         set(value) {

@@ -2,7 +2,6 @@ package com.colin.library.android.widget.web.client
 
 import android.annotation.SuppressLint
 import android.content.Context
-import com.colin.library.android.utils.Log
 import com.tencent.smtt.sdk.WebSettings
 import com.tencent.smtt.sdk.WebView
 
@@ -13,8 +12,6 @@ object DefaultWebSetting {
     fun updateSetting(view: WebView, agent: String = view.settings.userAgentString) {
         view.settings.apply {
             var userAgent = agent.replace("MQQBrowser/6.2", "")
-            Log.d("webView old==============>$agent")
-            Log.d("webView new==============>$userAgent")
             this.userAgentString = userAgent
             // 设置WebView是否允许执行JavaScript脚本，默认false，不允许。
             this.javaScriptEnabled = true

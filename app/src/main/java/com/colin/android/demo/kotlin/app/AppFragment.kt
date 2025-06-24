@@ -4,17 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
+import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.receiver.ScreenChangedReceiver
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widget.base.BaseFragment
+import kotlinx.coroutines.launch
 import java.lang.reflect.ParameterizedType
 
 
-abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
+abstract class AppFragment<VB : ViewBinding, VM : AppViewModel> : BaseFragment(),
     ScreenChangedReceiver.OnScreenChangedListener {
     private var _viewBinding: VB? = null
     internal val viewBinding: VB get() = _viewBinding!!
@@ -23,6 +28,15 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         ScreenChangedReceiver.bind(this)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.showLoading.collect { show ->
+                    view?.findViewById<SwipeRefreshLayout>(R.id.refresh)?.let {
+                        it.isRefreshing = show
+                    }
+                }
+            }
+        }
     }
 
     override fun onCreateView(
@@ -30,6 +44,14 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     ): View {
         _viewBinding = reflectViewBinding(inflater, container)
         return viewBinding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewBinding.root.findViewById<SwipeRefreshLayout>(R.id.refresh)?.apply {
+            setColorSchemeResources(R.color.colorAccent, R.color.teal_200, R.color.purple_200)
+            setOnRefreshListener { loadData(true) }
+        }
     }
 
     override fun onDestroyView() {
@@ -43,6 +65,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     override fun screenChanged(action: String) {
         Log.i(TAG, "screenChanged:$action")
     }
+
     /*如果想修改Store 可以重写此方法*/
     open fun bindViewModelStore() = viewModelStore
 
@@ -74,7 +97,7 @@ abstract class AppFragment<VB : ViewBinding, VM : ViewModel> : BaseFragment(),
     }
 
     @Throws(IllegalStateException::class)
-    private fun <VM : ViewModel> reflectViewModel(): VM {
+    private fun <VM : AppViewModel> reflectViewModel(): VM {
         try {
             return ViewModelProvider.create(bindViewModelStore())[getActualClass(1)]
         } catch (e: Exception) {

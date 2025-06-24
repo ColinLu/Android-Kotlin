@@ -9,7 +9,6 @@
     <string name="language">Language</string>
     <string name="search">Search</string>
     <string name="query_web_hint_link" translatable="false">https://m.baidu.com/</string>
-
     <string name="title_home">Home</string>
     <string name="title_method">Method</string>
     <string name="title_gallery">Gallery</string>

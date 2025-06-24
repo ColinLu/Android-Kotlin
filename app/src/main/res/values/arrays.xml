@@ -48,6 +48,7 @@
         <item>@string/method_http</item>
         <item>@string/method_contact</item>
         <item>@string/method_path</item>
+        <item>@string/title_web</item>
     </string-array>
     <string-array name="path_list">
         <item>can write</item>

@@ -63,13 +63,13 @@ android {
         aidl = true
     }
     android.applicationVariants.all {
-        val app_name = rootProject.name
+        val appName = rootProject.name
         val buildType = this.buildType.name
         outputs.all {
             if (this is com.android.build.gradle.internal.api.ApkVariantOutputImpl) {
                 val date = SimpleDateFormat("yy-MM-dd-HH_mm_ss", Locale.CHINA).format(Date())
                 val version = android.defaultConfig.versionName ?: "unknown"
-                val fileName = "${app_name}_${buildType}_${version}_${date}.apk"
+                val fileName = "${appName}_${buildType}_${version}_${date}.apk"
                 println("build apk:$${fileName}")
                 this.outputFileName = fileName
             }
@@ -84,7 +84,7 @@ dependencies {
     implementation(project(":Widgets"))
     implementation(project(":Network"))
 //    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
-
+    implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)
     implementation(libs.bundles.androidNavigation)

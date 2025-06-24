@@ -79,13 +79,11 @@ class SpaceItemDecoration(
         when (position) {
             //first
             ZERO -> {
-                outRect[ZERO, if (drawEdge) space else ZERO, ZERO] =
-                    size
+                outRect[ZERO, if (drawEdge) space else ZERO, ZERO] = size
             }
             //last
             itemCount - 1 -> {
-                outRect[ZERO, size, ZERO] =
-                    if (drawEdge) space else ZERO
+                outRect[ZERO, size, ZERO] = if (drawEdge) space else ZERO
             }
 
             else -> outRect[ZERO, size, ZERO] = size
