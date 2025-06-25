@@ -4,9 +4,9 @@ import android.content.Context
 import android.graphics.Color
 import android.util.AttributeSet
 import androidx.core.content.withStyledAttributes
+import com.colin.library.android.utils.ext.dp
 import com.colin.library.android.widget.R
 import com.colin.library.android.widget.banner.options.IndicatorOptions
-import com.colin.library.android.widget.banner.utils.BannerUtils.dp2px
 
 /**
  * Attrs控制器
@@ -27,7 +27,7 @@ object AttrsController {
                 )
                 val orientation = getInt(R.styleable.IndicatorView_banner_indicator_orientation, 0)
                 val radius = getDimension(
-                    R.styleable.IndicatorView_banner_indicator_slider_radius, dp2px(8f).toFloat()
+                    R.styleable.IndicatorView_banner_indicator_slider_radius, 8f.dp()
                 )
                 options.setCheckedColor(checkedColor)
                 options.normalSliderColor = normalColor

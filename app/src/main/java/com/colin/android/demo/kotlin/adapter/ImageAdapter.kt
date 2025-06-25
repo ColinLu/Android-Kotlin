@@ -12,14 +12,12 @@ import com.colin.library.android.widget.base.BaseViewHolder
  *
  * Des   :字符串 adapter
  */
-class StringAdapter(array: List<String> = emptyList(), layoutRes: Int = R.layout.item_text) :
-    BaseAdapter<String>(array, layoutRes = layoutRes) {
-
+class ImageAdapter(layoutRes: Int = R.layout.item_image) : BaseAdapter<Int>(layoutRes = layoutRes) {
 
     override fun bindListViewHolder(
-        holder: BaseViewHolder, item: String, position: Int, payloads: MutableList<Any>
+        holder: BaseViewHolder, item: Int, position: Int, payloads: MutableList<Any>
     ) {
-        holder.getTextView(R.id.item_text).text = item
+        holder.getImageView(R.id.item_image).setImageResource(item)
         holder.itemView.onClick {
             onItemClickListener?.invoke(it, item, position)
         }

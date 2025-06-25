@@ -1,6 +1,5 @@
 package com.colin.library.android.widget.banner.utils
 
-import android.content.res.Resources
 import android.util.Log
 import com.colin.library.android.widget.banner.base.BaseBannerAdapter.Companion.MAX_VALUE
 
@@ -20,9 +19,6 @@ object BannerUtils {
         return debugMode
     }
 
-    fun dp2px(dpValue: Float): Int {
-        return (0.5f + dpValue * Resources.getSystem().displayMetrics.density).toInt()
-    }
 
     fun log(tag: String?, msg: String?) {
         if (isDebugMode()) {

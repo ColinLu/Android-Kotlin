@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IntRange
 import androidx.annotation.LayoutRes
-import androidx.recyclerview.widget.DiffUtil.ItemCallback
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -25,21 +24,26 @@ import java.util.Collections
 
 
 abstract class BaseAdapter<ITEM>(
-    val items: ArrayList<ITEM> = arrayListOf(),
+    list: List<ITEM> = emptyList<ITEM>(),
     @LayoutRes private val layoutRes: Int,
 ) : RecyclerView.Adapter<BaseViewHolder>() {
-    val defaultDiff = object : ItemCallback<ITEM>() {
-        override fun areItemsTheSame(oldItem: ITEM & Any, newItem: ITEM & Any) = oldItem == newItem
+//    val defaultDiff = object : ItemCallback<ITEM>() {
+//        override fun areItemsTheSame(oldItem: ITEM & Any, newItem: ITEM & Any) = oldItem == newItem
+//
+//        @SuppressLint("DiffUtilEquals")
+//        override fun areContentsTheSame(oldItem: ITEM & Any, newItem: ITEM & Any) =
+//            oldItem == newItem
+//
+//    }
 
-        @SuppressLint("DiffUtilEquals")
-        override fun areContentsTheSame(oldItem: ITEM & Any, newItem: ITEM & Any) =
-            oldItem == newItem
+    constructor(@LayoutRes layoutRes: Int) : this(emptyList(), layoutRes)
 
+    internal lateinit var context: Context
+    val items = mutableListOf<ITEM>()
+
+    init {
+        if (list.isNotEmpty()) items.addAll(list)
     }
-
-    constructor(@LayoutRes layoutRes: Int) : this(arrayListOf(), layoutRes)
-
-    lateinit var context: Context
 
     /**
      * 空布局资源ID，如果不为ID_NULL,说明支持空布局
@@ -53,6 +57,10 @@ abstract class BaseAdapter<ITEM>(
     @LayoutRes
     var footer: Int = ZERO
 
+    /**
+     * Item点击Empty事件监听
+     */
+    var onEmptyClickListener: ((View) -> Unit)? = null
 
     /**
      * Item点击事件监听
@@ -60,19 +68,14 @@ abstract class BaseAdapter<ITEM>(
     var onItemClickListener: ((View, ITEM, Int) -> Unit)? = null
 
     /**
-     * Item点击Empty事件监听
-     */
-    var onEmptyClickListener: ((View) -> Unit)? = null
-
-    /**
      * Item长按事件监听
      */
-    var onItemLongClickListener: ((view: View, item: ITEM) -> Boolean)? = { _, _ -> false }
+    var onItemLongClickListener: ((View, ITEM, Int) -> Boolean)? = { _, _, _ -> false }
 
     /**
      * 计算Adapter 适配器总共大小
      */
-    final override fun getItemCount(): Int {
+    override fun getItemCount(): Int {
         return if (shouldDisplayEmpty()) 1
         else if (shouldDisplayFoot()) items.size + 1
         else items.size
@@ -85,7 +88,7 @@ abstract class BaseAdapter<ITEM>(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        context = parent.context
+        if (::context.isInitialized.not()) context = parent.context
         return BaseViewHolder(LayoutInflater.from(context).inflate(viewType, parent, false))
     }
 
@@ -216,25 +219,20 @@ abstract class BaseAdapter<ITEM>(
      * 判断当前Adapter是否需要显示空布局
      * ps:当list 数组为空显示，切empty 布局ID不为空
      */
-    open fun shouldDisplayEmpty(): Boolean {
-        return empty != ZERO && items.isEmpty()
-    }
+    open fun shouldDisplayEmpty() = empty != ZERO && items.isEmpty()
 
-    open fun shouldDisplayEmpty(position: Int): Boolean {
-        return shouldDisplayEmpty() && position == 0
-    }
+
+    open fun shouldDisplayEmpty(position: Int) = shouldDisplayEmpty() && position == 0
+
 
     /**
      * 判断当前Adapter是否需要显示尾部布局
      * ps:当list 数组为空显示，切empty 布局ID不为空
      */
-    open fun shouldDisplayFoot(): Boolean {
-        return footer != ZERO
-    }
+    open fun shouldDisplayFoot() = footer != ZERO
 
-    open fun shouldDisplayFoot(position: Int): Boolean {
-        return shouldDisplayFoot() && position + 1 == items.size
-    }
+
+    open fun shouldDisplayFoot(position: Int) = shouldDisplayFoot() && position + 1 == items.size
 
     abstract fun bindListViewHolder(
         holder: BaseViewHolder, item: ITEM, position: Int, payloads: MutableList<Any>
@@ -262,9 +260,9 @@ abstract class BaseAdapter<ITEM>(
     private fun applyStaggeredFullSpan(holder: BaseViewHolder) {
         val type = holder.itemViewType
         val params = holder.itemView.layoutParams
-
-        if (fullSpanViewType(type) && params is StaggeredGridLayoutManager.LayoutParams) params.isFullSpan =
-            true
+        if (fullSpanViewType(type) && params is StaggeredGridLayoutManager.LayoutParams) {
+            params.isFullSpan = true
+        }
     }
 
     open fun fullSpanViewType(type: Int) = (type == empty || type == footer)

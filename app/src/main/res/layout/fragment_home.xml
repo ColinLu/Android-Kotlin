@@ -17,12 +17,15 @@
             android:fitsSystemWindows="true"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <androidx.appcompat.widget.AppCompatImageView
+            <com.colin.library.android.widget.banner.BannerView
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_200"
                 android:scaleType="fitXY"
-                android:src="@drawable/ic_launcher_background" />
+                android:src="@drawable/ic_launcher_background"
+                app:autoPlay="true"
+                app:cyclic="true"
+                app:interval="3000" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout

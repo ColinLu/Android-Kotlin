@@ -37,6 +37,7 @@ android {
 
 dependencies {
     implementation(libs.bundles.androidCommon)
+    implementation("cn.student0.manager:repeatmanager:1.0.3")
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
     compileOnly(libs.tbssdk)
     compileOnly(libs.gson)
