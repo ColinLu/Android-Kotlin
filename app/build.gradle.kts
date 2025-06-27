@@ -80,17 +80,17 @@ android {
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 
-    implementation(project(":Utils"))
-    implementation(project(":Widgets"))
-    implementation(project(":Network"))
-//    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
+//    implementation(project(":Utils"))
+//    implementation(project(":Widgets"))
+//    implementation(project(":Network"))
+    implementation("com.gitee.colin_lu:Android-Kotlin:0.0.1")
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)
     implementation(libs.bundles.androidNavigation)
     implementation(libs.bundles.androidLifecycle)
     implementation(libs.bundles.squareup)
-
+    implementation(libs.repeatmanager)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

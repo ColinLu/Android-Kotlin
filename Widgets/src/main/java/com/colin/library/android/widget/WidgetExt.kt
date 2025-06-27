@@ -14,11 +14,11 @@ import android.view.ViewOutlineProvider
 /**
  * 设置View圆角
  */
-fun View.setClipViewCornerRadius(radius: Int) {
+fun View.setClipViewCornerRadius(radius: Float) {
     if (radius > 0) {
         this.outlineProvider = object : ViewOutlineProvider() {
             override fun getOutline(view: View?, outline: Outline?) {
-                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, radius.toFloat())
+                outline?.setRoundRect(0, 0, view?.width ?: 0, view?.height ?: 0, radius)
             }
         }
         this.clipToOutline = true

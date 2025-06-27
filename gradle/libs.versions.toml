@@ -27,6 +27,7 @@ tbssdk = "44286"
 gson = "2.11.0"
 squareup_retrofit = "2.11.0"
 squareup_okhttp = "4.12.0"
+repeatmanager = "1.0.3"
 
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -45,6 +46,7 @@ androidx-viewpager = { module = "androidx.viewpager2:viewpager2", version.ref = 
 androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigation" }
 androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigation" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+repeatmanager = { module = "cn.student0.manager:repeatmanager", version.ref = "repeatmanager" }
 squareup-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "squareup_okhttp" }
 squareup-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "squareup_okhttp" }
 squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "squareup_retrofit" }

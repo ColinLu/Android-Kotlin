@@ -3,11 +3,9 @@ package com.colin.library.android.widget.banner.indicator
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import com.colin.library.android.widget.banner.base.BaseIndicatorView
-import com.colin.library.android.widget.banner.controller.AttrsController
-import com.colin.library.android.widget.banner.def.IndicatorOrientation
+import android.widget.LinearLayout
 import com.colin.library.android.widget.banner.drawer.DrawerProxy
-import com.colin.library.android.widget.banner.options.IndicatorOptions
+import kotlin.div
 
 /**
  * The Indicator in BannerViewPager，this include three indicator styles,as below:
@@ -17,57 +15,49 @@ import com.colin.library.android.widget.banner.options.IndicatorOptions
  */
 class IndicatorView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : BaseIndicatorView(context, attrs, defStyleAttr) {
+) : IIndicatorView(context, attrs, defStyleAttr) {
 
-    private var mDrawerProxy: DrawerProxy
-
-    init {
-        val options = getIndicatorOptions()
-        AttrsController.initAttrs(context, attrs, options)
-        mDrawerProxy = DrawerProxy(options)
+    private val proxy by lazy {
+        DrawerProxy(this)
     }
 
-    override fun onLayout(
-        changed: Boolean, left: Int, top: Int, right: Int, bottom: Int
-    ) {
-        super.onLayout(changed, left, top, right, bottom)
-        mDrawerProxy.onLayout(changed, left, top, right, bottom)
-    }
 
-    override fun onMeasure(
-        widthMeasureSpec: Int, heightMeasureSpec: Int
-    ) {
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val measureResult = mDrawerProxy.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        setMeasuredDimension(measureResult.measureWidth, measureResult.measureHeight)
+        if (!showIndicator()) return
+        val value = proxy.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        setMeasuredDimension(value.width.toInt(), value.height.toInt())
+    }
+
+
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        if (!showIndicator()) return
+        super.onLayout(changed, left, top, right, bottom)
+        proxy.onLayout(changed, left, top, right, bottom)
     }
 
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        rotateCanvas(canvas)
-        mDrawerProxy.onDraw(canvas)
-    }
-
-    override fun setIndicatorOptions(options: IndicatorOptions) {
-        super.setIndicatorOptions(options)
-        mDrawerProxy.setIndicatorOptions(options)
-    }
-
-
-    override fun notifyDataChanged() {
-        mDrawerProxy = DrawerProxy(getIndicatorOptions())
-        super.notifyDataChanged()
-    }
-
-    private fun rotateCanvas(canvas: Canvas) {
-        if (getIndicatorOptions().orientation == IndicatorOrientation.INDICATOR_VERTICAL) {
+        if (!showIndicator()) return
+        if (getOrientation() == LinearLayout.VERTICAL) {
             canvas.rotate(90f, width / 2f, width / 2f)
-        } else if (getIndicatorOptions().orientation == IndicatorOrientation.INDICATOR_RTL) {
-            canvas.rotate(180f, width / 2f, height / 2f)
+        }
+        proxy.onDraw(canvas)
+    }
+
+    override fun setIndicatorStyle(style: Int) {
+        if (indicatorStyle != style) {
+            indicatorStyle = style
+            proxy.setSwitchMode(this)
+            notifyDataChanged()
         }
     }
 
-    fun setOrientation(@IndicatorOrientation orientation: Int) {
-        getIndicatorOptions().orientation = orientation;
+    override fun setIndicatorMode(mode: Int) {
+        if (indicatorMode != mode) {
+            indicatorMode = mode
+            proxy.setSwitchMode(this)
+            notifyDataChanged()
+        }
     }
+
 }

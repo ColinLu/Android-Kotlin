@@ -21,11 +21,20 @@
                 android:id="@+id/header"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_200"
-                android:scaleType="fitXY"
                 android:src="@drawable/ic_launcher_background"
                 app:autoPlay="true"
                 app:cyclic="true"
-                app:interval="3000" />
+                app:indicatorBackgroundColor="@color/translucence"
+                app:indicatorGravity="center"
+                app:indicatorHeight="@dimen/dp_20"
+                app:indicatorMode="color"
+                app:indicatorNormalColor="#00FF00"
+                app:indicatorOrientation="vertical"
+                app:indicatorSelectColor="#FF0000"
+                app:indicatorStyle="round_rect"
+                app:indicatorWidth="match_parent"
+                app:interval="3000"
+                app:limit="4" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout

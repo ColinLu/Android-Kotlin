@@ -1,6 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <attr name="cyclic" format="boolean|reference" />
+    <attr name="radius" format="dimension|reference" />
+    <attr name="indicatorWidth" format="dimension">
+        <enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+    </attr>
+
+    <attr name="indicatorHeight" format="dimension">
+        <enum name="match_parent" value="-1" />
+        <enum name="wrap_content" value="-2" />
+    </attr>
+    <attr name="indicatorBackgroundColor" format="color|reference" />
+    <attr name="indicatorSelectWidth" format="dimension|reference" />
+    <attr name="indicatorSelectHeight" format="dimension|reference" />
+    <attr name="indicatorNormalWidth" format="dimension|reference" />
+    <attr name="indicatorNormalHeight" format="dimension|reference" />
+    <attr name="indicatorSelectRadius" format="dimension|reference" />
+    <attr name="indicatorNormalRadius" format="dimension|reference" />
+    <attr name="indicatorSpace" format="dimension|reference" />
+    <attr name="indicatorSelectColor" format="color|reference" />
+    <attr name="indicatorNormalColor" format="color|reference" />
+    <attr name="indicatorGravity">
+        <flag name="top" value="0x30" />
+        <flag name="bottom" value="0x50" />
+        <flag name="left" value="0x03" />
+        <flag name="right" value="0x05" />
+        <flag name="center_vertical" value="0x10" />
+        <flag name="fill_vertical" value="0x70" />
+        <flag name="center_horizontal" value="0x01" />
+        <flag name="fill_horizontal" value="0x07" />
+        <flag name="center" value="0x11" />
+        <flag name="fill" value="0x77" />
+        <flag name="clip_vertical" value="0x80" />
+        <flag name="clip_horizontal" value="0x08" />
+        <flag name="start" value="0x00800003" />
+        <flag name="end" value="0x00800005" />
+    </attr>
+    <attr name="indicatorOrientation">
+        <enum name="horizontal" value="0" />
+        <enum name="vertical" value="1" />
+    </attr>
+    <attr name="indicatorMode" format="enum">
+        <enum name="normal" value="0" />
+        <enum name="smooth" value="2" />
+        <enum name="worm" value="3" />
+        <enum name="scale" value="4" />
+        <enum name="color" value="5" />
+    </attr>
+
+    <attr name="indicatorStyle" format="enum">
+        <enum name="circle" value="0" />
+        <enum name="dash" value="2" />
+        <enum name="round_rect" value="4" />
+    </attr>
+
+    <attr name="indicatorVisibility">
+        <enum name="visible" value="0" />
+        <enum name="invisible" value="1" />
+        <enum name="gone" value="2" />
+    </attr>
 
     <declare-styleable name="ShimmerLayout">
         <attr name="shimmer_color" format="color|reference" />
@@ -150,81 +209,85 @@
     <item name="banner_indicator" type="id" />
     <declare-styleable name="BannerView">
         <attr name="cyclic" />
+        <attr name="radius" />
         <attr name="cyclicCount" format="integer|reference" />
         <attr name="interval" format="integer|reference" />
         <attr name="autoPlay" format="boolean|reference" />
-        <attr name="disallowInterceptTouchEvent" format="boolean|reference" />
+
+        <attr name="indicatorStyle" />
+        <attr name="indicatorMode" />
+        <attr name="indicatorWidth" />
+        <attr name="indicatorHeight" />
+        <attr name="indicatorSelectRadius" />
+        <attr name="indicatorNormalRadius" />
+        <attr name="indicatorSelectWidth" />
+        <attr name="indicatorSelectHeight" />
+        <attr name="indicatorNormalWidth" />
+        <attr name="indicatorNormalHeight" />
+        <attr name="indicatorSelectColor" />
+        <attr name="indicatorNormalColor" />
+        <attr name="indicatorSpace" />
+        <attr name="indicatorGravity" />
+        <attr name="indicatorVisibility" />
+        <attr name="indicatorOrientation" />
+        <attr name="indicatorBackgroundColor" />
+
         <attr name="limit" format="integer|reference" />
+        <attr name="disallowInterceptTouchEvent" format="boolean|reference" />
         <attr name="android:clipChildren" />
         <attr name="android:orientation" />
+        <attr name="android:gravity" />
     </declare-styleable>
 
     <declare-styleable name="IndicatorView">
-        <attr name="banner_indicator_slider_checked_color" format="color" />
-        <attr name="banner_indicator_slider_normal_color" format="color" />
-        <attr name="banner_indicator_slider_radius" format="dimension" />
-        <attr name="banner_indicator_rtl" format="boolean" />
-        <attr name="banner_indicator_orientation" format="enum">
-            <enum name="horizontal" value="0" />
-            <enum name="vertical" value="1" />
-            <enum name="rtl" value="3" />
-        </attr>
-
-        <attr name="banner_indicator_slide_mode" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="smooth" value="2" />
-            <enum name="worm" value="3" />
-            <enum name="scale" value="4" />
-            <enum name="color" value="5" />
-        </attr>
-
-        <attr name="banner_indicator_style" format="enum">
-            <enum name="circle" value="0" />
-            <enum name="dash" value="2" />
-            <enum name="round_rect" value="4" />
-        </attr>
-
+        <attr name="indicatorStyle" />
+        <attr name="indicatorMode" />
+        <attr name="indicatorSelectWidth" />
+        <attr name="indicatorSelectHeight" />
+        <attr name="indicatorNormalWidth" />
+        <attr name="indicatorNormalHeight" />
+        <attr name="indicatorSelectRadius" />
+        <attr name="indicatorNormalRadius" />
+        <attr name="indicatorSelectColor" />
+        <attr name="indicatorNormalColor" />
+        <attr name="indicatorSpace" />
+        <attr name="android:gravity" />
+        <attr name="android:orientation" />
+        <attr name="android:visibility" />
     </declare-styleable>
     <declare-styleable name="BannerViewPager">
-        <!--页面切换时间间隔-->
         <attr name="bvp_interval" format="integer" />
         <attr name="bvp_scroll_duration" format="integer" />
         <attr name="bvp_can_loop" format="boolean" />
         <attr name="bvp_auto_play" format="boolean" />
-        <attr name="bvp_indicator_checked_color" format="color" />
-        <attr name="bvp_indicator_normal_color" format="color" />
-        <attr name="bvp_indicator_radius" format="dimension" />
         <attr name="bvp_round_corner" format="dimension" />
         <attr name="bvp_page_margin" format="dimension" />
         <attr name="bvp_reveal_width" format="dimension" />
-        <attr name="bvp_indicator_style" format="enum">
-            <enum name="circle" value="0" />
-            <enum name="dash" value="2" />
-            <enum name="round_rect" value="4" />
-        </attr>
-        <attr name="bvp_indicator_slide_mode" format="enum">
-            <enum name="normal" value="0" />
-            <enum name="smooth" value="2" />
-            <enum name="worm" value="3" />
-            <enum name="scale" value="4" />
-            <enum name="color" value="5" />
-        </attr>
-        <attr name="bvp_indicator_gravity" format="enum">
-            <enum name="center" value="0" />
-            <enum name="start" value="2" />
-            <enum name="end" value="4" />
-        </attr>
+        <attr name="indicatorStyle" />
+        <attr name="indicatorMode" />
+        <attr name="indicatorWidth" />
+        <attr name="indicatorHeight" />
+        <attr name="indicatorSelectWidth" />
+        <attr name="indicatorSelectHeight" />
+        <attr name="indicatorNormalWidth" />
+        <attr name="indicatorNormalHeight" />
+        <attr name="indicatorSelectRadius" />
+        <attr name="indicatorNormalRadius" />
+        <attr name="indicatorSelectColor" />
+        <attr name="indicatorNormalColor" />
+        <attr name="indicatorSpace" />
+        <attr name="indicatorGravity" />
+        <attr name="indicatorVisibility" />
+        <attr name="indicatorOrientation" />
+        <attr name="indicatorBackgroundColor" />>
+
         <attr name="bvp_page_style" format="enum">
             <enum name="normal" value="0" />
             <enum name="multi_page" value="2" />
             <enum name="multi_page_overlap" value="4" />
             <enum name="multi_page_scale" value="8" />
         </attr>
-        <attr name="bvp_indicator_visibility" format="enum">
-            <enum name="visible" value="0" />
-            <enum name="invisible" value="4" />
-            <enum name="gone" value="8" />/>
-        </attr>
+
 
     </declare-styleable>
     <declare-styleable name="CustomWebView">
