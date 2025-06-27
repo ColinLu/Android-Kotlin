@@ -1,46 +1,48 @@
 package com.colin.library.android.widget.banner.drawer
 
 import android.graphics.Canvas
-import com.colin.library.android.widget.banner.base.BaseDrawer
-
-import com.colin.library.android.widget.banner.options.IndicatorOptions
+import com.colin.library.android.widget.banner.indicator.IIndicator
 
 /**
  * Indicator Drawer Proxy.
  */
-class DrawerProxy(indicatorOptions: IndicatorOptions) : IDrawer {
+class DrawerProxy(indicator: IIndicator) : IDrawer {
 
-    private lateinit var mIDrawer: IDrawer
+    private lateinit var drawer: IDrawer
 
     init {
-        init(indicatorOptions)
+        init(indicator)
     }
 
-    private fun init(indicatorOptions: IndicatorOptions) {
-        mIDrawer = DrawerFactory.createDrawer(indicatorOptions)
+    private fun init(indicator: IIndicator) {
+        drawer = DrawerFactory.createDrawer(indicator)
     }
 
-    override fun onLayout(
-        changed: Boolean,
-        left: Int,
-        top: Int,
-        right: Int,
-        bottom: Int
-    ) {
+    fun setSwitchMode(indicator: IIndicator) {
+        init(indicator)
+    }
+
+    override fun measureWidth(widthMeasureSpec: Int): Float {
+        return drawer.measureWidth(widthMeasureSpec)
+    }
+
+    override fun measureHeight(heightMeasureSpec: Int): Float {
+        return drawer.measureHeight(heightMeasureSpec)
     }
 
     override fun onMeasure(
-        widthMeasureSpec: Int,
-        heightMeasureSpec: Int
-    ): BaseDrawer.MeasureResult {
-        return mIDrawer.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        widthMeasureSpec: Int, heightMeasureSpec: Int
+    ): IDrawer.MeasureSize {
+        return drawer.onMeasure(widthMeasureSpec, heightMeasureSpec)
+    }
+
+    override fun onLayout(
+        changed: Boolean, left: Int, top: Int, right: Int, bottom: Int
+    ) {
+        drawer.onLayout(changed, left, top, right, bottom)
     }
 
     override fun onDraw(canvas: Canvas) {
-        mIDrawer.onDraw(canvas)
-    }
-
-    fun setIndicatorOptions(indicatorOptions: IndicatorOptions) {
-        init(indicatorOptions)
+        drawer.onDraw(canvas)
     }
 }

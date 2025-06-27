@@ -1,25 +1,22 @@
 package com.colin.library.android.widget.banner.drawer
 
 import android.graphics.Canvas
-import com.colin.library.android.widget.banner.base.BaseDrawer
 
 /**
  * IDrawer
  */
 interface IDrawer {
+    data class MeasureSize(val width: Float, val height: Float)
 
-    fun onLayout(
-        changed: Boolean,
-        left: Int,
-        top: Int,
-        right: Int,
-        bottom: Int
-    )
+    fun measureWidth(widthMeasureSpec: Int): Float
 
-    fun onMeasure(
-        widthMeasureSpec: Int,
-        heightMeasureSpec: Int
-    ): BaseDrawer.MeasureResult
+    fun measureHeight(heightMeasureSpec: Int): Float
+
+    fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int): MeasureSize
+
+    fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int)
 
     fun onDraw(canvas: Canvas)
+
+
 }

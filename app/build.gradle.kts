@@ -90,7 +90,7 @@ dependencies {
     implementation(libs.bundles.androidNavigation)
     implementation(libs.bundles.androidLifecycle)
     implementation(libs.bundles.squareup)
-
+    implementation(libs.repeatmanager)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

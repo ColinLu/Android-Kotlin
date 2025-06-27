@@ -11,70 +11,53 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.drawable.DrawableCompat
-import com.colin.library.android.widget.banner.base.BaseIndicatorView
 
 /**
  * 图片选择器
  */
 class DrawableIndicator @JvmOverloads constructor(
-    context: Context?,
-    attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-) : BaseIndicatorView(context!!, attrs, defStyleAttr) {
+    context: Context?, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : IIndicatorView(context!!, attrs, defStyleAttr) {
     // 选中时的Bitmap
-    private var mCheckedBitmap: Bitmap? = null
+    private var selectBitmap: Bitmap? = null
 
     // 未选中时的Bitmap
-    private var mNormalBitmap: Bitmap? = null
-
-    // 图片之间的间距
-    private var mIndicatorPadding = 0
-
-    // 选中图片的宽度
-    private var mCheckedBitmapWidth = 0
-
-    // 选中图片的高度
-    private var mCheckedBitmapHeight = 0
-
-    //未选中图片的宽高
-    private var mNormalBitmapWidth = 0
-    private var mNormalBitmapHeight = 0
-    private var mIndicatorSize: IndicatorSize? = null
-    private var normalCanResize = true
-    private var checkCanResize = true
+    private var normalBitmap: Bitmap? = null
+    private var normalResize = true
+    private var selectResize = true
     override fun onMeasure(
-        widthMeasureSpec: Int,
-        heightMeasureSpec: Int
+        widthMeasureSpec: Int, heightMeasureSpec: Int
     ) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val maxHeight = mCheckedBitmapHeight.coerceAtLeast(mNormalBitmapHeight)
-        val realWidth =
-            mCheckedBitmapWidth + (mNormalBitmapWidth + mIndicatorPadding) * (getPageSize() - 1)
-        setMeasuredDimension(realWidth, maxHeight)
+        val width =
+            getSelectWidth() + (getNormalWidth() + getIndicatorSpace()) * (getItemCount() - 1)
+        val height = getSelectHeight().coerceAtLeast(getNormalHeight())
+        setMeasuredDimension(width.toInt(), height.toInt())
     }
 
     override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-        if (getPageSize() > 1 && mCheckedBitmap != null && mNormalBitmap != null) {
-            for (i in 1 until getPageSize() + 1) {
-                var left: Int
-                var top: Int
-                var bitmap = mNormalBitmap
+        if (getItemCount() > 0 && selectBitmap != null && normalBitmap != null) {
+            for (i in 1 until getItemCount() + 1) {
+                var left: Float
+                var top: Float
+                var bitmap = normalBitmap!!
                 val index = i - 1
                 when {
-                    index < getCurrentPosition() -> {
-                        left = (i - 1) * (mNormalBitmapWidth + mIndicatorPadding)
-                        top = measuredHeight / 2 - mNormalBitmapHeight / 2
+                    index < getPosition() -> {
+                        left = (i - 1) * (getNormalWidth() + getIndicatorSpace())
+                        top = measuredHeight / 2 - getNormalHeight() / 2
                     }
-                    index == getCurrentPosition() -> {
-                        left = (i - 1) * (mNormalBitmapWidth + mIndicatorPadding)
-                        top = measuredHeight / 2 - mCheckedBitmapHeight / 2
-                        bitmap = mCheckedBitmap
+
+                    index == getPosition() -> {
+                        left = (i - 1) * (getNormalWidth() + getIndicatorSpace())
+                        top = measuredHeight / 2 - getSelectHeight() / 2
+                        bitmap = selectBitmap!!
                     }
+
                     else -> {
                         left =
-                            (i - 1) * mIndicatorPadding + (i - 2) * mNormalBitmapWidth + mCheckedBitmapWidth
-                        top = measuredHeight / 2 - mNormalBitmapHeight / 2
+                            (i - 1) * getIndicatorSpace() + (i - 2) * getNormalWidth() + getSelectWidth()
+                        top = measuredHeight / 2 - getNormalHeight() / 2
                     }
                 }
                 drawIcon(canvas, left, top, bitmap)
@@ -83,108 +66,86 @@ class DrawableIndicator @JvmOverloads constructor(
     }
 
     private fun drawIcon(
-        canvas: Canvas,
-        left: Int,
-        top: Int,
-        icon: Bitmap?
+        canvas: Canvas, left: Float, top: Float, icon: Bitmap?
     ) {
-        if (icon == null) {
+        if (icon == null || icon.width <= 0 || icon.height <= 0) {
             return
         }
-        canvas.drawBitmap(icon, left.toFloat(), top.toFloat(), null)
+        canvas.drawBitmap(icon, left, top, null)
     }
 
     private fun initIconSize() {
-        mCheckedBitmap?.let { bitmap ->
-            mIndicatorSize?.let { size ->
-                if (bitmap.isMutable && checkCanResize) {
-                    bitmap.width = size.checkedWidth
-                    bitmap.height = size.checkedHeight
-                } else {
-                    val width = bitmap.width
-                    val height = bitmap.height
-                    val scaleWidth = size.checkedWidth.toFloat() / width
-                    val scaleHeight = size.checkedHeight.toFloat() / height
-                    val matrix = Matrix()
-                    matrix.postScale(scaleWidth, scaleHeight)
-                    mCheckedBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
-                }
+        selectBitmap?.let { bitmap ->
+            if (bitmap.isMutable && selectResize) {
+                bitmap.width = getSelectWidth().toInt()
+                bitmap.height = getSelectHeight().toInt()
+            } else {
+                val width = bitmap.width
+                val height = bitmap.height
+                val scaleWidth = getSelectWidth() / width
+                val scaleHeight = getSelectHeight() / height
+                val matrix = Matrix()
+                matrix.postScale(scaleWidth, scaleHeight)
+                selectBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
             }
-            mCheckedBitmapWidth = mCheckedBitmap?.width ?: 0
-            mCheckedBitmapHeight = mCheckedBitmap?.height ?: 0
+            setSelect(selectBitmap?.width?.toFloat() ?: 0F, selectBitmap?.height?.toFloat() ?: 0F)
         }
-        mNormalBitmap?.let { bitmap ->
-            mIndicatorSize?.let { size ->
-                if (bitmap.isMutable && normalCanResize) {
-                    bitmap.width = size.normalWidth
-                    bitmap.height = size.normalHeight
-                } else {
-                    val width = bitmap.width
-                    val height = bitmap.height
-                    val scaleWidth = size.normalWidth.toFloat() / bitmap.width
-                    val scaleHeight = size.normalHeight.toFloat() / bitmap.height
-                    val matrix = Matrix()
-                    matrix.postScale(scaleWidth, scaleHeight)
-                    mNormalBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
-                }
+        normalBitmap?.let { bitmap ->
+            if (bitmap.isMutable && selectResize) {
+                bitmap.width = getNormalWidth().toInt()
+                bitmap.height = getNormalHeight().toInt()
+            } else {
+                val width = bitmap.width
+                val height = bitmap.height
+                val scaleWidth = getNormalWidth() / width
+                val scaleHeight = getNormalHeight() / height
+                val matrix = Matrix()
+                matrix.postScale(scaleWidth, scaleHeight)
+                normalBitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height, matrix, true)
             }
-            mNormalBitmapWidth = mNormalBitmap?.width ?: 0
-            mNormalBitmapHeight = mNormalBitmap?.height ?: 0
+            setNormal(normalBitmap?.width?.toFloat() ?: 0F, normalBitmap?.height?.toFloat() ?: 0F)
         }
     }
 
-    fun setIndicatorDrawable(
-        @DrawableRes normalDrawable: Int,
-        @DrawableRes checkedDrawable: Int
+    fun setDrawable(
+        @DrawableRes selected: Int, @DrawableRes normal: Int
     ): DrawableIndicator {
-        mNormalBitmap = BitmapFactory.decodeResource(resources, normalDrawable)
-        mCheckedBitmap = BitmapFactory.decodeResource(resources, checkedDrawable)
-        if (mNormalBitmap == null) {
-            mNormalBitmap = getBitmapFromVectorDrawable(context, normalDrawable)
-            normalCanResize = false
+        normalBitmap = BitmapFactory.decodeResource(resources, normal)
+        selectBitmap = BitmapFactory.decodeResource(resources, selected)
+        if (normalBitmap == null) {
+            normalBitmap = getBitmapFromDrawable(context, normal)
+            normalResize = false
         }
-        if (mCheckedBitmap == null) {
-            mCheckedBitmap = getBitmapFromVectorDrawable(context, checkedDrawable)
-            checkCanResize = false
+        if (selectBitmap == null) {
+            selectBitmap = getBitmapFromDrawable(context, selected)
+            selectResize = false
         }
         initIconSize()
         postInvalidate()
         return this
     }
 
-    fun setIndicatorSize(
-        normalWidth: Int,
-        normalHeight: Int,
-        checkedWidth: Int,
-        checkedHeight: Int
+    fun setDrawable(
+        selected: Bitmap, normal: Bitmap
     ): DrawableIndicator {
-        mIndicatorSize = IndicatorSize(normalWidth, normalHeight, checkedWidth, checkedHeight)
+        if (normalBitmap == null) {
+            normalBitmap = normal
+            normalResize = false
+        }
+        if (selectBitmap == null) {
+            selectBitmap = selected
+            selectResize = false
+        }
         initIconSize()
         postInvalidate()
         return this
     }
-
-    fun setIndicatorGap(padding: Int): DrawableIndicator {
-        if (padding >= 0) {
-            mIndicatorPadding = padding
-            postInvalidate()
-        }
-        return this
-    }
-
-    internal class IndicatorSize(
-        var normalWidth: Int,
-        var normalHeight: Int,
-        var checkedWidth: Int,
-        var checkedHeight: Int
-    )
 
     @SuppressLint("UseKtx")
-    private fun getBitmapFromVectorDrawable(
-        context: Context,
-        drawableId: Int
+    private fun getBitmapFromDrawable(
+        context: Context, @DrawableRes res: Int
     ): Bitmap? {
-        var drawable = ContextCompat.getDrawable(context, drawableId)
+        var drawable = ContextCompat.getDrawable(context, res)
         if (drawable != null) drawable = DrawableCompat.wrap(drawable).mutate()
         drawable?.let {
             val bitmap = createBitmap(it.intrinsicWidth, it.intrinsicHeight)

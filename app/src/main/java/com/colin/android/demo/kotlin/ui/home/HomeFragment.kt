@@ -2,17 +2,21 @@ package com.colin.android.demo.kotlin.ui.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.colin.android.demo.kotlin.R
+import com.colin.android.demo.kotlin.adapter.BannerAdapter
 import com.colin.android.demo.kotlin.adapter.FragmentAdapter
-import com.colin.android.demo.kotlin.adapter.ImageAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
 import com.colin.android.demo.kotlin.ui.list.ListFragment
+import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.ToastUtil
+import com.colin.library.android.widget.banner.transform.ScaleInTransformer
 import com.google.android.material.tabs.TabLayoutMediator
 
 
 class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
-    private var imageAdapter = ImageAdapter()
+    private var bannerAdapter = BannerAdapter()
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
             val array = resources.getStringArray(R.array.flow_data)
@@ -27,10 +31,30 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
                 tab.text = array[position]
             }.attach()
 
-            header.setAdapter(imageAdapter)
-        }
+            header.setAdapter(bannerAdapter)
+            header.setPageTransformer(ScaleInTransformer())
+            header.pageChangeListener = object : OnPageChangeCallback() {
+                override fun onPageScrollStateChanged(state: Int) {
+                    Log.i("onPageScrollStateChanged-->>state:$state")
+                }
 
-        imageAdapter.submitList(createBanner())
+                override fun onPageScrolled(
+                    position: Int, positionOffset: Float, positionOffsetPixels: Int
+                ) {
+                    Log.i("onPageScrolled-->>position:$position positionOffset:$positionOffset")
+                }
+
+                override fun onPageSelected(position: Int) {
+                    Log.i("onPageSelected-->>position:$position")
+                }
+            }
+        }
+        bannerAdapter.onItemClickListener = { view, item, position ->
+            ToastUtil.show("position:$position")
+        }
+        bannerAdapter.submitList(createBanner())
+        viewBinding.header.setCurrentItem(bannerAdapter.itemCount)
+
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -41,4 +65,5 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun createBanner() = listOf(
         R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner3, R.mipmap.banner4, R.mipmap.banner5
     )
+
 }

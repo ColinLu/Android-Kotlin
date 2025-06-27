@@ -1,17 +1,17 @@
 package com.colin.library.android.widget.banner.drawer
 
 import com.colin.library.android.widget.banner.def.IndicatorStyle
-import com.colin.library.android.widget.banner.options.IndicatorOptions
+import com.colin.library.android.widget.banner.indicator.IIndicator
 
 /**
  * Indicator Drawer Factory.
  */
 internal object DrawerFactory {
-    fun createDrawer(indicatorOptions: IndicatorOptions): IDrawer {
-        return when (indicatorOptions.indicatorStyle) {
-            IndicatorStyle.DASH -> DashDrawer(indicatorOptions)
-            IndicatorStyle.ROUND_RECT -> RoundRectDrawer(indicatorOptions)
-            else -> CircleDrawer(indicatorOptions)
+    fun createDrawer(indicator: IIndicator): IDrawer {
+        return when (indicator.getIndicatorStyle()) {
+            IndicatorStyle.DASH -> DashDrawer(indicator)
+            IndicatorStyle.ROUND_RECT -> RoundRectDrawer(indicator)
+            else -> CircleDrawer(indicator)
         }
     }
 }

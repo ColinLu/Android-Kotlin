@@ -1,17 +1,14 @@
 package com.colin.library.android.widget.banner.drawer
 
 import android.graphics.Canvas
-
-import com.colin.library.android.widget.banner.options.IndicatorOptions
+import com.colin.library.android.widget.banner.indicator.IIndicator
 
 /**
  * DashDrawer
  */
-class DashDrawer internal constructor(indicatorOptions: IndicatorOptions) : RectDrawer(
-    indicatorOptions
-) {
+class DashDrawer internal constructor(indicator: IIndicator) : RectDrawer(indicator) {
 
     override fun drawDash(canvas: Canvas) {
-        canvas.drawRect(mRectF, mPaint)
+        canvas.drawRect(mRectF, paint)
     }
 }
