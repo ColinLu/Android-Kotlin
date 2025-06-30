@@ -43,7 +43,7 @@ publishing {
         create<MavenPublication>("release") {
             groupId = libs.versions.publishGroup.get()
             artifactId = libs.versions.publishUtils.get()
-            version = libs.versions.publishVersion.get()
+            version = libs.versions.versionName.get()
             afterEvaluate {
                 from(components["release"])
             }
