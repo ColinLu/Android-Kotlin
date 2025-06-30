@@ -51,6 +51,19 @@
             android:defaultValue="www.baidu.com"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/fragment_list"
+        android:name="com.colin.android.demo.kotlin.ui.list.ListFragment"
+        tools:layout="@layout/layout_refresh_list">
+        <argument
+            android:name="id"
+            android:defaultValue="-1"
+            app:argType="integer" />
+        <argument
+            android:name="title"
+            android:defaultValue="title"
+            app:argType="string" />
+    </fragment>
     <action
         android:id="@+id/action_to_log"
         app:destination="@+id/fragment_log"
@@ -65,5 +78,7 @@
     <action
         android:id="@+id/action_web"
         app:destination="@+id/fragment_web" />
-
+    <action
+        android:id="@+id/action_list"
+        app:destination="@+id/fragment_list" />
 </navigation>

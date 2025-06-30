@@ -19,19 +19,13 @@ class UtilConfig private constructor(builder: Builder) {
     /*环境*/
     private val mDebug = builder.mDebug     //是否测试环境
     private val mShowLog: Boolean           //Log是否需要显示
-    private val mShowLogThread: Boolean     //Log是否显示线程
     private val mLogLevel: Int              //Log默认显示Level，Level等级一下不会显示
     private val mLogTag: String?            //Log配置全局Tag
-    private val mLogMethodOffset: Int       //Log打印方法
-    private val mLogMethodCount: Int        //Log打印方法数量
 
     init {
         this.mShowLog = builder.mShowLog
-        this.mShowLogThread = builder.mShowLogThread
         this.mLogLevel = builder.mLogLevel
         this.mLogTag = builder.mLogTag
-        this.mLogMethodCount = builder.mLogMethodCount
-        this.mLogMethodOffset = builder.mLogMethodOffset
     }
 
     fun getApplication(): Application {
@@ -46,17 +40,6 @@ class UtilConfig private constructor(builder: Builder) {
         return mShowLog
     }
 
-    fun isShowLogThread(): Boolean {
-        return mShowLogThread
-    }
-
-    fun getLogMethodOffset(): Int {
-        return mLogMethodOffset
-    }
-
-    fun getLogMethodCount(): Int {
-        return mLogMethodCount
-    }
 
     fun getLogLevel(): Int {
         return mLogLevel
@@ -71,11 +54,8 @@ class UtilConfig private constructor(builder: Builder) {
     ) {
         /*Log*/
         var mShowLog: Boolean = true
-        var mShowLogThread: Boolean = true
         var mLogLevel: Int = Log.INFO
         var mLogTag: String? = null
-        var mLogMethodOffset: Int = 0
-        var mLogMethodCount: Int = 3
 
         init {
             this.mShowLog = mDebug
@@ -86,11 +66,6 @@ class UtilConfig private constructor(builder: Builder) {
             return this
         }
 
-        fun setShowLogThread(show: Boolean): Builder {
-            this.mShowLogThread = show
-            return this
-        }
-
         fun setLogLevel(level: Int): Builder {
             this.mLogLevel = level
             return this
@@ -98,16 +73,6 @@ class UtilConfig private constructor(builder: Builder) {
 
         fun setLogTag(tag: String?): Builder {
             this.mLogTag = tag
-            return this
-        }
-
-        fun setLogMethodOffset(offset: Int): Builder {
-            this.mLogMethodOffset = offset
-            return this
-        }
-
-        fun setLogMethodCount(count: Int): Builder {
-            this.mLogMethodCount = count
             return this
         }
 

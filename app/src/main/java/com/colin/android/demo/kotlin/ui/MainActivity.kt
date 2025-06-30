@@ -130,12 +130,15 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-//    private fun selectedLanguage(position: Int) {
+    //    private fun selectedLanguage(position: Int) {
 //        val languages = resources.getStringArray(R.array.local_language_list)
 //        val countries = resources.getStringArray(R.array.local_country_list)
 //        LanguageHelper.saveLocale(Locale(languages[position], countries[position]))
 //        onCreate(null)
 //    }
 
+    fun update(title: CharSequence?) {
+        viewBinding.appBarMain.toolbar.title = title
+    }
 
 }

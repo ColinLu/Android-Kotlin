@@ -43,24 +43,21 @@ fun countDown(
     scope.launch {
         flow {
             (time downTo 0).forEach {
-                Log.e("countDown downTo:${it}")
                 delay(ONE_SECOND.toLong())
                 emit(it)
             }
         }.onStart {
-            Log.e("countDown onStart:$this")
             // 倒计时开始 ，在这里可以让Button 禁止点击状态
             start(this@launch)
-        }.onCompletion {
+        }.onCompletion { cause->
             // 倒计时结束 ，在这里可以让Button 恢复点击状态
-            Log.e("countDown finish:${it}")
-            finish()
+            if (cause !is CancellationException) {
+                finish()
+            }
         }.catch {
             // 处理异常，例如记录日志
-            Log.e("countDown catch:${it}")
         }.collect {
             // 在这里 更新值来显示到UI
-            Log.e("countDown collect:$it")
             next(it)
         }
     }

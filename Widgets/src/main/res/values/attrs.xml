@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="banner_pager" type="id" />
+    <item name="banner_indicator" type="id" />
+
+    <item name="web_view" type="id" />
+    <item name="web_progress" type="id" />
+
+    <!--自定义View xml属性-->
+
     <attr name="cyclic" format="boolean|reference" />
     <attr name="radius" format="dimension|reference" />
     <attr name="indicatorWidth" format="dimension">
@@ -205,8 +213,7 @@
         <!--选中区域/分割线上下偏移，通过移动分割线上下限制的位置来实现扩大/缩小显示区域-->
         <attr name="wheel_dividerOffsetY" format="dimension" />
     </declare-styleable>
-    <item name="banner_pager" type="id" />
-    <item name="banner_indicator" type="id" />
+
     <declare-styleable name="BannerView">
         <attr name="cyclic" />
         <attr name="radius" />

@@ -1,6 +1,5 @@
 package com.colin.library.android.utils.ext
 
-import android.R.attr.action
 import android.view.View
 import com.colin.library.android.utils.INVALID
 import com.colin.library.android.utils.TIMEOUT_CLICK
@@ -16,18 +15,16 @@ import com.colin.library.android.utils.TIMEOUT_CLICK
  * 设置防止重复点击事件
  * @param views 需要设置点击事件的view
  * @param interval 时间间隔 默认0.5秒
- * @param onClick 点击触发的方法
+ * @param click 点击触发的方法
  */
 fun onClick(vararg views: View, interval: Long = TIMEOUT_CLICK, click: (View) -> Unit) {
-    views.forEach {
-        it.onClick(interval = interval) { view -> click.invoke(view) }
-    }
+    views.forEach { it.onClick(interval = interval) { view -> click.invoke(view) } }
 }
 
 /**
  * 防止重复点击事件 默认0.5秒内不可重复点击
  * @param interval 时间间隔 默认0.5秒
- * @param action 执行方法
+ * @param click 执行方法
  */
 
 private var lastClickTime = INVALID.toLong()

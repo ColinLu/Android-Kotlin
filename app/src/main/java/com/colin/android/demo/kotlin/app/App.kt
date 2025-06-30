@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.config.UtilConfig
+import com.colin.library.android.utils.helper.CrashHelper
 import com.colin.library.android.utils.helper.UtilHelper
 
 /**
@@ -16,7 +17,7 @@ import com.colin.library.android.utils.helper.UtilHelper
  *
  * Des   :项目 Android 全局App，配置初始化
  */
-class App : Application() {
+class App : Application(), CrashHelper.OnCrashListener {
 
     companion object {
         private lateinit var instance: App
@@ -27,8 +28,10 @@ class App : Application() {
         super.onCreate()
         instance = this
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
+        CrashHelper.init(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver())
     }
+
 
     private inner class AppLifeObserver : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -38,5 +41,9 @@ class App : Application() {
                 Log.e("background")
             }
         }
+    }
+
+    override fun crash(error: Throwable, info: String) {
+        Log.e("info:$info")
     }
 }

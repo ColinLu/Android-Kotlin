@@ -29,7 +29,7 @@ android {
             java.srcDir("src/main/java")
             assets.srcDir("src/main/assets")
             res.srcDir("src/main/res")
-            aidl.srcDir("src/main/aidl")
+            aidl.srcDirs("src/main/aidl", "com.colin.library.android.widget.web")
         }
     }
 

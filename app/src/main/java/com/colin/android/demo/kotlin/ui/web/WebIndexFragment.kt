@@ -6,7 +6,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
@@ -25,20 +24,13 @@ import com.colin.library.android.utils.Log
 class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
     private lateinit var stringAdapter: StringAdapter
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewBinding.refresh.apply {
-            setColorSchemeResources(R.color.colorAccent)
-        }
         if (::stringAdapter.isInitialized.not()) stringAdapter = StringAdapter()
         viewBinding.list.apply {
-            layoutManager = LinearLayoutManager(requireContext())
             setHasFixedSize(true)
             adapter = stringAdapter
             itemAnimator = DefaultItemAnimator()
         }
 
-        viewBinding.refresh.setOnRefreshListener {
-            viewModel.loadData(true)
-        }
         stringAdapter.onItemClickListener = { view, item, position ->
             toWebView(item, false)
         }

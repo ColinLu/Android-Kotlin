@@ -49,24 +49,31 @@
         <item>@string/method_contact</item>
         <item>@string/method_path</item>
         <item>@string/title_web</item>
+        <item>Crash</item>
     </string-array>
     <string-array name="path_list">
         <item>can write</item>
         <item>has sd card</item>
         <item>root system</item>
         <item>root data</item>
-        <item>user data</item>
-        <item>user cache</item>
-        <item>user code cache</item>
-        <item>internal files</item>
         <item>internal data</item>
+        <item>internal files</item>
         <item>internal cache</item>
+        <item>internal code</item>
+        <item>internal db</item>
         <item>internal shared prefs</item>
-        <item>internal databases</item>
-        <item>internal code cache</item>
-        <item>internal append</item>
-        <item>internal private</item>
-        <item>external code cache</item>
+        <item>app external empty</item>
+        <item>app external music</item>
+        <item>app external podcasts</item>
+        <item>app external alarms</item>
+        <item>app external notifications</item>
+        <item>app external pictures</item>
+        <item>app external movies</item>
+        <item>app external download</item>
+        <item>app external dcim</item>
+        <item>app external documents</item>
+        <item>external cache</item>
+        <item>external download cache</item>
         <item>external empty</item>
         <item>external music</item>
         <item>external podcasts</item>
@@ -77,16 +84,6 @@
         <item>external download</item>
         <item>external dcim</item>
         <item>external documents</item>
-        <item>external public empty</item>
-        <item>external public music</item>
-        <item>external public podcasts</item>
-        <item>external public alarms</item>
-        <item>external public notifications</item>
-        <item>external public pictures</item>
-        <item>external public movies</item>
-        <item>external public download</item>
-        <item>external public dcim</item>
-        <item>external public documents</item>
     </string-array>
     <string-array name="log_list">
         <item>Log V</item>

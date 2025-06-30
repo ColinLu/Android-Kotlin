@@ -24,6 +24,8 @@
     <string name="method_permission">Permission</string>
     <string name="method_http" translatable="false">Http</string>
     <string name="method_path">Path</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确认</string>
 
 
 </resources>

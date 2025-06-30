@@ -35,6 +35,8 @@
     <style name="Theme.AndroidKotlin.RecyclerView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
     </style>
 
     <style name="Text" parent="TextAppearance.AppCompat.Body1">

@@ -22,7 +22,7 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
             val array = resources.getStringArray(R.array.flow_data)
             val list: MutableList<Fragment> = mutableListOf()
             array.forEachIndexed { index, test ->
-                list.add(ListFragment.newInstance(index, test))
+                list.add(ListFragment.newInstance(R.array.flow_data, test))
             }
             page.apply {
                 adapter = FragmentAdapter(this@HomeFragment, list)
@@ -53,7 +53,7 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
             ToastUtil.show("position:$position")
         }
         bannerAdapter.submitList(createBanner())
-        viewBinding.header.setCurrentItem(bannerAdapter.itemCount)
+        viewBinding.header.setItemCount(bannerAdapter.itemCount)
 
     }
 
