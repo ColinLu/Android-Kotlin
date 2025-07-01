@@ -30,9 +30,7 @@ fun JsonObject.append(vararg args: Pair<String, Any?>): JsonObject {
 }
 
 fun JsonObject.append(other: JsonObject?): JsonObject {
-    other?.entrySet()?.forEach { (name, value) ->
-        append(name, value)
-    }
+    other?.entrySet()?.forEach { (name, value) -> append(name, value) }
     return this
 }
 

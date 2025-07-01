@@ -57,11 +57,6 @@ object NetworkHelper {
 
     private val networkInterceptors = mutableListOf<Interceptor>()
 
-    val retrofit: Retrofit by lazy {
-        Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create(gson))
-            .client(getOkHttpClient()).callbackExecutor(Executors.newSingleThreadExecutor()).build()
-    }
-
     @Volatile
     var baseUrl: String = ""
 
@@ -74,10 +69,14 @@ object NetworkHelper {
     @Volatile
     var timeout: Long = TIMEOUT
 
-    var gson: Gson =
-        GsonBuilder().setLenient().registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
+    var gson: Gson = GsonBuilder().setLenient().registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
             .registerTypeAdapter(String::class.java, StringTypeAdapter()).create()
 
+    /*懒加载构建，所以调用前，需要把 gson、baseUrl okhttpClient等构建完成*/
+    val retrofit: Retrofit by lazy {
+        Retrofit.Builder().baseUrl(baseUrl).addConverterFactory(GsonConverterFactory.create(gson))
+            .client(getOkHttpClient()).callbackExecutor(Executors.newSingleThreadExecutor()).build()
+    }
 
     fun addInterceptor(interceptor: Interceptor) = apply {
         if (!interceptors.contains(interceptor)) interceptors.add(interceptor)
@@ -101,12 +100,11 @@ object NetworkHelper {
         return builder.build()
     }
 
-    fun createLoggingInterceptor(tag: String = "okhttp") =
-        HttpLoggingInterceptor { message ->
-            Log.i(tag, message)
-        }.also {
-            it.level = if (UtilHelper.isDebug()) Level.BODY else Level.BASIC
-        }
+    fun createLoggingInterceptor(tag: String = "okhttp") = HttpLoggingInterceptor { message ->
+        Log.i(tag, message)
+    }.also {
+        it.level = if (UtilHelper.isDebug()) Level.BODY else Level.BASIC
+    }
 
     fun createNetworkInterceptor() = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {

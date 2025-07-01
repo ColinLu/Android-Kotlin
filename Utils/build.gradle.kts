@@ -54,16 +54,12 @@ publishing {
             url = uri("/Users/Colin/Projects/Maven/Repository")
         }
         maven {
-            val properties = Properties().apply {
-                load(project.rootProject.file("local.properties").inputStream())
-            }
-            url = uri(
-                properties.getProperty("gitee.url")
-                    ?: "https://gitee.com/ColinTeam/maven/raw/master/repository"
-            )
+            val properties = Properties()
+            properties.load(project.rootProject.file("local.properties").inputStream())
+            url = uri(properties.getProperty("gitee.url"))
             credentials {
-                username = properties.getProperty("gitee.user") ?: ""
-                password = properties.getProperty("gitee.pwd") ?: ""
+                username = properties.getProperty("gitee.user")
+                password = properties.getProperty("gitee.pwd")
             }
         }
     }

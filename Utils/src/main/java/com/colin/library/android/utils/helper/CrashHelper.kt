@@ -75,8 +75,8 @@ object CrashHelper {
                 if (!FileUtil.isDir(folder)) folder = createFile()
                 if (fileName.isNullOrBlank()) fileName = createFileName()
                 val file = File(folder, fileName!!)
-                Log.e("CrashHelper", file.absolutePath)
-                FileUtil.write(file, sb.toString(), true)
+                val result = FileUtil.write(file, sb.toString(), true)
+                Log.e("CrashHelper", "write crash:$result->${file.absolutePath}")
             }
         }
     }
