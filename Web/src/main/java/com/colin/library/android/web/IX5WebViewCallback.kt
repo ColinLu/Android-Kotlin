@@ -1,11 +1,10 @@
-package com.colin.library.android.widget.web
+package com.colin.library.android.web
 
 import android.net.Uri
 import com.tencent.smtt.export.external.interfaces.JsResult
 import com.tencent.smtt.export.external.interfaces.PermissionRequest
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient.FileChooserParams
-import com.tencent.smtt.sdk.WebView
 
 /**
  * Author:ColinLu
@@ -14,7 +13,9 @@ import com.tencent.smtt.sdk.WebView
  *
  * Des   :WebViewCallback
  */
-interface IWebViewCallback {
+interface IX5WebViewCallback {
+    fun intercept(url: String?) = false
+
     fun start(url: String?) {}
 
     fun progress(progress: Int) {}
@@ -23,9 +24,9 @@ interface IWebViewCallback {
 
     fun error(url: String, error: String) {}
 
-    fun title(title: String?) {}
+    fun resource(url: String) {}
 
-    fun intercept(view: WebView, url: String?) = false
+    fun title(title: String?) {}
 
     fun dialog(url: String?, message: String?, value: String?, result: JsResult?) = false
 

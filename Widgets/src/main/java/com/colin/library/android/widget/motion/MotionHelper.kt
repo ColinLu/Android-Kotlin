@@ -17,7 +17,7 @@ import java.lang.ref.WeakReference
  *
  * Des   :MotionHelper
  */
-class MotionHelper(var view: View) : IMotion {
+class MotionHelper(var view: View) {
     private val viewRef: WeakReference<View?> = WeakReference<View?>(view)
 
     companion object {
@@ -27,7 +27,6 @@ class MotionHelper(var view: View) : IMotion {
     }
 
     init {
-
         view.setOnTouchListener(object : View.OnTouchListener {
             @SuppressLint("ClickableViewAccessibility")
             override fun onTouch(

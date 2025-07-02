@@ -3,9 +3,6 @@
     <item name="banner_pager" type="id" />
     <item name="banner_indicator" type="id" />
 
-    <item name="web_view" type="id" />
-    <item name="web_progress" type="id" />
-
     <!--自定义View xml属性-->
 
     <attr name="cyclic" format="boolean|reference" />
@@ -299,5 +296,23 @@
     </declare-styleable>
     <declare-styleable name="CustomWebView">
         <attr name="useJavascript" format="boolean|reference" />
+    </declare-styleable>
+
+
+    <attr name="orientation" format="dimension" />
+
+    <!-- 垂直方向的虚线 -->
+    <declare-styleable name="DividerView">
+        <!-- 虚线朝向 -->
+        <attr name="android:orientation" />
+        <!-- 虚线颜色 -->
+        <attr name="color" format="color|reference" />
+        <!-- 虚线宽度 -->
+        <attr name="length" format="dimension|reference" />
+        <!-- 虚线dash宽度 -->
+        <attr name="dash" format="dimension|reference" />
+        <!-- 虚线dash间隔 -->
+        <attr name="space" format="dimension|reference" />
+
     </declare-styleable>
 </resources>

@@ -1,18 +1,16 @@
-package com.colin.library.android.widget.web.client
+package com.colin.library.android.web
 
 import android.net.Uri
+import android.webkit.ConsoleMessage
+import android.webkit.JsPromptResult
+import android.webkit.JsResult
+import android.webkit.PermissionRequest
+import android.webkit.ValueCallback
+import android.webkit.WebChromeClient
+import android.webkit.WebView
 import com.colin.library.android.utils.Log
-import com.colin.library.android.widget.web.IWebViewCallback
-import com.tencent.smtt.export.external.interfaces.ConsoleMessage
-import com.tencent.smtt.export.external.interfaces.JsPromptResult
-import com.tencent.smtt.export.external.interfaces.JsResult
-import com.tencent.smtt.export.external.interfaces.PermissionRequest
-import com.tencent.smtt.sdk.ValueCallback
-import com.tencent.smtt.sdk.WebChromeClient
-import com.tencent.smtt.sdk.WebView
 
 class DefaultWebChromeClient(private val callBack: IWebViewCallback) : WebChromeClient() {
-
 
     override fun onReceivedTitle(view: WebView, title: String?) {
         callBack.title(title)

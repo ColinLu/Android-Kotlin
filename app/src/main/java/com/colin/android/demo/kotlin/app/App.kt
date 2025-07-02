@@ -9,6 +9,8 @@ import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.config.UtilConfig
 import com.colin.library.android.utils.helper.CrashHelper
 import com.colin.library.android.utils.helper.UtilHelper
+import com.colin.library.android.web.WebUtil
+import com.tencent.smtt.sdk.QbSdk.PreInitCallback
 
 /**
  * Author:ColinLu
@@ -29,6 +31,16 @@ class App : Application(), CrashHelper.OnCrashListener {
         instance = this
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
         CrashHelper.init(this)
+        WebUtil.init(this, object : PreInitCallback {
+            override fun onCoreInitFinished() {
+                Log.e("onCoreInitFinished")
+            }
+
+            override fun onViewInitFinished(success: Boolean) {
+                Log.e("onViewInitFinished:$success")
+            }
+
+        })
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver())
     }
 

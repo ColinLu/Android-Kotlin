@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import android.util.AttributeSet
+import android.webkit.WebView
 import androidx.core.os.BundleCompat
 import com.colin.library.android.utils.ext.dp
 import com.colin.library.android.widget.scroll.INestedScroll.OnScrollNotify
-import com.colin.library.android.widget.web.CustomWebView
 import kotlin.math.max
 import kotlin.math.min
 
@@ -20,7 +20,7 @@ import kotlin.math.min
  */
 class NestedScrollTopWebView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
-) : CustomWebView(context, attrs, 0), INestedScrollTop {
+) : WebView(context, attrs, 0), INestedScrollTop {
     private var mScrollNotify: OnScrollNotify? = null
 
     init {

@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.colin.library.android.widget"
+    namespace = "com.colin.library.android.web"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -26,7 +26,7 @@ android {
     sourceSets {
         getByName("main") {
             kotlin.srcDir("src/main/kotlin")
-            java.srcDir("src/main/java")
+            assets.srcDir("src/main/assets")
             res.srcDir("src/main/res")
         }
     }
@@ -35,26 +35,24 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = "17"
-    }
-    buildFeatures {
-        viewBinding = true
     }
 }
 
 dependencies {
-    compileOnly(project(":Utils"))
-    compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
+    compileOnly(libs.bundles.androidCommon)
+    compileOnly(libs.tbssdk)
     compileOnly(libs.gson)
-    implementation(libs.bundles.androidCommon)
+    compileOnly(project(":Utils"))
 }
 
 publishing {
     publications {
         create<MavenPublication>("release") {
             groupId = libs.versions.publishGroup.get()
-            artifactId = libs.versions.publishWidgets.get()
+            artifactId = libs.versions.publishWeb.get()
             version = libs.versions.versionName.get()
             afterEvaluate {
                 from(components["release"])

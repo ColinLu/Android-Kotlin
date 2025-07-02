@@ -15,7 +15,7 @@ import com.colin.library.android.utils.ZERO
  *
  * Des   :SkeletonAdapter
  */
-class SkeletonAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder?>() {
+class SkeletonAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private var count = ZERO
     private var layoutId = ZERO
     private var layoutIds: IntArray? = null

@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.ListPopupWindow
@@ -23,10 +24,16 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.tencent.smtt.sdk.QbSdk
 
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val backCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            val back = onSupportNavigateUp()
+            Log.e("onSupportNavigateUp:$back")
+            isEnabled = back
+        }
+    }
 
     override fun onResume() {
         super.onResume()
@@ -64,17 +71,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
-            override fun onCoreInitFinished() {
-                Log.i("onCoreInitFinished:x5")
-            }
-
-            override fun onViewInitFinished(isX5: Boolean) {
-                Log.i("onViewInitFinished:isX5:$isX5")
-            }
-
-        })
-        QbSdk.setDownloadWithoutWifi(true)
+        onBackPressedDispatcher.addCallback(this, backCallback)
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {

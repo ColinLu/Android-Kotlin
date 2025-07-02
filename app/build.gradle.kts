@@ -83,7 +83,7 @@ dependencies {
     implementation(project(":Utils"))
     implementation(project(":Widgets"))
     implementation(project(":Network"))
-//    implementation("com.gitee.colin_lu:Android-Kotlin:v0.0.2")
+    implementation(project(":Web"))
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)

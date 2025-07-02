@@ -1,13 +1,12 @@
-package com.colin.library.android.widget.web.client
+package com.colin.library.android.web
 
 import android.graphics.Bitmap
-import com.colin.library.android.widget.web.IWebViewCallback
 import com.tencent.smtt.export.external.interfaces.WebResourceError
 import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.sdk.WebView
 import com.tencent.smtt.sdk.WebViewClient
 
-class DefaultWebViewClient(private val callback: IWebViewCallback) : WebViewClient() {
+class DefaultX5WebViewClient(private val callback: IX5WebViewCallback) : WebViewClient() {
 
 
     override fun onPageFinished(view: WebView, url: String?) {
@@ -34,14 +33,11 @@ class DefaultWebViewClient(private val callback: IWebViewCallback) : WebViewClie
     override fun shouldOverrideUrlLoading(
         view: WebView, request: WebResourceRequest?
     ): Boolean {
-        return callback.intercept(view, request?.url?.toString()) || super.shouldOverrideUrlLoading(
-            view,
-            request
-        )
+        return callback.intercept(request?.url?.toString()) || super.shouldOverrideUrlLoading(view, request)
     }
 
     override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        return callback.intercept(view, url) || super.shouldOverrideUrlLoading(view, url)
+        return callback.intercept(url) || super.shouldOverrideUrlLoading(view, url)
     }
 
     // WebView发生改变时调用

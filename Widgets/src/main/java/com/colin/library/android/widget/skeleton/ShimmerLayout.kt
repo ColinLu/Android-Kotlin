@@ -62,7 +62,7 @@ class ShimmerLayout @JvmOverloads constructor(
                 getBoolean(R.styleable.ShimmerLayout_shimmer_reverse_animation, false)
         }
         this.setMaskWidth(this.maskWidth)
-        this.setgradientWidth(this.gradientWidth)
+        this.setGradientWidth(this.gradientWidth)
         this.setShimmerAngle(this.shimmerAngle)
         if (this.autoStart && this.isVisible) this.startShimmerAnimation()
     }
@@ -158,7 +158,7 @@ class ShimmerLayout @JvmOverloads constructor(
         }
     }
 
-    fun setgradientWidth(gradientWidth: Float) {
+    fun setGradientWidth(gradientWidth: Float) {
         if (!(gradientWidth <= 0.0f) && !(1.0f <= gradientWidth)) {
             this.gradientWidth = gradientWidth
             this.resetIfStarted()

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="javascriptEnabled" format="boolean|reference" />
+    <item name="web_view" type="id" />
+    <item name="web_progress" type="id" />
+    <declare-styleable name="WebViewDefault">
+        <attr name="javascriptEnabled" />
+    </declare-styleable>
+    <declare-styleable name="X5WebViewDefault">
+        <attr name="javascriptEnabled" />
+    </declare-styleable>
+</resources>

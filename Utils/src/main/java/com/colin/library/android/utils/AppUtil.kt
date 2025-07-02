@@ -3,6 +3,7 @@ package com.colin.library.android.utils
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.annotation.IntRange
 import com.colin.library.android.utils.helper.UtilHelper
 
@@ -16,8 +17,13 @@ import com.colin.library.android.utils.helper.UtilHelper
 object AppUtil {
     fun getVersionName() = getPackageInfo()?.versionName
 
-    fun getVersionCode(context: Context= UtilHelper.getApplication()): Long {
-        return getPackageInfo(context)?.longVersionCode ?: INVALID.toLong()
+    fun getVersionCode(context: Context = UtilHelper.getApplication()): Long {
+        val info = getPackageInfo(context) ?: return INVALID.toLong()
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            info.longVersionCode
+        } else {
+            info.versionCode.toLong()
+        }
     }
 
     /**

@@ -9,6 +9,7 @@
     tools:context=".ui.web.WebViewFragment">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/linear"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -19,11 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="6dp" />
 
-        <com.colin.library.android.widget.scroll.NestedScrollTopWebView
-            android:id="@+id/webView"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

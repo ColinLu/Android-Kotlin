@@ -15,7 +15,6 @@ interface ISkeletonScreen {
 }
 
 
-
 fun bind(view: View): ViewSkeletonScreen.Builder {
     return ViewSkeletonScreen.Builder(view)
 }

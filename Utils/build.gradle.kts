@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -52,15 +50,6 @@ publishing {
     publishing.repositories {
         maven {
             url = uri("/Users/Colin/Projects/Maven/Repository")
-        }
-        maven {
-            val properties = Properties()
-            properties.load(project.rootProject.file("local.properties").inputStream())
-            url = uri(properties.getProperty("gitee.url"))
-            credentials {
-                username = properties.getProperty("gitee.user")
-                password = properties.getProperty("gitee.pwd")
-            }
         }
     }
 }
