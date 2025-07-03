@@ -11,10 +11,13 @@
     <string name="query_web_hint_link" translatable="false">https://m.baidu.com/</string>
     <string name="title_home">Home</string>
     <string name="title_method">Method</string>
+    <string name="title_view">View</string>
     <string name="title_gallery">Gallery</string>
     <string name="title_slideshow">Slideshow</string>
     <string name="title_log" translatable="false">Log</string>
     <string name="title_web" translatable="false">Web</string>
+    <string name="title_crash" translatable="false">Crash</string>
+    <string name="title_command" translatable="false">Command</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="picture">Choose Picture</string>
 
@@ -24,8 +27,10 @@
     <string name="method_permission">Permission</string>
     <string name="method_http" translatable="false">Http</string>
     <string name="method_path">Path</string>
-    <string name="cancel">取消</string>
-    <string name="sure">确认</string>
+    <string name="method_crash">Crash</string>
+    <string name="method_command">Command</string>
+    <string name="cancel" translatable="false">取消</string>
+    <string name="sure" translatable="false">确认</string>
 
 
 </resources>

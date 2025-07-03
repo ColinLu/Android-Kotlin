@@ -16,7 +16,11 @@
         android:name="com.colin.android.demo.kotlin.ui.gallery.GalleryFragment"
         android:label="@string/title_gallery"
         tools:layout="@layout/fragment" />
-
+    <fragment
+        android:id="@+id/fragment_view"
+        android:name="com.colin.android.demo.kotlin.ui.view.ViewFragment"
+        android:label="@string/title_view"
+        tools:layout="@layout/fragment" />
     <fragment
         android:id="@+id/fragment_slideshow"
         android:name="com.colin.android.demo.kotlin.ui.slideshow.SlideshowFragment"
@@ -28,6 +32,11 @@
         android:label="@string/title_method"
         tools:layout="@layout/layout_refresh_list" />
     <fragment
+        android:id="@+id/fragment_command"
+        android:name="com.colin.android.demo.kotlin.ui.method.CommandFragment"
+        android:label="@string/method_command"
+        tools:layout="@layout/layout_refresh_list" />
+    <fragment
         android:id="@+id/fragment_log"
         android:name="com.colin.android.demo.kotlin.ui.method.LogFragment"
         android:label="@string/title_log"
@@ -37,6 +46,7 @@
         android:name="com.colin.android.demo.kotlin.ui.web.WebIndexFragment"
         android:label="@string/title_web"
         tools:layout="@layout/layout_refresh_list" />
+
     <fragment
         android:id="@+id/fragment_web"
         android:name="com.colin.android.demo.kotlin.ui.web.WebViewFragment"
@@ -54,6 +64,7 @@
     <fragment
         android:id="@+id/fragment_list"
         android:name="com.colin.android.demo.kotlin.ui.list.ListFragment"
+        android:label="@string/title_view"
         tools:layout="@layout/layout_refresh_list">
         <argument
             android:name="id"
@@ -81,4 +92,7 @@
     <action
         android:id="@+id/action_list"
         app:destination="@+id/fragment_list" />
+    <action
+        android:id="@+id/action_command"
+        app:destination="@+id/fragment_command" />
 </navigation>

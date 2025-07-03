@@ -2,15 +2,15 @@ package com.colin.android.demo.kotlin.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.colin.android.demo.kotlin.app.AppViewModel
 import kotlinx.coroutines.launch
 
-class MainViewModel : ViewModel() {
-    private val _status = MutableLiveData(false)
-    val status: LiveData<Boolean> = _status
+open class MainViewModel : AppViewModel() {
+    private val _search = MutableLiveData(false)
+    val search: LiveData<Boolean> = _search
 
-    fun update(status: Boolean) {
-        viewModelScope.launch { _status.value = status }
+    fun updateSearch(status: Boolean) {
+        viewModelScope.launch { _search.value = status }
     }
 }

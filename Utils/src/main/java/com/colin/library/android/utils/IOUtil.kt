@@ -1,8 +1,10 @@
 package com.colin.library.android.utils
 
+import java.io.BufferedReader
 import java.io.Closeable
 import java.io.Flushable
 import java.io.IOException
+import java.io.InputStreamReader
 
 /**
  * Author:ColinLu
@@ -12,6 +14,10 @@ import java.io.IOException
  * Des   :IOUtil
  */
 object IOUtil {
+
+    fun read(read: InputStreamReader): String {
+        return BufferedReader(read).use { it.readLines().joinToString(LINE_SEP) }
+    }
 
     /**
      * 关闭数据流

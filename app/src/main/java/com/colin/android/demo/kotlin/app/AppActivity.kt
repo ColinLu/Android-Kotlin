@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.viewbinding.ViewBinding
 import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.helper.ActivityHelper
 import com.colin.library.android.widget.base.BaseActivity
 import java.lang.reflect.ParameterizedType
 
@@ -20,6 +21,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = reflectViewBinding()
         setContentView(viewBinding.root, savedInstanceState)
+        ActivityHelper.push(this)
     }
 
     override fun loadData(refresh: Boolean) {

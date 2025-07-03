@@ -44,12 +44,15 @@
     </string-array>
     <string-array name="method_list">
         <item>@string/method_log</item>
+        <item>@string/method_path</item>
         <item>@string/method_permission</item>
         <item>@string/method_http</item>
         <item>@string/method_contact</item>
-        <item>@string/method_path</item>
+        <item>@string/method_crash</item>
+        <item>@string/method_command</item>
+    </string-array>
+    <string-array name="view_list">
         <item>@string/title_web</item>
-        <item>Crash</item>
     </string-array>
     <string-array name="path_list">
         <item>can write</item>
@@ -163,4 +166,16 @@
         <item>PL/SQL语言</item>
         <item>C++语言</item>
     </string-array>
+
+    <string-array name="command_list">
+        <item>getprop ro.build.version.emui</item>
+        <item>getprop ro.miui.ui.version.name</item>
+        <item>getprop ro.vivo.os.version</item>
+        <item>getprop ro.build.version.opporom</item>
+        <item>getprop ro.rom.version</item>
+        <item>getprop ro.letv.release.version</item>
+        <item>getprop ro.build.uiversion</item>
+        <item>getprop ro.smartisan.version</item>
+    </string-array>
+
 </resources>

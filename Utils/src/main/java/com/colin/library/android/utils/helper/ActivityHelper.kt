@@ -3,6 +3,8 @@ package com.colin.library.android.utils.helper
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.os.Process
+import kotlin.system.exitProcess
 
 /**
  * Activity管理类
@@ -23,20 +25,17 @@ object ActivityHelper {
         return tasks.last()
     }
 
-    fun finishAllActivity(callback: (() -> Unit)? = null) {
-        val it = tasks.iterator()
-        while (it.hasNext()) {
-            val item = it.next()
-            it.remove()
-            item.finish()
+    /*获取指定的Activity*/
+    fun getActivity(clazz: Class<out Activity>): Activity? {
+        if (tasks.isEmpty()) return null
+        for (activity in tasks) {
+            if (activity.javaClass == clazz) return activity
         }
-        callback?.invoke()
+        return null
     }
 
-    /**
-     * 关闭其他activity
-     */
-    fun finishOtherActivity(clazz: Class<out Activity>, callback: (() -> Unit)? = null) {
+    fun finish(clazz: Class<out Activity>) {
+        if (tasks.isEmpty()) return
         val it = tasks.iterator()
         while (it.hasNext()) {
             val item = it.next()
@@ -45,63 +44,37 @@ object ActivityHelper {
                 item.finish()
             }
         }
-        callback?.invoke()
     }
 
-
-    /**
-     * 关闭activity
-     */
-    fun finishActivity(clazz: Class<out Activity>) {
+    fun finishAll() {
         val it = tasks.iterator()
         while (it.hasNext()) {
             val item = it.next()
-            if (item::class.java == clazz) {
-                it.remove()
-                item.finish()
-                break
-            }
+            it.remove()
+            item.finish()
         }
     }
 
-    /**
-     * activity是否在栈中
-     */
-    fun isActivityExists(clazz: Class<out Activity>?): Boolean {
-        if (clazz != null) {
-            for (task in tasks) {
-                if (task::class.java == clazz) return true
-            }
+    fun exitApp() {
+        try {
+            //关闭所有Activity
+            finishAll()
+            // 杀死该应用进程
+            Process.killProcess(Process.myPid())
+            //Java方式退出
+            exitProcess(0)
+        } catch (e: Throwable) {
+            e.printStackTrace()
         }
-        return false
     }
 
-    /**
-     * Activity是否销毁
-     * @param activity
-     */
-    fun isActivityDestroy(activity: Activity): Boolean {
-        return activity.isDestroyed || activity.isFinishing
-    }
 
-    fun isActivityDestroy(context: Context): Boolean {
-        val activity = findActivity(context)
-        return if (activity != null) {
-            activity.isDestroyed || activity.isFinishing
-        } else true
-    }
-
-    /**
-     * ContextWrapper是context的包装类，AppcompatActivity，service，application实际上都是ContextWrapper的子类
-     * AppcompatXXX类的context都会被包装成TintContextWrapper
-     * @param context
-     */
-    private fun findActivity(context: Context): Activity? {
-        if (context is Activity) {
-            return context
-        } else if (context is ContextWrapper) {
-            return findActivity(context.baseContext)
-        }
+    /*通过上下文获取当前绑定的Activity界面*/
+    fun getActivity(context: Context?): Activity? {
+        context ?: return null
+        if (context is Activity) return context
+        else if (context is ContextWrapper) getActivity(context.baseContext)
         return null
     }
+
 }

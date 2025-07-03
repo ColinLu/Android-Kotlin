@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.colin.android.demo.kotlin.R
-import com.colin.android.demo.kotlin.app.AppViewModel
+import com.colin.android.demo.kotlin.ui.MainViewModel
 import com.colin.library.android.utils.SpUtil
 import com.colin.library.android.utils.helper.UtilHelper
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
  *
  * Des   :WebViewModel
  */
-class WebViewModel : AppViewModel() {
+class WebViewModel : MainViewModel() {
     private val _history = MutableLiveData<List<String>>()
     var history: LiveData<List<String>> = _history
 

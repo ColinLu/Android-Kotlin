@@ -9,4 +9,9 @@
     <declare-styleable name="X5WebViewDefault">
         <attr name="javascriptEnabled" />
     </declare-styleable>
+
+    <declare-styleable name="WebViewProgress">
+        <attr name="isX5" format="boolean|reference" />
+        <attr name="javascriptEnabled" />
+    </declare-styleable>
 </resources>

@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.ListPopupWindow
+import androidx.appcompat.widget.SearchView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -35,20 +36,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.update(true)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.update(false)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-    }
-
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         setSupportActionBar(viewBinding.appBarMain.toolbar)
@@ -64,7 +51,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.fragment_home,
-                R.id.fragment_gallery,
+                R.id.fragment_view,
                 R.id.fragment_method,
                 R.id.fragment_slideshow
             ), drawerLayout
@@ -75,19 +62,20 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewModel.status.observe {
+        viewModel.search.observe {
             Log.i(TAG, "status:$it")
+            setMenuVisible(R.id.action_search, it)
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
+        setMenuVisible(menu, R.id.action_search, viewModel.search.value == true)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
-
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -102,7 +90,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         setMenuVisible(viewBinding.appBarMain.toolbar.menu, res, visible)
     }
 
-    fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
+    private fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
         val menuItem = menu?.findItem(res) ?: return
         menuItem.isVisible = visible
     }
@@ -138,4 +126,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         viewBinding.appBarMain.toolbar.title = title
     }
 
+    fun getMenu(): Menu? = viewBinding.appBarMain.toolbar.menu
+
+    fun getSearchView() = getMenu()?.findItem(R.id.action_search) as? SearchView
 }

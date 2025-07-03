@@ -1,10 +1,8 @@
 package com.colin.android.demo.kotlin.ui.web
 
 import android.os.Bundle
-import android.view.ContextMenu
-import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelStore
 import androidx.recyclerview.widget.DefaultItemAnimator
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.adapter.StringAdapter
@@ -22,34 +20,33 @@ import com.colin.library.android.utils.Log
  * Des   :WebIndexFragment
  */
 class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
-    private lateinit var stringAdapter: StringAdapter
+    private lateinit var adapter: StringAdapter
+
+    override fun bindViewModelStore(): ViewModelStore {
+        return requireActivity().viewModelStore
+    }
+
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        if (::stringAdapter.isInitialized.not()) stringAdapter = StringAdapter()
+        if (::adapter.isInitialized.not()) adapter = StringAdapter()
         viewBinding.list.apply {
             setHasFixedSize(true)
-            adapter = stringAdapter
+            adapter = this@WebIndexFragment.adapter
             itemAnimator = DefaultItemAnimator()
         }
 
-        stringAdapter.onItemClickListener = { view, item, position ->
+        adapter.onItemClickListener = { view, item, position ->
             toWebView(item, false)
         }
+
+        initSearch((requireActivity() as? MainActivity)?.getSearchView())
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewModel.history.observe {
-            Log.i("history:$it")
-            stringAdapter.submitList(it)
-            viewBinding.refresh.isRefreshing = false
+            adapter.submitList(it)
         }
     }
 
-
-    override fun onCreateContextMenu(
-        menu: ContextMenu, v: View, menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
-    }
 
     override fun loadData(refresh: Boolean) {
         viewModel.loadData(refresh)
@@ -57,12 +54,13 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
 
     override fun onResume() {
         super.onResume()
-        (requireActivity() as MainActivity).setMenuVisible(R.id.action_search, true)
+        viewModel.updateSearch(true)
     }
 
     override fun onPause() {
         super.onPause()
-        (requireActivity() as MainActivity).setMenuVisible(R.id.action_search, false)
+        (requireActivity() as? MainActivity)?.getSearchView()?.onActionViewCollapsed()
+        viewModel.updateSearch(false)
     }
 
     /**
@@ -70,9 +68,8 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
      *
      * @param searchItem
      */
-    private fun initSearch(searchItem: MenuItem?) {
-        val searchView = searchItem?.actionView as? SearchView ?: return
-        searchView.apply {
+    private fun initSearch(search: SearchView?) {
+        search?.apply {
             queryHint = getString(R.string.query_web_hint_link)
             isSubmitButtonEnabled = true
             setOnQueryTextListener(searchListener)
@@ -81,8 +78,8 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
 
     private val searchListener = object : SearchView.OnQueryTextListener {
         override fun onQueryTextSubmit(key: String): Boolean {
-            Log.i(key)
             toWebView(key, true)
+            (requireActivity() as? MainActivity)?.getSearchView()?.onActionViewCollapsed()
             return true
         }
 

@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/title_home" />
         <item
-            android:id="@+id/fragment_gallery"
+            android:id="@+id/fragment_view"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/title_gallery" />
+            android:title="@string/title_view" />
         <item
             android:id="@+id/fragment_method"
             android:icon="@drawable/ic_menu_slideshow"

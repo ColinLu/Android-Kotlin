@@ -11,6 +11,7 @@ import com.colin.library.android.utils.helper.CrashHelper
 import com.colin.library.android.utils.helper.UtilHelper
 import com.colin.library.android.web.WebUtil
 import com.tencent.smtt.sdk.QbSdk.PreInitCallback
+import com.tencent.smtt.sdk.TbsListener
 
 /**
  * Author:ColinLu
@@ -31,7 +32,20 @@ class App : Application(), CrashHelper.OnCrashListener {
         instance = this
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
         CrashHelper.init(this)
-        WebUtil.init(this, object : PreInitCallback {
+        WebUtil.init(this, object : TbsListener {
+            override fun onDownloadFinish(state: Int) {
+                Log.e("onDownloadFinish:$state")
+            }
+
+            override fun onInstallFinish(state: Int) {
+                Log.e("onInstallFinish:$state")
+            }
+
+            override fun onDownloadProgress(progress: Int) {
+                Log.e("onDownloadFinish:$progress")
+            }
+
+        }, object : PreInitCallback {
             override fun onCoreInitFinished() {
                 Log.e("onCoreInitFinished")
             }

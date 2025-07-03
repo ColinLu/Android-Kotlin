@@ -1,16 +1,16 @@
 package com.colin.android.demo.kotlin.ui.method
 
 import android.os.Bundle
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.lifecycle.repeatOnLifecycle
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widget.recycler.SpaceItemDecoration
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  *
  * Des   :Log日志打印
  */
-class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
+class LogFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
 
     val JSON: String =
         "{\n" + "  \"sites\": {\n" + "    \"site\": [\n" + "      {\n" + "        \"id\": \"1\",\n" + "        \"name\": \"菜鸟教程\",\n" + "        \"url\": \"www.runoob.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"2\",\n" + "        \"name\": \"菜鸟工具\",\n" + "        \"url\": \"www.jyshare.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"3\",\n" + "        \"name\": \"Google\",\n" + "        \"url\": \"www.google.com\"\n" + "      }\n" + "    ]\n" + "  }\n" + "}"
@@ -31,13 +31,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
     val adapter by lazy { StringAdapter() }
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
-            refresh.setColorSchemeResources(
-                R.color.purple_200, R.color.purple_500, R.color.purple_700
-            )
-            refresh.setOnRefreshListener { loadData(true) }
-
             list.apply {
-                this.layoutManager = LinearLayoutManager(requireActivity())
                 this.adapter = this@LogFragment.adapter
                 this.addItemDecoration(SpaceItemDecoration(space = 5))
             }
@@ -68,17 +62,17 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
-            viewModel.list.flowWithLifecycle(lifecycle).collect {
-                Log.i("LogFragment", it)
-                it.apply { adapter.submitList(it) }
-                viewBinding.refresh.isRefreshing = false
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.list.flowWithLifecycle(lifecycle).collect {
+                    Log.i("LogFragment", it)
+                    it.apply { adapter.submitList(it) }
+                    viewBinding.refresh.isRefreshing = false
+                }
             }
         }
     }
 
     override fun loadData(refresh: Boolean) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadData()
-        }
+        viewModel.loadData(R.array.log_list)
     }
 }

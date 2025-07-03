@@ -1,11 +1,8 @@
 package com.colin.android.demo.kotlin.ui.list
 
-import android.Manifest
 import android.os.Bundle
 import android.os.Environment
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.ArrayRes
-import androidx.annotation.RequiresPermission
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colin.android.demo.kotlin.R
@@ -14,7 +11,6 @@ import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
 import com.colin.android.demo.kotlin.dialog.DialogTips
 import com.colin.library.android.utils.INVALID
-import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.PathUtil
 import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.widget.recycler.SpaceItemDecoration
@@ -30,13 +26,6 @@ import java.io.File
 class ListFragment : AppFragment<LayoutRefreshListBinding, ListViewModel>() {
     private lateinit var adapter: ItemAdapter
     private var id: Int = INVALID
-
-    @RequiresPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
-    val launcher =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { result ->
-            Log.d("requestPermission granted:${result}")
-//            if (result) dialog(title, PathUtil.getExternalFile(type))
-        }
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {

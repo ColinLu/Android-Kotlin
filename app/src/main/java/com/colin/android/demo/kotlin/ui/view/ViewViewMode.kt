@@ -1,4 +1,4 @@
-package com.colin.android.demo.kotlin.ui.method
+package com.colin.android.demo.kotlin.ui.view
 
 import androidx.annotation.ArrayRes
 import androidx.lifecycle.viewModelScope
@@ -11,13 +11,20 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-class MethodViewModel : MainViewModel() {
+/**
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Create:2025-07-03 16:44
+ *
+ * Des   :ViewViewMode
+ */
+class ViewViewMode : MainViewModel() {
 
     private var _list = MutableSharedFlow<List<String>>()
 
     val list = _list.asSharedFlow()
 
-    fun loadData(@ArrayRes id: Int = R.array.method_list) {
+    fun loadData(@ArrayRes id: Int = R.array.view_list) {
         viewModelScope.launch(Dispatchers.IO) {
             loading(true)
             delay(3000)

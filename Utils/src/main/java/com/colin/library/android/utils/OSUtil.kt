@@ -1,10 +1,6 @@
 package com.colin.library.android.utils
 
 import android.os.Build
-import android.text.TextUtils
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStreamReader
 import java.util.Locale
 
 /**
@@ -16,46 +12,28 @@ import java.util.Locale
  */
 object OSUtil {
 
-    const val ROM_MIUI: String = "MIUI"
     const val ROM_EMUI: String = "EMUI"
+    const val ROM_MIUI: String = "MIUI"
     const val ROM_FLYME: String = "FLYME"
-    const val ROM_OPPO: String = "OPPO"
-    const val ROM_SMARTISAN: String = "SMARTISAN"
     const val ROM_VIVO: String = "VIVO"
+    const val ROM_OPPO: String = "OPPO"
+    const val ROM_ONEPLUS: String = "ONEPLUS"
+    const val ROM_LETV: String = "LETV"
+    const val ROM_360: String = "360"
     const val ROM_QIKU: String = "QIKU"
-    const val KEY_VERSION_MIUI: String = "ro.miui.ui.version.name"
-    const val KEY_VERSION_EMUI: String = "ro.build.version.emui"
-    const val KEY_VERSION_OPPO: String = "ro.build.version.opporom"
-    const val KEY_VERSION_SMARTISAN: String = "ro.smartisan.version"
-    const val KEY_VERSION_VIVO: String = "ro.vivo.os.version"
+    const val ROM_SMARTISAN: String = "SMARTISAN"
 
-    var sName: String? = null
-    var sVersion: String? = null
+    private const val KEY_VERSION_EMUI: String = "ro.build.version.emui" //华为
+    private const val KEY_VERSION_MIUI: String = "ro.miui.ui.version.name" //华为
+    private const val KEY_VERSION_VIVO: String = "ro.vivo.os.version" //vivo
+    private const val KEY_VERSION_OPPO: String = "ro.build.version.opporom" //OPPO
+    private const val KEY_VERSION_ONEPLUS: String = "ro.rom.version" //1加
+    private const val KEY_VERSION_LETV: String = "ro.letv.release.version" //乐视
+    private const val KEY_VERSION_360: String = "ro.build.uiversion" //360
+    private const val KEY_VERSION_SMARTISAN: String = "ro.smartisan.version" //锤子
 
-    fun isEmui() = check(ROM_EMUI)
-
-
-    fun isMiui() = check(ROM_MIUI)
-
-
-    fun isVivo() = check(ROM_VIVO)
-
-
-    fun isOppo() = check(ROM_OPPO)
-
-
-    fun isFlyme() = check(ROM_FLYME)
-
-
-    fun is360() = check(ROM_QIKU) || check("360")
-
-
-    fun isSmartisan() = check(ROM_SMARTISAN)
-
-
-    fun getOSName() = Build.BRAND.uppercase(Locale.getDefault())
-
-
+    private var sName: String? = null
+    private var sVersion: String? = null
     fun getName(): String? {
         if (null == sName) check("")
         return sName
@@ -66,42 +44,69 @@ object OSUtil {
         return sVersion
     }
 
-    fun check(rom: String?): Boolean {
-        if (sName != null) return sName == rom
-        if (!TextUtils.isEmpty(getProp(KEY_VERSION_MIUI).also { sVersion = it })) sName = ROM_MIUI
-        else if (!TextUtils.isEmpty(getProp(KEY_VERSION_EMUI).also { sVersion = it })) sName =
-            ROM_EMUI
-        else if (!TextUtils.isEmpty(getProp(KEY_VERSION_OPPO).also { sVersion = it })) sName =
-            ROM_OPPO
-        else if (!TextUtils.isEmpty(getProp(KEY_VERSION_VIVO).also { sVersion = it })) sName =
-            ROM_VIVO
-        else if (!TextUtils.isEmpty(getProp(KEY_VERSION_SMARTISAN).also { sVersion = it })) sName =
-            ROM_SMARTISAN
-        else {
+    fun isEmui() = check(ROM_EMUI)
+
+
+    fun isMiui() = check(ROM_MIUI)
+
+
+    fun isFlyme() = check(ROM_FLYME)
+
+
+    fun isVIVO() = check(ROM_VIVO)
+
+
+    fun isOPPO() = check(ROM_OPPO)
+
+
+    fun isOnePlus() = check(ROM_ONEPLUS)
+
+
+    fun is360() = check(ROM_QIKU) || check(ROM_360)
+
+
+    fun isSmartisan() = check(ROM_SMARTISAN)
+
+
+    fun getOSName() = Build.BRAND.uppercase(Locale.getDefault())
+
+
+    private fun check(rom: String): Boolean {
+        sName?.let {
+            return it.equals(rom, ignoreCase = true)
+        } ?: getProp(KEY_VERSION_EMUI)?.let {
+            sName = ROM_EMUI
+            sVersion = it
+        } ?: getProp(KEY_VERSION_MIUI)?.let {
+            sName = ROM_MIUI
+            sVersion = it
+        } ?: getProp(KEY_VERSION_OPPO)?.let {
+            sName = ROM_OPPO
+            sVersion = it
+        } ?: getProp(KEY_VERSION_VIVO)?.let {
+            sName = ROM_VIVO
+            sVersion = it
+        } ?: getProp(KEY_VERSION_ONEPLUS)?.let {
+            sName = ROM_ONEPLUS
+            sVersion = it
+        } ?: getProp(KEY_VERSION_LETV)?.let {
+            sName = ROM_LETV
+            sVersion = it
+        } ?: getProp(KEY_VERSION_SMARTISAN)?.let {
+            sName = ROM_SMARTISAN
+            sVersion = it
+        } ?: {
             sVersion = Build.DISPLAY
-            if (sVersion!!.uppercase(Locale.getDefault()).contains(ROM_FLYME)) sName = ROM_FLYME
+            if (Build.DISPLAY.contains(ROM_FLYME)) sName = ROM_FLYME
+            else if (Build.DISPLAY.contains(ROM_QIKU)) sName = ROM_QIKU
+            else if (Build.DISPLAY.contains(ROM_360)) sName = ROM_360
             else {
-                sVersion = Build.UNKNOWN
-                sName = Build.MANUFACTURER.uppercase(Locale.getDefault())
+                sVersion = Build.DISPLAY
+                sName = Build.MANUFACTURER.uppercase()
             }
         }
-        return sName == rom
+        return sName.equals(rom, ignoreCase = true)
     }
 
-    @Synchronized
-    fun getProp(name: String): String? {
-        var line: String? = null
-        var input: BufferedReader? = null
-        try {
-            val p = Runtime.getRuntime().exec("getprop " + name)
-            input = BufferedReader(InputStreamReader(p.inputStream), 1024)
-            line = input.readLine()
-            input.close()
-        } catch (ex: IOException) {
-            return null
-        } finally {
-            IOUtil.close(input)
-        }
-        return line
-    }
+    fun getProp(name: String) = CommandUtil.execCmd("getprop $name", 1024)
 }
