@@ -34,7 +34,7 @@ class WebViewModel : MainViewModel() {
                 .toMutableSet()
             val local = SpUtil.getString(HISTORY_KEY)?.split(",")
                 ?.filter { it.isEmpty().not() && !urls.contains(it) }
-            if (local.isNullOrEmpty().not()) urls.addAll(local)
+            local?.let { urls.addAll(it) }
             _history.postValue(urls.toList())
             loading(false)
         }

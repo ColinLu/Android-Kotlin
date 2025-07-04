@@ -1,13 +1,13 @@
 package com.colin.android.demo.kotlin.ui.dialog
 
 import android.content.Context
-import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup.LayoutParams
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.colin.android.demo.kotlin.adapter.StringAdapter
+import com.colin.library.android.utils.ZERO
 import com.colin.library.android.widget.base.BasePopupWindow
 
 /**
@@ -34,7 +34,7 @@ class ListPopupWindow(
         width: Int = LayoutParams.WRAP_CONTENT,
         height: Int = LayoutParams.WRAP_CONTENT
     ) : BasePopupWindow.Builder<Builder, ListPopupWindow>(context, width, height) {
-        private var layoutRes: Int = Resources.ID_NULL
+        private var layoutRes: Int = ZERO
         private var view: View? = null
         private var array: Array<String>? = null
 

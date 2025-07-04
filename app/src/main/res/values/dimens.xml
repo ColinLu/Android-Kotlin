@@ -9,9 +9,12 @@
     <dimen name="margin_default">8dp</dimen>
     <dimen name="button_height_normal">50dp</dimen>
 
-    <dimen name="text_size">20sp</dimen>
-    <dimen name="button_text_size">22sp</dimen>
+    <dimen name="text_size">@dimen/sp_20</dimen>
+    <dimen name="text_max_size">@dimen/sp_30</dimen>
+    <dimen name="text_min_size">@dimen/sp_12</dimen>
+    <dimen name="text_step_size">1sp</dimen>
+    <dimen name="button_text_size">@dimen/sp_22</dimen>
     <!--z轴高度-->
-    <dimen name="app_elevation_default">4dp</dimen>
-    <dimen name="app_radius_default">4dp</dimen>
+    <dimen name="app_elevation_default">@dimen/dp_4</dimen>
+    <dimen name="app_radius_default">@dimen/dp_4</dimen>
 </resources>

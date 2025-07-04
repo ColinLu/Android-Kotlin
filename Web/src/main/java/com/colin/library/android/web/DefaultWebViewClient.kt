@@ -30,17 +30,8 @@ class DefaultWebViewClient(private val callback: IWebViewCallback) : WebViewClie
      * @return true:表示当前url已经加载完成，即使url还会重定向都不会再进行加载
      *          false 表示此url默认由系统处理，该重定向还是重定向，直到加载完成
      */
-    override fun shouldOverrideUrlLoading(
-        view: WebView, request: WebResourceRequest?
-    ): Boolean {
-        return callback.intercept(request?.url?.toString()) || super.shouldOverrideUrlLoading(
-            view, request
-        )
-    }
-
-    @Deprecated("Deprecated in Java")
-    override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        return callback.intercept(url) || super.shouldOverrideUrlLoading(view, url)
+    override fun shouldOverrideUrlLoading(view: WebView, request: WebResourceRequest): Boolean {
+        return callback.intercept(request) || super.shouldOverrideUrlLoading(view, request)
     }
 
     // WebView发生改变时调用

@@ -5,6 +5,7 @@ import android.webkit.JsResult
 import android.webkit.PermissionRequest
 import android.webkit.ValueCallback
 import android.webkit.WebChromeClient.FileChooserParams
+import android.webkit.WebResourceRequest
 
 /**
  * Author:ColinLu
@@ -14,7 +15,7 @@ import android.webkit.WebChromeClient.FileChooserParams
  * Des   :WebViewCallback
  */
 interface IWebViewCallback {
-    fun intercept(url: String?) = false
+    fun intercept(request: WebResourceRequest) = false
 
     fun start(url: String?) {}
 

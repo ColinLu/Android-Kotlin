@@ -1,6 +1,5 @@
 package com.colin.library.android.widget.base
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
@@ -10,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup.LayoutParams
 import android.widget.PopupWindow
 import androidx.core.graphics.drawable.toDrawable
+import com.colin.library.android.widget.R
 
 /**
  * Author:ColinLu
@@ -37,7 +37,9 @@ abstract class BasePopupWindow(
         val width: Int = LayoutParams.WRAP_CONTENT,
         val height: Int = LayoutParams.WRAP_CONTENT
     ) {
-        constructor(context: Context) : this(context, 0, 0)
+        constructor(context: Context) : this(
+            context, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
+        )
 
         //设置背景为透明，以解决点击外部区域无法关闭的问题。
         @SuppressLint("UseKtx")
@@ -47,7 +49,7 @@ abstract class BasePopupWindow(
         var outsideTouchable: Boolean = true
         var clippingEnable: Boolean = true
         var focusable: Boolean = true
-        var animStyle = R.style.Animation_Toast
+        var animStyle = R.style.Base_Dialog
         var dismissListener: OnDismissListener? = null
 
         /**

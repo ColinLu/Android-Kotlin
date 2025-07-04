@@ -35,7 +35,7 @@ class ViewFragment : AppFragment<LayoutRefreshListBinding, ViewViewMode>() {
             }
             adapter.onItemClickListener = { _, item, _ ->
                 when (item) {
-                    getString(R.string.title_web) -> {
+                    getString(R.string.view_web) -> {
                         toNavigate(this@ViewFragment, R.id.action_webIndex)
                     }
 

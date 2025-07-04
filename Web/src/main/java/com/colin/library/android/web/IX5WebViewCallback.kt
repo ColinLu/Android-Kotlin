@@ -3,6 +3,7 @@ package com.colin.library.android.web
 import android.net.Uri
 import com.tencent.smtt.export.external.interfaces.JsResult
 import com.tencent.smtt.export.external.interfaces.PermissionRequest
+import com.tencent.smtt.export.external.interfaces.WebResourceRequest
 import com.tencent.smtt.sdk.ValueCallback
 import com.tencent.smtt.sdk.WebChromeClient.FileChooserParams
 
@@ -14,7 +15,7 @@ import com.tencent.smtt.sdk.WebChromeClient.FileChooserParams
  * Des   :WebViewCallback
  */
 interface IX5WebViewCallback {
-    fun intercept(url: String?) = false
+    fun intercept(request: WebResourceRequest) = false
 
     fun start(url: String?) {}
 

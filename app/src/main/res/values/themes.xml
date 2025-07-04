@@ -11,11 +11,34 @@
 
     <style name="Theme.AndroidKotlin.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
-    <style name="Theme.AndroidKotlin.Button" parent="Widget.MaterialComponents.Button">
+    <style name="Theme.AndroidKotlin.Text" parent="Widget.MaterialComponents.TextView">
+        <item name="android:layout_width">@dimen/dp_0</item>
+        <item name="android:layout_height">@dimen/dp_0</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textAppearance">@style/Text</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">@dimen/text_min_size</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_max_size</item>
+        <item name="autoSizeStepGranularity">@dimen/text_step_size</item>
+        <item name="android:layoutDirection">ltr</item>
+        <item name="android:textDirection">ltr</item>
+    </style>
+
+    <style name="Theme.AndroidKotlin.Text.Item" parent="Theme.AndroidKotlin.Text">
         <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:gravity">start|center_vertical</item>
+        <item name="android:background">?android:selectableItemBackground</item>
+        <item name="android:paddingHorizontal">@dimen/margin_default</item>
+    </style>
+
+    <style name="Theme.AndroidKotlin.Button" parent="Widget.MaterialComponents.Button">
+        <item name="android:layout_width">@dimen/dp_0</item>
         <item name="android:layout_height">@dimen/button_height_normal</item>
         <item name="android:textAppearance">@style/Text.Button</item>
         <item name="android:background">@drawable/bg_button</item>
+        <item name="android:layoutDirection">ltr</item>
+        <item name="android:textDirection">ltr</item>
     </style>
 
     <!--默认文本框样式-->

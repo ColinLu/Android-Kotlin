@@ -31,13 +31,9 @@ class DefaultX5WebViewClient(private val callback: IX5WebViewCallback) : WebView
      *          false 表示此url默认由系统处理，该重定向还是重定向，直到加载完成
      */
     override fun shouldOverrideUrlLoading(
-        view: WebView, request: WebResourceRequest?
+        view: WebView, request: WebResourceRequest
     ): Boolean {
-        return callback.intercept(request?.url?.toString()) || super.shouldOverrideUrlLoading(view, request)
-    }
-
-    override fun shouldOverrideUrlLoading(view: WebView, url: String?): Boolean {
-        return callback.intercept(url) || super.shouldOverrideUrlLoading(view, url)
+        return callback.intercept(request) || super.shouldOverrideUrlLoading(view, request)
     }
 
     // WebView发生改变时调用

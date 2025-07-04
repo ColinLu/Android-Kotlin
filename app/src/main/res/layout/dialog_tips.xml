@@ -5,7 +5,10 @@
     android:id="@+id/card_dialog_content"
     style="@style/Theme.AndroidKotlin.CardView"
     android:layout_height="match_parent"
-    app:cardCornerRadius="@dimen/margin_default_half">
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="@dimen/margin_default_half"
+    app:cardElevation="@dimen/dp_2"
+    app:cardMaxElevation="@dimen/dp_4">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,12 +29,9 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMsg"
-            android:layout_width="@dimen/dp_0"
-            android:layout_height="0dp"
-            android:gravity="center"
+            style="@style/Theme.AndroidKotlin.Text"
             android:minHeight="@dimen/dp_120"
             android:padding="@dimen/margin_default"
-            android:textAppearance="@style/Text"
             app:layout_constraintBottom_toTopOf="@+id/btSure"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

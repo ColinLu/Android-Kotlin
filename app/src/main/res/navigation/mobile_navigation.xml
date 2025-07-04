@@ -39,18 +39,18 @@
     <fragment
         android:id="@+id/fragment_log"
         android:name="com.colin.android.demo.kotlin.ui.method.LogFragment"
-        android:label="@string/title_log"
+        android:label="@string/method_log"
         tools:layout="@layout/layout_refresh_list" />
     <fragment
         android:id="@+id/fragment_webIndex"
         android:name="com.colin.android.demo.kotlin.ui.web.WebIndexFragment"
-        android:label="@string/title_web"
+        android:label="@string/view_web"
         tools:layout="@layout/layout_refresh_list" />
 
     <fragment
         android:id="@+id/fragment_web"
         android:name="com.colin.android.demo.kotlin.ui.web.WebViewFragment"
-        android:label="@string/title_web"
+        android:label="@string/view_web"
         tools:layout="@layout/fragment_web_view">
         <argument
             android:name="type"
@@ -58,7 +58,7 @@
             app:argType="integer" />
         <argument
             android:name="url"
-            android:defaultValue="www.baidu.com"
+            android:defaultValue=""
             app:argType="string" />
     </fragment>
     <fragment

@@ -1,13 +1,13 @@
 package com.colin.android.demo.kotlin.ui.web
 
 import android.content.Context
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import android.webkit.JsResult
-import android.webkit.PermissionRequest
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.widget.LinearLayoutCompat.LayoutParams
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.lifecycle.viewModelScope
 import com.colin.android.demo.kotlin.R
@@ -19,7 +19,6 @@ import com.colin.library.android.web.IWebViewCallback
 import com.colin.library.android.web.IX5WebViewCallback
 import com.colin.library.android.web.WebViewDefault
 import com.colin.library.android.web.X5WebViewDefault
-import com.tencent.smtt.sdk.WebView
 import kotlinx.coroutines.launch
 
 /**
@@ -54,9 +53,9 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
         }
     }
     private val webCallback = object : IWebViewCallback {
-        override fun intercept(url: String?): Boolean {
-            Log.i("intercept url:$url")
-            return loadUrl(url)
+        override fun intercept(request: android.webkit.WebResourceRequest): Boolean {
+            Log.i("intercept request:$request")
+            return loadUrl(request.url)
         }
 
         override fun start(url: String?) {
@@ -80,26 +79,26 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
         }
 
         override fun dialog(
-            url: String?, message: String?, value: String?, result: JsResult?
+            url: String?, message: String?, value: String?, result: android.webkit.JsResult?
         ): Boolean {
             Log.i("url:$url message:$message value:$value")
             return super.dialog(url, message, value, result)
         }
 
-        override fun permissionRequest(request: PermissionRequest): Boolean {
+        override fun permissionRequest(request: android.webkit.PermissionRequest): Boolean {
             Log.i("request:$request")
             return super.permissionRequest(request)
         }
 
-        override fun permissionCancel(request: PermissionRequest): Boolean {
+        override fun permissionCancel(request: android.webkit.PermissionRequest): Boolean {
             Log.i("request:$request")
             return super.permissionCancel(request)
         }
     }
     private val x5webCallback = object : IX5WebViewCallback {
-        override fun intercept(url: String?): Boolean {
-            Log.i("intercept url:$url")
-            return loadUrl(url)
+        override fun intercept(request: com.tencent.smtt.export.external.interfaces.WebResourceRequest): Boolean {
+            Log.i("intercept request:$request")
+            return loadUrl(request.url)
         }
 
         override fun start(url: String?) {
@@ -146,7 +145,7 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
     override fun goBack(): Boolean {
         val view =
             viewBinding.linear.findViewById<View?>(com.colin.library.android.web.R.id.web_view)
-        if (view is WebView && view.canGoBack()) {
+        if (view is com.tencent.smtt.sdk.WebView && view.canGoBack()) {
             view.goBack()
             return true
         }
@@ -170,13 +169,13 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         val url = bundle?.getString(EXTRAS_URL) ?: getString(R.string.query_web_hint_link)
-        loadUrl(url)
+        loadUrl(url.toUri())
     }
 
     override fun loadData(refresh: Boolean) {
         if (firstLoadFinish) {
             val view = getWebView()
-            if (view is WebView) view.reload()
+            if (view is com.tencent.smtt.sdk.WebView) view.reload()
             else if (view is android.webkit.WebView) view.reload()
         }
     }
@@ -199,10 +198,11 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
         }
     }
 
-    private fun loadUrl(url: String?): Boolean {
+    private fun loadUrl(url: Uri): Boolean {
+        Log.i("loadUrl:$url")
         val view = getWebView()
-        if (view is android.webkit.WebView) view.loadUrl(url ?: "")
-        else if (view is WebView) view.loadUrl(url ?: "")
+        if (view is android.webkit.WebView) view.loadUrl(url.toString())
+        else if (view is com.tencent.smtt.sdk.WebView) view.loadUrl(url.toString())
         return true
     }
 

@@ -42,7 +42,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
             }
             adapter.onItemClickListener = { _, item, _ ->
                 when (item) {
-                    getString(R.string.title_log) -> {
+                    getString(R.string.method_log) -> {
                         toNavigate(this@MethodFragment, R.id.action_to_log)
                     }
 
@@ -54,12 +54,16 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
                         launcher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
                     }
 
-                    getString(R.string.title_command) -> {
+                    getString(R.string.method_command) -> {
                         toNavigate(this@MethodFragment, R.id.action_command)
                     }
 
-                    getString(R.string.title_crash) -> {
+                    getString(R.string.method_crash) -> {
                         throw RuntimeException("test crash")
+                    }
+
+                    getString(R.string.method_contact) -> {
+                        ToastUtil.show(R.string.method_contact)
                     }
 
                     else -> {
