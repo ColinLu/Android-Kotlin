@@ -1,8 +1,10 @@
 package com.colin.android.demo.kotlin.ui.list
 
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Environment
 import androidx.annotation.ArrayRes
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.colin.android.demo.kotlin.R
@@ -13,7 +15,7 @@ import com.colin.android.demo.kotlin.dialog.DialogTips
 import com.colin.library.android.utils.INVALID
 import com.colin.library.android.utils.PathUtil
 import com.colin.library.android.utils.ToastUtil
-import com.colin.library.android.widget.recycler.SpaceItemDecoration
+import com.colin.library.android.widget.recycler.LinearItemDecoration
 import java.io.File
 
 /**
@@ -34,7 +36,7 @@ class ListFragment : AppFragment<LayoutRefreshListBinding, ListViewModel>() {
             }
             list.apply {
                 this.adapter = this@ListFragment.adapter
-                this.addItemDecoration(SpaceItemDecoration(space = 5))
+                this.addItemDecoration(LinearItemDecoration(space = 5, Color.GRAY.toDrawable()))
             }
         }
         adapter.onItemClickListener = { _, item, _ ->

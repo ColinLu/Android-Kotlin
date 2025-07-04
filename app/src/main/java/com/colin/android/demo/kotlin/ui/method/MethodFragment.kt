@@ -1,9 +1,11 @@
 package com.colin.android.demo.kotlin.ui.method
 
 import android.Manifest
+import android.graphics.Color
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresPermission
+import androidx.core.graphics.drawable.toDrawable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -16,7 +18,7 @@ import com.colin.android.demo.kotlin.toNavigate
 import com.colin.android.demo.kotlin.ui.list.ListFragment
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ToastUtil
-import com.colin.library.android.widget.recycler.SpaceItemDecoration
+import com.colin.library.android.widget.recycler.LinearItemDecoration
 import kotlinx.coroutines.launch
 
 
@@ -38,7 +40,7 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
         viewBinding.apply {
             list.apply {
                 this.adapter = this@MethodFragment.adapter
-                this.addItemDecoration(SpaceItemDecoration(space = 5))
+                this.addItemDecoration(LinearItemDecoration(space = 5, Color.BLUE.toDrawable()))
             }
             adapter.onItemClickListener = { _, item, _ ->
                 when (item) {
