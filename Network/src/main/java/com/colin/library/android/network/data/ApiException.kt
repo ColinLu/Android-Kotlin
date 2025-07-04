@@ -1,5 +1,7 @@
 package com.colin.library.android.network.data
 
+import java.io.IOException
+
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
@@ -7,7 +9,7 @@ package com.colin.library.android.network.data
  *
  * Des   :ApiException
  */
-open class ApiException : Exception {
+open class ApiException : IOException {
     var code: Int
     var msg: String
 

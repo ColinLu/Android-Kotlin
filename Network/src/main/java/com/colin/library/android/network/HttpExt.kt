@@ -2,8 +2,11 @@ package com.colin.library.android.network
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.colin.library.android.network.NetworkHelper.HTTP_NETWORK_ERROR
 import com.colin.library.android.network.data.ApiException
 import com.colin.library.android.network.data.AppResponse
+import com.colin.library.android.utils.Log
+import com.colin.library.android.utils.NetUtil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -81,6 +84,7 @@ fun <T> request(
             if (e is IOException && "Canceled" == e.message) return@launch
             NetworkHelper.handleFailure(state, e)
             loading.invoke(false)
+            return@launch
         }
     }
 }
@@ -91,9 +95,11 @@ fun <T> request(
  * @param request 网络请求体。
  * @param retry 最大重试次数。
  */
+@Throws(Exception::class)
 private suspend fun <T> requestResult(
     request: suspend () -> AppResponse<T>?, retry: Int = NetworkHelper.retry
 ): AppResponse<T> {
+    if (!NetUtil.isConnected()) throw ApiException(HTTP_NETWORK_ERROR, "network error")
     var result: AppResponse<T>? = null
     var exception: Exception? = null
     // 尝试执行请求，最多重试[retry]次
@@ -102,6 +108,8 @@ private suspend fun <T> requestResult(
             result = withContext(Dispatchers.IO) { withTimeout(10 * 1000) { request() } }
             break
         } catch (e: Exception) {
+            Log.log(e)
+            e.printStackTrace()
             exception = e
             // 仅在网络连接中断或"reset"错误时重试
             if (e is SocketException || e.message?.contains("reset") == true) delay(500L)
@@ -160,6 +168,7 @@ private suspend fun <T> requestResult(
         .onStart {//4.请求开始，展示加载框
             loading.invoke(true)
         }.catch { e ->//5.捕获异常
+            Log.log(e)
             e.printStackTrace()
             NetworkHelper.handleFailure(state, e)
         }.onCompletion { //6.请求完成，包括成功和失败
