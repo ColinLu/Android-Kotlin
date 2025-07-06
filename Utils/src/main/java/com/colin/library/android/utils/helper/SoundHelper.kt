@@ -1,10 +1,8 @@
-package com.colin.library.android.widget.wheel
+package com.colin.library.android.utils.helper
 
 import android.content.Context
 import android.media.SoundPool
 import androidx.annotation.RawRes
-import kotlin.math.max
-import kotlin.math.min
 
 /**
  * Author:ColinLu
@@ -15,13 +13,6 @@ import kotlin.math.min
  */
 class SoundHelper private constructor() {
 
-    private val soundPool: SoundPool = SoundPool.Builder().build()
-    private var soundId: Int = 0
-    /**
-     * 音频播放音量 range 0.0-1.0
-     */
-    var soundPlayVolume: Float = 0f
-        set(value) { field = min(1f, max(value, 0f)) }
 
     companion object {
         /**
@@ -34,6 +25,18 @@ class SoundHelper private constructor() {
             return SoundHelper()
         }
     }
+
+    private val soundPool: SoundPool = SoundPool.Builder().build()
+    private var soundId: Int = 0
+
+    /**
+     * 音频播放音量 range 0.0-1.0
+     */
+    var soundPlayVolume: Float = 0f
+        set(value) {
+            field = value.coerceIn(0f, 1f)
+        }
+
 
     /**
      * 加载音频资源
@@ -49,7 +52,9 @@ class SoundHelper private constructor() {
      * 播放声音效果
      */
     fun playSoundEffect() {
-        if (soundId != 0) { soundPool.play(soundId, soundPlayVolume, soundPlayVolume, 1, 0, 1f) }
+        if (soundId > 0) {
+            soundPool.play(soundId, soundPlayVolume, soundPlayVolume, 1, 0, 1f)
+        }
     }
 
     /**

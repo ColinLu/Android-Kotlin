@@ -22,7 +22,15 @@ import androidx.core.content.withStyledAttributes
 class DividerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
-    private lateinit var paint: Paint
+    private val paint by lazy {
+        Paint().apply {
+            this.isAntiAlias = true
+            this.style = this@DividerView.style
+            this.strokeWidth = this@DividerView.length
+            this.color = this@DividerView.color
+            this.setPathEffect(DashPathEffect(floatArrayOf(space, dash), 0F))
+        }
+    }
     var orientation = LinearLayout.HORIZONTAL
         set(value) {
             if (field != value) {
@@ -31,25 +39,30 @@ class DividerView @JvmOverloads constructor(
             }
         }
 
-
     @Px
-    private var length = 0F
+    var length = 0F
         set(value) {
             if (field == value) return
             field = value
-            if (::paint.isInitialized.not()) return
             paint.strokeWidth = value
             invalidate()
         }
 
 
     @ColorInt
-    private var color = Color.GRAY
+    var color = Color.GRAY
         set(value) {
             if (field == value) return
             field = value
-            if (::paint.isInitialized.not()) return
             paint.color = value
+            invalidate()
+        }
+
+    var style = Paint.Style.STROKE
+        set(value) {
+            if (field == value) return
+            field = value
+            paint.style = value
             invalidate()
         }
 
@@ -59,26 +72,24 @@ class DividerView @JvmOverloads constructor(
     @Px
     private var dash = 0F
 
+    fun setPath(space: Float, dash: Float, phase: Float) {
+        paint.setPathEffect(DashPathEffect(floatArrayOf(space, dash), phase))
+    }
+
     init {
+        setWillNotDraw(false)
         context.withStyledAttributes(attrs, R.styleable.DividerView, defStyleAttr, 0) {
             orientation = getInt(R.styleable.DividerView_android_orientation, orientation)
             space = getDimension(R.styleable.DividerView_space, space)
             length = getDimension(R.styleable.DividerView_length, length)
             dash = getDimension(R.styleable.DividerView_dash, dash)
             color = getColor(R.styleable.DividerView_color, color)
-        }
-        paint = Paint().apply {
-            this.isAntiAlias = true
-            this.style = Paint.Style.STROKE
-            this.strokeWidth = length
-            this.color = color
-            setPathEffect(DashPathEffect(floatArrayOf(space, dash), 0f))
+            style = getPaintStyle(getInt(R.styleable.DividerView_line, 0))
         }
     }
 
 
     override fun onDraw(canvas: Canvas) {
-        if (::paint.isInitialized.not()) return
         if (orientation == LinearLayout.HORIZONTAL) {
             val center = height * 0.5f
             canvas.drawLine(0f, center, width.toFloat(), center, paint)
@@ -86,6 +97,12 @@ class DividerView @JvmOverloads constructor(
             val center = width * 0.5f
             canvas.drawLine(center, 0f, center, height.toFloat(), paint)
         }
+    }
+
+    private fun getPaintStyle(style: Int): Paint.Style {
+        return if (style == 1) Paint.Style.STROKE
+        else if (style == 2) Paint.Style.FILL_AND_STROKE
+        else Paint.Style.FILL
     }
 
 }

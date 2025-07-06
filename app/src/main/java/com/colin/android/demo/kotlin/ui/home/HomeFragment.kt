@@ -35,13 +35,11 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
             header.setPageTransformer(ScaleInTransformer())
             header.pageChangeListener = object : OnPageChangeCallback() {
                 override fun onPageScrollStateChanged(state: Int) {
-                    Log.i("onPageScrollStateChanged-->>state:$state")
                 }
 
                 override fun onPageScrolled(
                     position: Int, positionOffset: Float, positionOffsetPixels: Int
                 ) {
-                    Log.i("onPageScrolled-->>position:$position positionOffset:$positionOffset")
                 }
 
                 override fun onPageSelected(position: Int) {

@@ -313,6 +313,11 @@
         <attr name="dash" format="dimension|reference" />
         <!-- 虚线dash间隔 -->
         <attr name="space" format="dimension|reference" />
-
+        <attr name="line" format="enum">
+            <enum name="fill" value="0" />
+            <enum name="stroke" value="1" />
+            <enum name="all" value="2" />
+        </attr>
     </declare-styleable>
+
 </resources>

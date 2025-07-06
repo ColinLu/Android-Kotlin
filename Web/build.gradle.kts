@@ -42,10 +42,10 @@ android {
 }
 
 dependencies {
+    compileOnly(project(":Utils"))
     compileOnly(libs.bundles.androidCommon)
     compileOnly(libs.tbssdk)
     compileOnly(libs.gson)
-    compileOnly(project(":Utils"))
 }
 
 publishing {

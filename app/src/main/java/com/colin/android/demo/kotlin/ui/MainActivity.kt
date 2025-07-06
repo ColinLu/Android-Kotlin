@@ -25,14 +25,23 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlin.system.exitProcess
 
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var appBarConfiguration: AppBarConfiguration
+    var last = 0L
     private val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            val back = onSupportNavigateUp()
-            Log.e("onSupportNavigateUp:$back")
-            isEnabled = back
+            if (onSupportNavigateUp()) return
+            Log.e("handleOnBackPressed:${onSupportNavigateUp()}")
+            if (last <= 0L || System.currentTimeMillis() - last < 2000) {
+                ToastUtil.show("退出")
+                return
+            }
+            last = System.currentTimeMillis()
+            finish()
+            exitProcess(0)
+            isEnabled = false
         }
     }
 
@@ -70,7 +79,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
-        setMenuVisible(menu, R.id.action_search, viewModel.search.value == true)
         return true
     }
 

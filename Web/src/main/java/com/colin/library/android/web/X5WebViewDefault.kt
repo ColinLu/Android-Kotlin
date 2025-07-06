@@ -112,7 +112,7 @@ class X5WebViewDefault @JvmOverloads constructor(
         doSend(null, data, callback)
     }
 
-    override fun callHandler(handlerName: String, data: String?, callBack: BridgeCallback?) {
+    override fun callHandler(handlerName: String?, data: String?, callBack: BridgeCallback?) {
         Log.i("javascriptEnabled:$javascriptEnabled handlerName:$handlerName data:$data")
         doSend(handlerName, data, callBack)
     }
@@ -142,7 +142,7 @@ class X5WebViewDefault @JvmOverloads constructor(
                         }
                         val callback = getCallBackFunction(message.callbackId, message.handlerName)
                         val handler = getBridgeHandler(message.handlerName)
-                        if (handler != null && message.handlerName.isNullOrEmpty().not()) {
+                        if (handler != null && !message.handlerName.isNullOrEmpty()) {
                             handler.handler(message.handlerName, message.data, callback)
                         }
                     }
@@ -219,14 +219,15 @@ class X5WebViewDefault @JvmOverloads constructor(
         return String.format(BridgeUtil.CALLBACK_ID_FORMAT, value)
     }
 
-    private fun getCallBackFunction(callbackId: String, handlerName: String?): BridgeCallback {
+    private fun getCallBackFunction(callbackId: String?, handlerName: String?): BridgeCallback {
         return object : BridgeCallback {
             override fun call(data: String?) {
-                if (callbackId.isNotEmpty()) {
+                if (!callbackId.isNullOrEmpty()) {
                     val message = BridgeMessage(
                         handlerName = handlerName,
                         callbackId = callbackId,
                         data = data,
+                        responseData = null,
                     )
                     queueMessage(message)
                 }
@@ -235,13 +236,13 @@ class X5WebViewDefault @JvmOverloads constructor(
     }
 
     private fun getBridgeHandler(handlerName: String?): BridgeHandler? {
-        return if (handlerName.isNullOrEmpty().not()) handlers[handlerName]
+        return if (!handlerName.isNullOrEmpty()) handlers[handlerName]
         else handler
     }
 
     /*list<message> != null 添加到消息集合否则分发消息*/
     private fun queueMessage(message: BridgeMessage) {
-        if (messages.isNullOrEmpty().not()) messages!!.add(message) else dispatchMessage(message)
+        if (!messages.isNullOrEmpty()) messages!!.add(message) else dispatchMessage(message)
     }
 
 }

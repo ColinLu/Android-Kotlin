@@ -143,8 +143,7 @@ class WebViewFragment : AppFragment<FragmentWebViewBinding, WebViewModel>() {
     }
 
     override fun goBack(): Boolean {
-        val view =
-            viewBinding.linear.findViewById<View?>(com.colin.library.android.web.R.id.web_view)
+        val view = viewBinding.linear.findViewById<View?>(com.colin.library.android.web.R.id.web_view)
         if (view is com.tencent.smtt.sdk.WebView && view.canGoBack()) {
             view.goBack()
             return true

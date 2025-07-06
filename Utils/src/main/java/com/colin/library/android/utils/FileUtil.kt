@@ -21,7 +21,7 @@ object FileUtil {
     fun isDir(path: String?) = isDir(getFile(path))
     fun isDir(dir: File?) = dir?.exists() == true && dir.isDirectory
 
-    fun getFile(path: String?) = if (path.isNullOrBlank().not()) File(path) else null
+    fun getFile(path: String?) = if (!path.isNullOrBlank()) File(path) else null
 
     /*创建文件*/
     fun createFile(file: File?, delete: Boolean = false): Boolean {

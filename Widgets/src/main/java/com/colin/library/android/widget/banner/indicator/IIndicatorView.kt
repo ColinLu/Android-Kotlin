@@ -114,7 +114,6 @@ abstract class IIndicatorView constructor(
     }
 
     override fun onPageScrollStateChanged(state: Int) {
-        Log.e("IndicatorView onPageScrollStateChanged->state:$state")
     }
 
     override fun getView() = this

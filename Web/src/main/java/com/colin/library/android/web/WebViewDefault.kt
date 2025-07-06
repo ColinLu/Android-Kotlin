@@ -110,7 +110,7 @@ class WebViewDefault @JvmOverloads constructor(
         doSend(null, data, callback)
     }
 
-    override fun callHandler(handlerName: String, data: String?, callBack: BridgeCallback?) {
+    override fun callHandler(handlerName: String?, data: String?, callBack: BridgeCallback?) {
         Log.i("javascriptEnabled:$javascriptEnabled handlerName:$handlerName data:$data")
         doSend(handlerName, data, callBack)
     }
@@ -217,16 +217,17 @@ class WebViewDefault @JvmOverloads constructor(
         return String.format(BridgeUtil.CALLBACK_ID_FORMAT, value)
     }
 
-    private fun getCallBackFunction(callbackId: String, handlerName: String?): BridgeCallback {
+    private fun getCallBackFunction(callbackId: String?, handlerName: String?): BridgeCallback {
         return object : BridgeCallback {
             override fun call(data: String?) {
-                if (callbackId.isNotEmpty()) {
-                    val message = BridgeMessage(
-                        handlerName = handlerName,
-                        callbackId = callbackId,
-                        data = data,
+                if (!callbackId.isNullOrEmpty()) {
+                    queueMessage(
+                        BridgeMessage(
+                            handlerName = handlerName,
+                            callbackId = callbackId,
+                            data = data
+                        )
                     )
-                    queueMessage(message)
                 }
             }
         }

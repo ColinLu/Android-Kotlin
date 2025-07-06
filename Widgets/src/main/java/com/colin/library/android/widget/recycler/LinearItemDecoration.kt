@@ -36,6 +36,7 @@ class LinearItemDecoration(
     override fun getItemOffsets(
         outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
     ) {
+        if (state.itemCount <= 0) return
         val manager = parent.layoutManager as? LinearLayoutManager ?: return
         if (manager.orientation == RecyclerView.HORIZONTAL) {
             outRect[0, 0, getSpaceSize(RecyclerView.HORIZONTAL)] = 0
@@ -45,6 +46,7 @@ class LinearItemDecoration(
     }
 
     override fun onDraw(canvas: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+        if (state.itemCount <= 0) return
         val manager = parent.layoutManager as? LinearLayoutManager ?: return
         if (manager.orientation == RecyclerView.HORIZONTAL) {
             drawHorizontal(canvas, parent, state)
@@ -89,9 +91,7 @@ class LinearItemDecoration(
             if (parent.clipToPadding) {
                 top = parent.paddingTop
                 bottom = parent.height - parent.paddingBottom
-                clipRect(
-                    parent.paddingLeft, top, parent.width - parent.paddingRight, bottom
-                )
+                clipRect(parent.paddingLeft, top, parent.width - parent.paddingRight, bottom)
             } else {
                 top = 0
                 bottom = parent.height
@@ -102,7 +102,7 @@ class LinearItemDecoration(
                 val child = parent.getChildAt(i)
                 val childPosition = parent.getChildAdapterPosition(child)
                 if (drawEdge || childPosition < last) {
-                    parent.layoutManager!!.getDecoratedBoundsWithMargins(child, bounds)
+                    parent.getDecoratedBoundsWithMargins(child, bounds)
                     val right = bounds.right + child.translationX.roundToInt()
                     val left = right - getSpaceSize(RecyclerView.HORIZONTAL)
                     drawable.setBounds(left, top, right, bottom)

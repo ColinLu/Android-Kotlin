@@ -34,27 +34,43 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
             itemAnimator = DefaultItemAnimator()
         }
 
-        adapter.onItemClickListener = { view, item, position ->
+        adapter.onItemClickListener = { _, item, _ ->
             toWebView(item, false)
         }
-
-        initSearch((requireActivity() as? MainActivity)?.getSearchView())
+        val search = (requireActivity() as? MainActivity)?.getMenu()
+            ?.findItem(R.id.action_search) as? SearchView
+        Log.e("${requireActivity().javaClass.simpleName}")
+        Log.e("${(requireActivity() as? MainActivity)?.getMenu()}")
+        Log.e("$search")
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewModel.history.observe {
-            adapter.submitList(it)
-        }
+        viewModel.history.observe { adapter.submitList(it) }
+        val search = (requireActivity() as? MainActivity)?.getMenu()
+            ?.findItem(R.id.action_search) as? SearchView
+        Log.e("${requireActivity().javaClass.simpleName}")
+        Log.e("${(requireActivity() as? MainActivity)?.getMenu()}")
+        Log.e("$search")
     }
 
 
     override fun loadData(refresh: Boolean) {
         viewModel.loadData(refresh)
+        val search = (requireActivity() as? MainActivity)?.getMenu()
+            ?.findItem(R.id.action_search) as? SearchView
+        Log.e("${requireActivity().javaClass.simpleName}")
+        Log.e("${(requireActivity() as? MainActivity)?.getMenu()}")
+        Log.e("$search")
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.updateSearch(true)
+        val search = (requireActivity() as? MainActivity)?.getMenu()
+            ?.findItem(R.id.action_search) as? SearchView
+        Log.e("${requireActivity().javaClass.simpleName}")
+        Log.e("${(requireActivity() as? MainActivity)?.getMenu()}")
+        Log.e("$search")
     }
 
     override fun onPause() {
@@ -69,6 +85,7 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
      * @param searchItem
      */
     private fun initSearch(search: SearchView?) {
+        Log.e("search:$search")
         search?.apply {
             queryHint = getString(R.string.query_web_hint_link)
             isSubmitButtonEnabled = true

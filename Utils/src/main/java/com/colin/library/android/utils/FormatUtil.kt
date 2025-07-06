@@ -18,7 +18,6 @@ import javax.xml.transform.stream.StreamSource
  */
 object FormatUtil {
     private const val INDENT_SPACES = 4
-    private val LINE_SEPARATOR = System.lineSeparator()
 
     /**
      * 格式化Json 字符串
@@ -44,7 +43,7 @@ object FormatUtil {
 
     @JvmStatic
     fun formatXml(xml: String?): String? {
-        if (xml == null) return null
+        if (xml.isNullOrEmpty()) return null
         try {
             val xmlInput = StreamSource(StringReader(xml))
             val xmlOutput = StreamResult(StringWriter())
@@ -52,7 +51,7 @@ object FormatUtil {
             transformer.setOutputProperty(OutputKeys.INDENT, "yes")
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4")
             transformer.transform(xmlInput, xmlOutput)
-            return xmlOutput.writer.toString().replaceFirst((">").toRegex(), ">$LINE_SEPARATOR")
+            return xmlOutput.writer.toString().replaceFirst((">").toRegex(), ">$LINE_SEP")
         } catch (e: Exception) {
             e.printStackTrace()
         }

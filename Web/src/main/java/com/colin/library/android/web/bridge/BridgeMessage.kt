@@ -12,21 +12,21 @@ import org.json.JSONObject
  * Des   :BridgeMessage
  */
 data class BridgeMessage(
-    val handlerName: String?,       //消息名称
-    val data: String?,              //消息内容
-    var callbackId: String = "",    //回调id
     var responseId: String = "",    //响应id
-    var responseData: String = ""   //响应内容
+    var callbackId: String? = null,        //回调id
+    val handlerName: String? = null,       //消息名称
+    val data: String? = null,              //消息内容
+    var responseData: String? = null       //响应内容
 ) {
 
     fun toJson(): String? {
         val jsonObject = JSONObject()
         try {
-            jsonObject.put(HANDLER_NAME_STR, handlerName)
-            jsonObject.put(CALLBACK_ID_STR, callbackId)
             jsonObject.put(RESPONSE_ID_STR, responseId)
-            jsonObject.put(RESPONSE_DATA_STR, responseData)
+            jsonObject.put(CALLBACK_ID_STR, callbackId)
+            jsonObject.put(HANDLER_NAME_STR, handlerName)
             jsonObject.put(DATA_STR, data)
+            jsonObject.put(RESPONSE_DATA_STR, responseData)
             return jsonObject.toString()
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -60,11 +60,11 @@ data class BridgeMessage(
         fun toObject(json: JSONObject): BridgeMessage? {
             try {
                 return BridgeMessage(
-                    handlerName = json.optString(HANDLER_NAME_STR, ""),
-                    callbackId = json.optString(CALLBACK_ID_STR, ""),
                     responseId = json.optString(RESPONSE_ID_STR, ""),
-                    responseData = json.optString(RESPONSE_DATA_STR, ""),
-                    data = json.optString(DATA_STR, "")
+                    callbackId = json.optString(CALLBACK_ID_STR, ""),
+                    handlerName = json.optString(HANDLER_NAME_STR, ""),
+                    data = json.optString(DATA_STR, ""),
+                    responseData = json.optString(RESPONSE_DATA_STR, "")
                 )
             } catch (e: JSONException) {
                 e.printStackTrace()

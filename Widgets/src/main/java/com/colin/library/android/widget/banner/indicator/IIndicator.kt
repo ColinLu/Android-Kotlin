@@ -56,6 +56,7 @@ interface IIndicator : ViewPager.OnPageChangeListener {
 
     @Px
     fun getIndicatorSpace(): Float = INDICATOR_SPACE
+
     fun setIndicatorSpace(@Px space: Float) {}
 
     @ColorInt
@@ -71,6 +72,7 @@ interface IIndicator : ViewPager.OnPageChangeListener {
     fun setOrientation(orientation: Int) {}
 
     fun getGravity(): Int = Gravity.CENTER
+
     fun setGravity(gravity: Int) {}
 
     fun showIndicator() = false

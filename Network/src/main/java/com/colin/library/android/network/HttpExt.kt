@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.colin.library.android.network.NetworkHelper.HTTP_NETWORK_ERROR
 import com.colin.library.android.network.data.ApiException
 import com.colin.library.android.network.data.AppResponse
-import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.NetUtil
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +40,8 @@ fun <T> ViewModel.request(
     result: (suspend (T?) -> Unit) = { },
     state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
     loading: (suspend (Boolean) -> Unit) = {},
-    retry: Int = NetworkHelper.retry,
-    delay: Long = NetworkHelper.delay
+    retry: Int = 0,
+    delay: Long = 0
 ) = request(viewModelScope, request, result, state, loading, retry, delay)
 
 /**
@@ -80,11 +79,10 @@ fun <T> request(
             // 如果协程被取消，则直接退出
             e.printStackTrace()
             if (e is CancellationException) return@launch
-            if (e is InterruptedIOException && "timeout" == e.message) return@launch
-            if (e is IOException && "Canceled" == e.message) return@launch
+            if (e is InterruptedIOException && "timeout".equals(e.message, true)) return@launch
+            if (e is IOException && "Canceled".equals(e.message, true)) return@launch
             NetworkHelper.handleFailure(state, e)
             loading.invoke(false)
-            return@launch
         }
     }
 }
@@ -97,7 +95,9 @@ fun <T> request(
  */
 @Throws(Exception::class)
 private suspend fun <T> requestResult(
-    request: suspend () -> AppResponse<T>?, retry: Int = NetworkHelper.retry
+    request: suspend () -> AppResponse<T>?,
+    retry: Int = NetworkHelper.retry,
+    delay: Long = NetworkHelper.delay
 ): AppResponse<T> {
     if (!NetUtil.isConnected()) throw ApiException(HTTP_NETWORK_ERROR, "network error")
     var result: AppResponse<T>? = null
@@ -108,11 +108,8 @@ private suspend fun <T> requestResult(
             result = withContext(Dispatchers.IO) { withTimeout(10 * 1000) { request() } }
             break
         } catch (e: Exception) {
-            Log.log(e)
-            e.printStackTrace()
-            exception = e
-            // 仅在网络连接中断或"reset"错误时重试
-            if (e is SocketException || e.message?.contains("reset") == true) delay(500L)
+            exception = e // 仅在网络连接中断或"reset"错误时重试
+            if (e is SocketException || e.message?.contains("reset", true) == true) delay(delay)
             else break
         }
     }
@@ -168,9 +165,8 @@ private suspend fun <T> requestResult(
         .onStart {//4.请求开始，展示加载框
             loading.invoke(true)
         }.catch { e ->//5.捕获异常
-            Log.log(e)
             e.printStackTrace()
-            NetworkHelper.handleFailure(state, e)
+            if (e is CancellationException) NetworkHelper.handleFailure(state, e)
         }.onCompletion { //6.请求完成，包括成功和失败
             loading.invoke(false)
         }

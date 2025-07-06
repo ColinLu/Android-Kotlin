@@ -3,8 +3,6 @@ package com.colin.library.android.network
 import android.net.ParseException
 import android.util.Log
 import com.colin.library.android.network.data.ApiException
-import com.colin.library.android.network.gson.IntegerTypeAdapter
-import com.colin.library.android.network.gson.StringTypeAdapter
 import com.colin.library.android.utils.NetUtil
 import com.colin.library.android.utils.helper.UtilHelper
 import com.google.gson.Gson
@@ -49,7 +47,7 @@ object NetworkHelper {
     const val HTTP_SSL_ERROR = 1004//"证书出错"
     const val HTTP_UNKONW_HOST = 1005//"未知Host"
 
-    private const val DELAY: Long = 0L
+    private const val DELAY: Long = 1000L
     private const val RETRY: Int = 3
     private const val TIMEOUT: Long = 10000L
 
@@ -69,8 +67,8 @@ object NetworkHelper {
     @Volatile
     var timeout: Long = TIMEOUT
 
-    var gson: Gson = GsonBuilder().setLenient().registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
-            .registerTypeAdapter(String::class.java, StringTypeAdapter()).create()
+    @Volatile
+    var gson: Gson = GsonBuilder().setLenient().create()
 
     /*懒加载构建，所以调用前，需要把 gson、baseUrl okhttpClient等构建完成*/
     val retrofit: Retrofit by lazy {

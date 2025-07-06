@@ -73,11 +73,8 @@ class NestedScrollTopWebView @JvmOverloads constructor(
             val bundle = state
             val scrollY: Int = bundle.getInt(INSTANCE_SCROLL_OFFSET, 0).dp()
             exec("javascript:scrollTo(0, $scrollY)")
-            super.onRestoreInstanceState(
-                BundleCompat.getParcelable<Parcelable>(
-                    bundle, INSTANCE_STATE, Parcelable::class.java
-                )
-            )
+            val state = BundleCompat.getParcelable(bundle, INSTANCE_STATE, Parcelable::class.java)
+            super.onRestoreInstanceState(state)
         } else super.onRestoreInstanceState(state)
     }
 

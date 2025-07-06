@@ -20,7 +20,7 @@ interface BridgeJavascriptWeb {
     /*发送信息 给js*/
     fun send(data: String?, callback: BridgeCallback?)
 
-    fun callHandler(handlerName: String, data: String?, callBack: BridgeCallback?)
+    fun callHandler(handlerName: String?, data: String?, callBack: BridgeCallback?)
 
     /*轮训 获取 js 返回内容*/
     fun handlerReturnData(url: String)

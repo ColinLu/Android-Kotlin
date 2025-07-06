@@ -10,7 +10,6 @@
     app:cardElevation="@dimen/dp_2"
     app:cardMaxElevation="@dimen/dp_4">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_dialog"
         android:layout_width="match_parent"
@@ -27,6 +26,17 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="@string/app_name" />
 
+        <com.colin.library.android.widget.DividerView
+            android:id="@+id/titleLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/line"
+            android:orientation="horizontal"
+            app:color="@color/color_FF0159A5"
+            app:dash="@dimen/dp_3"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            app:length="@dimen/dp_8"
+            app:space="@dimen/dp_5" />
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMsg"
             style="@style/Theme.AndroidKotlin.Text"
@@ -35,7 +45,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btSure"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle"
+            app:layout_constraintTop_toBottomOf="@+id/titleLine"
             tools:text="@string/app_name" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -45,8 +55,23 @@
             android:layout_height="@dimen/button_height"
             android:text="@string/sure"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btCancel"
+            app:layout_constraintEnd_toStartOf="@+id/buttonLine"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <com.colin.library.android.widget.DividerView
+            android:id="@+id/buttonLine"
+            android:layout_width="@dimen/line"
+            android:layout_height="@dimen/button_height"
+            android:orientation="vertical"
+            app:color="@color/blue_100"
+            app:dash="@dimen/dp_3"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btCancel"
+            app:layout_constraintStart_toEndOf="@+id/btSure"
+            app:layout_constraintTop_toTopOf="@+id/btSure"
+            app:length="@dimen/dp_8"
+            app:line="fill"
+            app:space="@dimen/dp_5" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btCancel"
@@ -56,7 +81,7 @@
             android:text="@string/cancel"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/btSure" />
+            app:layout_constraintStart_toEndOf="@+id/buttonLine" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

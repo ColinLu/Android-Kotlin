@@ -38,6 +38,7 @@ import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ZERO
 import com.colin.library.android.utils.ext.dp
 import com.colin.library.android.utils.ext.sp
+import com.colin.library.android.utils.helper.SoundHelper
 import com.colin.library.android.widget.R
 import com.colin.library.android.widget.wheel.WheelView.Companion.CURVED_ARC_DIRECTION_CENTER
 import com.colin.library.android.widget.wheel.WheelView.Companion.CURVED_ARC_DIRECTION_LEFT
@@ -839,8 +840,7 @@ open class WheelView @JvmOverloads constructor(
 
             textAlign =
                 convertTextAlign(getInt(R.styleable.WheelView_wheel_textAlign, TEXT_ALIGN_CENTER))
-            val textPadding =
-                getDimensionPixelSize(R.styleable.WheelView_wheel_textPadding, ZERO)
+            val textPadding = getDimensionPixelSize(R.styleable.WheelView_wheel_textPadding, ZERO)
             textPaddingLeft =
                 getDimensionPixelSize(R.styleable.WheelView_wheel_textPaddingLeft, textPadding)
             textPaddingRight =
@@ -885,10 +885,8 @@ open class WheelView @JvmOverloads constructor(
                 getInt(R.styleable.WheelView_wheel_visibleItems, DEFAULT_VISIBLE_ITEM)
             )
             val selectedPosition = getInt(R.styleable.WheelView_wheel_selected, 0)
-            val maxSelectedPosition =
-                getInt(R.styleable.WheelView_wheel_selectedMax, INVALID)
-            val minSelectedPosition =
-                getInt(R.styleable.WheelView_wheel_selectedMin, INVALID)
+            val maxSelectedPosition = getInt(R.styleable.WheelView_wheel_selectedMax, INVALID)
+            val minSelectedPosition = getInt(R.styleable.WheelView_wheel_selectedMin, INVALID)
             initSelectedPositionAndRange(selectedPosition, minSelectedPosition, maxSelectedPosition)
 
             isShowDivider = getBoolean(R.styleable.WheelView_wheel_showDivider, false)
@@ -2495,7 +2493,7 @@ open class WheelView @JvmOverloads constructor(
      * 设置字体大小
      */
     fun setTextSize(textSizeSp: Float) {
-        this.textSize = sp2px(textSizeSp)
+        this.textSize = textSizeSp.sp().toInt()
     }
 
     /**
