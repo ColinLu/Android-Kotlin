@@ -64,6 +64,8 @@ annotation class PoolType {
 object ThreadHelper {
 
     const val THREAD_MAX: Int = 128
+    const val KEEP_LIVE: Long = 30L
+    val TIME_UNIT: TimeUnit = TimeUnit.SECONDS
     val THREAD_CPU_COUNT: Int = Runtime.getRuntime().availableProcessors()
 
     //主线程
@@ -72,8 +74,8 @@ object ThreadHelper {
         ThreadPoolExecutor(
             getCoreCount(PoolType.IO),
             getMaxCount(PoolType.IO),
-            30L,
-            TimeUnit.SECONDS,
+            KEEP_LIVE,
+            TIME_UNIT,
             LinkedBlockingQueue<Runnable?>(THREAD_MAX),
             CustomThreadFactory(PoolType.IO, Thread.NORM_PRIORITY),
             getDefaultRejected()
@@ -139,7 +141,7 @@ object ThreadHelper {
      * corePoolSize         -> 1
      * maximumPoolSize      -> 1
      * keepAliveTime        -> 0L
-     * TimeUnit             -> TimeUnit.MILLISECONDS
+     * TimeUnit             -> TimeUnit.SECONDS
      * WorkQueue            -> new LinkedBlockingQueue<Runnable>() 无解阻塞队列
      *
      *
@@ -149,25 +151,14 @@ object ThreadHelper {
      * 适用：一个任务一个任务执行的场景
      * 返回：ThreadPoolExecutor
      */
-    fun single(): ExecutorService {
-        return single(
-            CustomThreadFactory(PoolType.SINGLE, Thread.NORM_PRIORITY), getDefaultRejected()
-        )
-    }
-
-    fun single(@IntRange(from = 1, to = 10) priority: Int): ExecutorService {
-        return single(CustomThreadFactory(PoolType.SINGLE, priority), getDefaultRejected())
-    }
-
-    fun single(factory: CustomThreadFactory, handler: RejectedExecutionHandler): ExecutorService {
+    @JvmOverloads
+    @JvmStatic
+    fun single(
+        factory: ThreadFactory = CustomThreadFactory(PoolType.SINGLE, Thread.NORM_PRIORITY),
+        handler: RejectedExecutionHandler = getDefaultRejected()
+    ): ExecutorService {
         return threadPool(
-            getCoreCount(PoolType.SINGLE),
-            getMaxCount(PoolType.SINGLE),
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            factory,
-            handler
+            1, 1, 0L, TIME_UNIT, LinkedBlockingQueue<Runnable>(THREAD_MAX), factory, handler
         )
     }
 
@@ -187,51 +178,18 @@ object ThreadHelper {
      * 适用：执行长期的任务，性能好很多
      * 返回：ThreadPoolExecutor
      */
-    fun fixed(): ExecutorService {
-        val core = getCoreCount(PoolType.FIXED)
-        return threadPool(
-            core,
-            core,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            CustomThreadFactory(PoolType.FIXED, Thread.NORM_PRIORITY),
-            getDefaultRejected()
-        )
-    }
-
+    @JvmOverloads
+    @JvmStatic
     fun fixed(
-        @IntRange(from = 1, to = 4) core: Int,
-        @IntRange(from = 1, to = 10) priority: Int,
-        rejectedHandler: RejectedExecutionHandler?
+        @IntRange(from = 1, to = 4) core: Int = getCoreCount(PoolType.FIXED),
+        @IntRange(from = 1, to = 128) max: Int = getMaxCount(PoolType.FIXED),
+        factory: ThreadFactory = CustomThreadFactory(PoolType.FIXED, Thread.NORM_PRIORITY),
+        handler: RejectedExecutionHandler = getDefaultRejected()
     ): ExecutorService {
         require(core >= 1 && core <= 4) { "core must be between 1 and 4" }
-        require(priority >= 1 && priority <= 10) { "priority must be between 1 and 10" }
+        require(max >= 1 && core <= 128) { "max must be between 1 and 128" }
         return threadPool(
-            core,
-            core,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            CustomThreadFactory(PoolType.FIXED, priority),
-            rejectedHandler ?: getDefaultRejected()
-        )
-    }
-
-    fun fixed(
-        @IntRange(from = 1, to = 4) core: Int,
-        factory: ThreadFactory?,
-        rejectedHandler: RejectedExecutionHandler?
-    ): ExecutorService {
-        require(core >= 1 && core <= 4) { "core must be between 1 and 4" }
-        return threadPool(
-            core,
-            core,
-            0L,
-            TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            factory ?: CustomThreadFactory(PoolType.FIXED, Thread.NORM_PRIORITY),
-            rejectedHandler ?: getDefaultRejected()
+            core, max, 0L, TIME_UNIT, LinkedBlockingQueue<Runnable>(THREAD_MAX), factory, handler
         )
     }
 
@@ -251,85 +209,60 @@ object ThreadHelper {
      * 适用：执行很多短期异步的小程序或者负载较轻的服务器
      * 返回：ThreadPoolExecutor
      */
-    fun cache(): ExecutorService {
-        return threadPool(
-            getCoreCount(PoolType.CACHED),
-            getMaxCount(PoolType.CACHED),
-            60L,
-            TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
-            CustomThreadFactory(PoolType.CACHED, Thread.NORM_PRIORITY),
-            getDefaultRejected()
-        )
-    }
-
+    @JvmOverloads
+    @JvmStatic
     fun cache(
-        @IntRange(from = 0, to = 128) max: Int, @IntRange(from = 1, to = 10) priority: Int
+        @IntRange(from = 1, to = 128) max: Int = getMaxCount(PoolType.CACHED),
+        keepLive: Long = KEEP_LIVE * 2,
+        unit: TimeUnit = TimeUnit.SECONDS,
+        factory: ThreadFactory = CustomThreadFactory(PoolType.CACHED, Thread.NORM_PRIORITY),
+        handler: RejectedExecutionHandler = getDefaultRejected()
     ): ExecutorService {
         require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
-        require(priority >= 1 && priority <= 10) { "priority must be between 1 and 10" }
-        return threadPool(
-            getCoreCount(PoolType.CACHED),
-            max,
-            60L,
-            TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
-            CustomThreadFactory(PoolType.CACHED, priority),
-            getDefaultRejected()
-        )
+        return threadPool(0, max, keepLive, unit, SynchronousQueue<Runnable>(), factory, handler)
     }
 
-    fun cache(
-        @IntRange(from = 0, to = 128) max: Int,
-        factory: ThreadFactory?,
-        rejectedHandler: RejectedExecutionHandler?
+    @JvmOverloads
+    @JvmStatic
+    fun io(
+        @IntRange(from = 1, to = 12) core: Int = getCoreCount(PoolType.IO),
+        @IntRange(from = 1, to = 128) max: Int = getMaxCount(PoolType.IO),
+        keepLive: Long = KEEP_LIVE,
+        unit: TimeUnit = TimeUnit.SECONDS,
+        factory: ThreadFactory = CustomThreadFactory(PoolType.IO, Thread.NORM_PRIORITY),
+        handler: RejectedExecutionHandler = getDefaultRejected()
     ): ExecutorService {
-        require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
         return threadPool(
-            getCoreCount(PoolType.CACHED),
-            max,
-            60L,
-            TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
-            factory ?: CustomThreadFactory(PoolType.CACHED, Thread.NORM_PRIORITY),
-            rejectedHandler ?: getDefaultRejected()
+            core, max, keepLive, unit, LinkedBlockingQueue<Runnable>(THREAD_MAX), factory, handler
         )
     }
 
-    fun io(): ExecutorService {
+    @JvmOverloads
+    @JvmStatic
+    fun cup(
+        @IntRange(from = 1, to = 12) core: Int = getCoreCount(PoolType.CPU),
+        @IntRange(from = 1, to = 128) max: Int = getMaxCount(PoolType.CPU),
+        keepLive: Long = KEEP_LIVE,
+        unit: TimeUnit = TimeUnit.SECONDS,
+        factory: ThreadFactory = CustomThreadFactory(PoolType.CPU, Thread.NORM_PRIORITY),
+        handler: RejectedExecutionHandler = getDefaultRejected()
+    ): ExecutorService {
         return threadPool(
-            getCoreCount(PoolType.IO),
-            getMaxCount(PoolType.IO),
-            30L,
-            TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            CustomThreadFactory(PoolType.IO, Thread.NORM_PRIORITY),
-            getDefaultRejected()
+            core, max, keepLive, unit, LinkedBlockingQueue<Runnable>(THREAD_MAX), factory, handler
         )
     }
 
-    fun cup(): ExecutorService {
-        return threadPool(
-            getCoreCount(PoolType.CPU),
-            getMaxCount(PoolType.CPU),
-            30L,
-            TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
-            CustomThreadFactory(PoolType.CPU, Thread.NORM_PRIORITY),
-            getDefaultRejected()
-        )
-    }
-
+    @JvmStatic
     fun threadPool(
-        @IntRange(from = 0, to = 4) core: Int,
+        @IntRange(from = 0, to = 12) core: Int,
         @IntRange(from = 0, to = 128) max: Int,
         @IntRange(from = 0, to = 128) keepAliveTime: Long,
         unit: TimeUnit,
-        queue: BlockingQueue<Runnable?>,
+        queue: BlockingQueue<Runnable>,
         factory: ThreadFactory,
         handler: RejectedExecutionHandler
     ): ExecutorService {
-        require(core >= 0 && core <= 4) { "core must be between 0 and 4" }
+        require(core >= 0 && core <= 12) { "core must be between 0 and 12" }
         require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
         require(keepAliveTime >= 0) { "keepAliveTime must be non-negative" }
         return ThreadPoolExecutor(core, max, keepAliveTime, unit, queue, factory, handler)
@@ -370,11 +303,8 @@ object ThreadHelper {
                     }
                 }
             }
-
-            if (run !is Thread) { // Avoid infinite recursion if someone uses a Thread as Runnable
-                poolNumber.incrementAndGet()
-            }
-
+            // Avoid infinite recursion if someone uses a Thread as Runnable
+            if (run !is Thread) poolNumber.incrementAndGet()
             return thread
         }
 
