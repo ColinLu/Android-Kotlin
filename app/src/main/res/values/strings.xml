@@ -17,6 +17,7 @@
     <string name="search">Search</string>
 
     <string name="view_web">Web</string>
+    <string name="view_image">Image</string>
 
     <string name="method_log">Log</string>
     <string name="method_path">Path</string>

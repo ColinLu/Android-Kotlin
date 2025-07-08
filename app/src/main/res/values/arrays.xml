@@ -53,6 +53,7 @@
     </string-array>
     <string-array name="view_list">
         <item>@string/view_web</item>
+        <item>@string/view_image</item>
     </string-array>
     <string-array name="path_list">
         <item>can write</item>

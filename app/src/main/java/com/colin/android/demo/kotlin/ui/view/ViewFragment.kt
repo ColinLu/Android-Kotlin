@@ -39,6 +39,10 @@ class ViewFragment : AppFragment<LayoutRefreshListBinding, ViewViewMode>() {
                         toNavigate(this@ViewFragment, R.id.action_webIndex)
                     }
 
+                    getString(R.string.view_image) -> {
+                        toNavigate(this@ViewFragment, R.id.action_gesture_image)
+                    }
+
                     else -> {
                         Log.i(item)
                     }
