@@ -30,7 +30,7 @@ class ListViewModel : AppViewModel() {
             } else {
                 Log.e("ArrayRes:$id is error")
             }
-            loading()
+            loading(false)
         }
     }
 }

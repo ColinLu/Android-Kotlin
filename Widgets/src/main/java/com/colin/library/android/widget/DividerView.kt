@@ -22,13 +22,15 @@ import androidx.core.content.withStyledAttributes
 class DividerView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
+    private val INTERVALS = floatArrayOf(6f, 2f)
+
     private val paint by lazy {
         Paint().apply {
             this.isAntiAlias = true
-            this.style = this@DividerView.style
-            this.strokeWidth = this@DividerView.length
-            this.color = this@DividerView.color
-            this.setPathEffect(DashPathEffect(floatArrayOf(space, dash), 0F))
+            this.style = this@DividerView.lineStyle
+            this.strokeWidth = this@DividerView.lineStrike
+            this.color = this@DividerView.lineColor
+            this.setPathEffect(DashPathEffect(INTERVALS, 0F))
         }
     }
     var orientation = LinearLayout.HORIZONTAL
@@ -40,7 +42,7 @@ class DividerView @JvmOverloads constructor(
         }
 
     @Px
-    var length = 0F
+    var lineStrike = 0F
         set(value) {
             if (field == value) return
             field = value
@@ -50,7 +52,7 @@ class DividerView @JvmOverloads constructor(
 
 
     @ColorInt
-    var color = Color.GRAY
+    var lineColor = Color.GRAY
         set(value) {
             if (field == value) return
             field = value
@@ -58,7 +60,7 @@ class DividerView @JvmOverloads constructor(
             invalidate()
         }
 
-    var style = Paint.Style.STROKE
+    var lineStyle = Paint.Style.STROKE
         set(value) {
             if (field == value) return
             field = value
@@ -66,25 +68,22 @@ class DividerView @JvmOverloads constructor(
             invalidate()
         }
 
-    @Px
-    private var space = 0F
+    fun setPath(phase: Float, vararg intervals: Float) {
+        paint.setPathEffect(DashPathEffect(intervals, phase))
+        invalidate()
+    }
 
-    @Px
-    private var dash = 0F
-
-    fun setPath(space: Float, dash: Float, phase: Float) {
-        paint.setPathEffect(DashPathEffect(floatArrayOf(space, dash), phase))
+    fun setPath(effect: DashPathEffect) {
+        paint.setPathEffect(effect)
+        invalidate()
     }
 
     init {
-        setWillNotDraw(false)
         context.withStyledAttributes(attrs, R.styleable.DividerView, defStyleAttr, 0) {
             orientation = getInt(R.styleable.DividerView_android_orientation, orientation)
-            space = getDimension(R.styleable.DividerView_space, space)
-            length = getDimension(R.styleable.DividerView_length, length)
-            dash = getDimension(R.styleable.DividerView_dash, dash)
-            color = getColor(R.styleable.DividerView_color, color)
-            style = getPaintStyle(getInt(R.styleable.DividerView_line, 0))
+            lineStyle = getPaintStyle(getInt(R.styleable.DividerView_lineStyle, 0))
+            lineStrike = getDimension(R.styleable.DividerView_lineStrike, lineStrike)
+            lineColor = getColor(R.styleable.DividerView_lineColor, lineColor)
         }
     }
 

@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class ItemBean(val id: Int, val title: String) : Parcelable {
     companion object {
+        @JvmStatic
         fun initList(@ArrayRes idRes: Int): List<ItemBean> {
             val array = UtilHelper.getApplication().resources.getStringArray(idRes)
             return array.mapIndexed { index, s -> ItemBean(index, s) }

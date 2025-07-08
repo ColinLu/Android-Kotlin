@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
+import androidx.core.util.forEach
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -32,16 +33,15 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     var last = 0L
     private val backCallback = object : OnBackPressedCallback(true) {
         override fun handleOnBackPressed() {
-            if (onSupportNavigateUp()) return
+            if (viewBinding.drawerLayout.isOpen) return
             Log.e("handleOnBackPressed:${onSupportNavigateUp()}")
-            if (last <= 0L || System.currentTimeMillis() - last < 2000) {
-                ToastUtil.show("退出")
+            if (last <= 0L || System.currentTimeMillis() - last > 2000) {
+                ToastUtil.show("再次点击退出应用")
                 return
             }
             last = System.currentTimeMillis()
             finish()
             exitProcess(0)
-            isEnabled = false
         }
     }
 
@@ -71,9 +71,9 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewModel.search.observe {
+        viewModel.menuState.observe {
             Log.i(TAG, "status:$it")
-            setMenuVisible(R.id.action_search, it)
+            it.forEach { id, state -> getMenu()?.findItem(id)?.isVisible = state }
         }
     }
 
@@ -84,6 +84,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
+            createPopupWindow().show()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -94,8 +95,16 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun setMenuVisible(@IdRes res: Int, visible: Boolean) {
-        setMenuVisible(viewBinding.appBarMain.toolbar.menu, res, visible)
+    fun update(title: CharSequence?) {
+        viewBinding.appBarMain.toolbar.title = title
+    }
+
+    fun getMenu(): Menu? = viewBinding.appBarMain.toolbar.menu
+
+    fun getSearchView() = getMenu()?.findItem(R.id.action_search)?.actionView as? SearchView
+
+    fun setMenuVisible(id: Int = R.id.action_search, visible: Boolean = true) {
+        viewModel.updateMenu(id, visible)
     }
 
     private fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
@@ -113,7 +122,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
                     resources.getStringArray(R.array.local_list)
                 ).apply {
                     setOnItemClickListener { _, _, position, _ ->
-//                        selectedLanguagege(position)
+                        selectedLanguage(position)
                     }
                 })
             anchorView = viewBinding.appBarMain.toolbar
@@ -123,18 +132,12 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    //    private fun selectedLanguage(position: Int) {
-//        val languages = resources.getStringArray(R.array.local_language_list)
-//        val countries = resources.getStringArray(R.array.local_country_list)
-//        LanguageHelper.saveLocale(Locale(languages[position], countries[position]))
-//        onCreate(null)
-//    }
-
-    fun update(title: CharSequence?) {
-        viewBinding.appBarMain.toolbar.title = title
+    private fun selectedLanguage(position: Int) {
+        val languages = resources.getStringArray(R.array.local_language_list)
+        val countries = resources.getStringArray(R.array.local_country_list)
+        Log.e("languages:$languages countries:$countries")
+        //  onCreate(null)
     }
 
-    fun getMenu(): Menu? = viewBinding.appBarMain.toolbar.menu
 
-    fun getSearchView() = getMenu()?.findItem(R.id.action_search) as? SearchView
 }

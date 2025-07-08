@@ -29,13 +29,11 @@
         <com.colin.library.android.widget.DividerView
             android:id="@+id/titleLine"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/line"
+            android:layout_height="1dp"
             android:orientation="horizontal"
-            app:color="@color/color_FF0159A5"
-            app:dash="@dimen/dp_3"
             app:layout_constraintTop_toBottomOf="@+id/tvTitle"
-            app:length="@dimen/dp_8"
-            app:space="@dimen/dp_5" />
+            app:lineColor="@color/color_FF0159A5"
+            app:lineStrike="@dimen/dp_8" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMsg"
@@ -63,15 +61,13 @@
             android:layout_width="@dimen/line"
             android:layout_height="@dimen/button_height"
             android:orientation="vertical"
-            app:color="@color/blue_100"
-            app:dash="@dimen/dp_3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btCancel"
             app:layout_constraintStart_toEndOf="@+id/btSure"
             app:layout_constraintTop_toTopOf="@+id/btSure"
-            app:length="@dimen/dp_8"
-            app:line="fill"
-            app:space="@dimen/dp_5" />
+            app:lineColor="@color/blue_100"
+            app:lineStrike="@dimen/dp_8"
+            app:lineStyle="fill" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btCancel"

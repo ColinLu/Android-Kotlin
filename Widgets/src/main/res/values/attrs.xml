@@ -305,19 +305,21 @@
     <declare-styleable name="DividerView">
         <!-- 虚线朝向 -->
         <attr name="android:orientation" />
-        <!-- 虚线颜色 -->
-        <attr name="color" format="color|reference" />
-        <!-- 虚线宽度 -->
-        <attr name="length" format="dimension|reference" />
-        <!-- 虚线dash宽度 -->
-        <attr name="dash" format="dimension|reference" />
-        <!-- 虚线dash间隔 -->
-        <attr name="space" format="dimension|reference" />
-        <attr name="line" format="enum">
+        <!-- 线条样式 -->
+        <attr name="lineStyle" format="enum">
             <enum name="fill" value="0" />
             <enum name="stroke" value="1" />
             <enum name="all" value="2" />
         </attr>
+        <!-- 虚线颜色 -->
+        <attr name="lineColor" format="color|reference" />
+        <!-- 虚线宽度 -->
+        <attr name="lineStrike" format="dimension|reference" />
+        <!-- 虚线dash宽度 -->
+        <attr name="dash" format="dimension|reference" />
+        <!-- 虚线dash间隔 -->
+        <attr name="space" format="dimension|reference" />
+
     </declare-styleable>
 
 </resources>

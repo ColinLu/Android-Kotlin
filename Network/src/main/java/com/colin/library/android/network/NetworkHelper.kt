@@ -19,6 +19,9 @@ import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.ConnectException
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
@@ -130,11 +133,9 @@ object NetworkHelper {
 
             is javax.net.ssl.SSLException -> state.invoke(HTTP_SSL_ERROR, "$e")
 
-            is java.net.SocketException, is java.net.SocketTimeoutException -> state.invoke(
-                HTTP_TIMEOUT, "$e"
-            )
+            is SocketException, is SocketTimeoutException -> state.invoke(HTTP_TIMEOUT, "$e")
 
-            is java.net.UnknownHostException -> state.invoke(HTTP_UNKONW_HOST, "$e")
+            is UnknownHostException -> state.invoke(HTTP_UNKONW_HOST, "$e")
 
             is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> {
                 state.invoke(HTTP_PARSE_ERROR, "$e")

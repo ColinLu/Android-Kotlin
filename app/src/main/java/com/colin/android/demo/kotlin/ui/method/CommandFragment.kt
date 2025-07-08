@@ -73,13 +73,12 @@ class CommandFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>()
 
     override fun onResume() {
         super.onResume()
-        viewModel.updateSearch(true)
+        (requireActivity() as? MainActivity)?.setMenuVisible(R.id.action_search, true)
     }
 
     override fun onPause() {
         super.onPause()
-        (requireActivity() as? MainActivity)?.getSearchView()?.onActionViewCollapsed()
-        viewModel.updateSearch(false)
+        (requireActivity() as? MainActivity)?.setMenuVisible(R.id.action_search, false)
     }
 
     /**
@@ -88,7 +87,7 @@ class CommandFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>()
      */
     private fun initSearch(search: SearchView?) {
         search?.apply {
-            queryHint = getString(R.string.query_web_hint_link)
+            queryHint = "ro.build.version.emui"
             isSubmitButtonEnabled = true
             setOnQueryTextListener(searchListener)
         }

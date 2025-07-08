@@ -8,6 +8,7 @@ import com.colin.android.demo.kotlin.adapter.BannerAdapter
 import com.colin.android.demo.kotlin.adapter.FragmentAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.FragmentHomeBinding
+import com.colin.android.demo.kotlin.ui.MainViewModel
 import com.colin.android.demo.kotlin.ui.list.ListFragment
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ToastUtil
@@ -15,7 +16,8 @@ import com.colin.library.android.widget.banner.transform.ScaleInTransformer
 import com.google.android.material.tabs.TabLayoutMediator
 
 
-class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
+class HomeFragment : AppFragment<FragmentHomeBinding, MainViewModel>() {
+    override fun bindViewModelStore() = requireActivity().viewModelStore
     private var bannerAdapter = BannerAdapter()
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
@@ -63,5 +65,16 @@ class HomeFragment : AppFragment<FragmentHomeBinding, HomeViewModel>() {
     private fun createBanner() = listOf(
         R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner3, R.mipmap.banner4, R.mipmap.banner5
     )
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.updateMenu(R.id.action_language, true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.updateMenu(R.id.action_language, false)
+    }
+
 
 }

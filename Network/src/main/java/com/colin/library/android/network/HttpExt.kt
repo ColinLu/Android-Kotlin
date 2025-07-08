@@ -109,7 +109,7 @@ private suspend fun <T> requestResult(
             break
         } catch (e: Exception) {
             exception = e // 仅在网络连接中断或"reset"错误时重试
-            if (e is SocketException || e.message?.contains("reset", true) == true) delay(delay)
+            if (e is SocketException || e.message?.contains("reset", true) == true) delay(1000L)
             else break
         }
     }

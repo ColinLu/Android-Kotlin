@@ -1,7 +1,6 @@
 package com.colin.library.android.utils
 
 import android.os.Build
-import java.util.Locale
 
 /**
  * Author:ColinLu
@@ -44,33 +43,6 @@ object OSUtil {
         return sVersion
     }
 
-    fun isEmui() = check(ROM_EMUI)
-
-
-    fun isMiui() = check(ROM_MIUI)
-
-
-    fun isFlyme() = check(ROM_FLYME)
-
-
-    fun isVIVO() = check(ROM_VIVO)
-
-
-    fun isOPPO() = check(ROM_OPPO)
-
-
-    fun isOnePlus() = check(ROM_ONEPLUS)
-
-
-    fun is360() = check(ROM_QIKU) || check(ROM_360)
-
-
-    fun isSmartisan() = check(ROM_SMARTISAN)
-
-
-    fun getOSName() = Build.BRAND.uppercase(Locale.getDefault())
-
-
     private fun check(rom: String): Boolean {
         sName?.let {
             return it.equals(rom, ignoreCase = true)
@@ -92,21 +64,38 @@ object OSUtil {
         } ?: getProp(KEY_VERSION_LETV)?.let {
             sName = ROM_LETV
             sVersion = it
+        } ?: getProp(KEY_VERSION_360)?.let {
+            sName = ROM_360
+            sVersion = it
         } ?: getProp(KEY_VERSION_SMARTISAN)?.let {
             sName = ROM_SMARTISAN
             sVersion = it
-        } ?: {
-            sVersion = Build.DISPLAY
-            if (Build.DISPLAY.contains(ROM_FLYME)) sName = ROM_FLYME
-            else if (Build.DISPLAY.contains(ROM_QIKU)) sName = ROM_QIKU
-            else if (Build.DISPLAY.contains(ROM_360)) sName = ROM_360
-            else {
-                sVersion = Build.DISPLAY
-                sName = Build.MANUFACTURER.uppercase()
-            }
-        }
+        } ?: getBySystem()
         return sName.equals(rom, ignoreCase = true)
     }
 
-    fun getProp(name: String) = CommandUtil.execCmd("getprop $name", 1024)
+    fun getProp(name: String): String? {
+        val result = CommandUtil.execCmd("getprop $name", 1024)
+        return if (result.isNullOrEmpty()) null else result
+    }
+
+    private fun getBySystem() {
+        if (Build.DISPLAY.contains(ROM_FLYME, true)) {
+            sName = ROM_FLYME
+            sVersion = Build.DISPLAY
+            return
+        }
+        if (Build.DISPLAY.contains(ROM_QIKU, true)) {
+            sName = ROM_QIKU
+            sVersion = Build.DISPLAY
+            return
+        }
+        if (Build.DISPLAY.contains(ROM_360, true)) {
+            sName = ROM_360
+            sVersion = Build.DISPLAY
+            return
+        }
+        sName = Build.MANUFACTURER.uppercase()
+        sVersion = Build.DISPLAY
+    }
 }

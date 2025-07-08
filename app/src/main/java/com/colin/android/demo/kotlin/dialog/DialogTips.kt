@@ -14,7 +14,7 @@ import com.colin.library.android.utils.ext.onClick
  * Des   :提示弹框
  */
 class DialogTips private constructor(
-    title: CharSequence, msg: CharSequence
+    private val title: CharSequence, private val msg: CharSequence
 ) : AppDialogFragment<DialogTipsBinding>() {
 
     companion object {
@@ -55,8 +55,8 @@ class DialogTips private constructor(
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         viewBinding.apply {
-            tvTitle.text = bundle?.getCharSequence(EXTRAS_TITLE, null)
-            tvMsg.text = bundle?.getCharSequence(EXTRAS_MSG, null)
+            tvTitle.text = title
+            tvMsg.text = msg
         }
     }
 }
