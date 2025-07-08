@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.AndroidKotlin" parent="Base.Activity" />
+    <style name="Theme.AndroidKotlin" parent="Base.Splash" />
 
     <style name="Theme.AndroidKotlin.NoActionBar">
         <item name="windowActionBar">false</item>

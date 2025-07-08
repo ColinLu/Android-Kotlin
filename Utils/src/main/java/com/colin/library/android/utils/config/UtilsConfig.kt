@@ -49,6 +49,8 @@ class UtilConfig private constructor(builder: Builder) {
         return mLogTag
     }
 
+    internal fun canShowLog(level: Int) = mShowLog && level >= mLogLevel
+
     class Builder @JvmOverloads constructor(/*全局上下文*/internal val mApplication: Application, /*环境*/
                                             val mDebug: Boolean = true
     ) {

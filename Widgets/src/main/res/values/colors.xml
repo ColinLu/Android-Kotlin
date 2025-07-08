@@ -7,6 +7,7 @@
     <color name="transparent">#00000000</color>
     <color name="translucence">#88000000</color>
 
+    <color name="appBg">@color/white</color>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#D81B60</color>

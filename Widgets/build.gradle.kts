@@ -47,6 +47,7 @@ dependencies {
     compileOnly(project(":Utils"))
     compileOnly(libs.androidx.lifecycle.viewmodel.ktx)
     compileOnly(libs.gson)
+    implementation(libs.androidx.splash)
     implementation(libs.bundles.androidCommon)
 }
 

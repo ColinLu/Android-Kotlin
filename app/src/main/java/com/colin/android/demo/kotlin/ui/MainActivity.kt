@@ -8,11 +8,14 @@ import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.IdRes
 import androidx.appcompat.widget.ListPopupWindow
 import androidx.appcompat.widget.SearchView
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.util.forEach
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -26,6 +29,8 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
@@ -35,13 +40,28 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         override fun handleOnBackPressed() {
             if (viewBinding.drawerLayout.isOpen) return
             Log.e("handleOnBackPressed:${onSupportNavigateUp()}")
-            if (last <= 0L || System.currentTimeMillis() - last > 2000) {
+            if (last <= 0L || System.currentTimeMillis() - last > 1000) {
                 ToastUtil.show("再次点击退出应用")
-                return
+            } else {
+                finish()
+                exitProcess(0)
             }
             last = System.currentTimeMillis()
-            finish()
-            exitProcess(0)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        val splash = installSplashScreen()
+        super.onCreate(savedInstanceState)
+        var loading = true
+        lifecycleScope.launch {
+            viewModel.loading(true)
+            delay(1000L)
+            loading = false
+        }
+        splash.setKeepOnScreenCondition {
+            Log.e("init.....")
+            loading
         }
     }
 
@@ -71,9 +91,13 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewModel.menuState.observe {
-            Log.i(TAG, "status:$it")
-            it.forEach { id, state -> getMenu()?.findItem(id)?.isVisible = state }
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.menuState.collect {
+                    Log.i("menuState:$it")
+                    it.forEach { id, visible -> getMenu()?.findItem(id)?.setVisible(visible) }
+                }
+            }
         }
     }
 
@@ -84,7 +108,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
-            createPopupWindow().show()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -105,11 +128,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     fun setMenuVisible(id: Int = R.id.action_search, visible: Boolean = true) {
         viewModel.updateMenu(id, visible)
-    }
-
-    private fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
-        val menuItem = menu?.findItem(res) ?: return
-        menuItem.isVisible = visible
     }
 
 

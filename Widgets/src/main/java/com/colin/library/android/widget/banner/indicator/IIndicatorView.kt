@@ -11,7 +11,6 @@ import androidx.annotation.FloatRange
 import androidx.annotation.Px
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.isVisible
-import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ZERO
 import com.colin.library.android.widget.INDICATOR_NORMAL_COLOR
 import com.colin.library.android.widget.INDICATOR_NORMAL_WIDTH
@@ -105,7 +104,6 @@ abstract class IIndicatorView constructor(
     }
 
     override fun onPageSelected(position: Int) {
-        Log.e("IndicatorView onPageSelected->position:$position")
         if (this.position != position) {
             this.position = position
             this.scrolledOffset = 0F

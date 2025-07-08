@@ -84,6 +84,7 @@ dependencies {
     implementation(project(":Widgets"))
     implementation(project(":Network"))
     implementation(project(":Web"))
+    implementation(libs.androidx.splash)
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)

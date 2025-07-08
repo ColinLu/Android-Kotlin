@@ -50,35 +50,38 @@ object Log {
     fun a(tag: String, msg: Any?) = print(Log.ASSERT, tag, msg)
 
     @JvmStatic
-    fun json(json: Any?) = print(UtilHelper.getUtilConfig().getLogLevel(), UtilHelper.getUtilConfig().getLogTag(), FormatUtil.formatJson(json))
+    fun json(json: Any?) = print(
+        UtilHelper.getUtilConfig().getLogLevel(),
+        UtilHelper.getUtilConfig().getLogTag(),
+        FormatUtil.formatJson(json)
+    )
 
     @JvmStatic
-    fun json(tag: String, json: Any?) = print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatJson(json))
+    fun json(tag: String, json: Any?) =
+        print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatJson(json))
 
     @JvmStatic
-    fun xml(xml: String?) = print(UtilHelper.getUtilConfig().getLogLevel(), UtilHelper.getUtilConfig().getLogTag(), FormatUtil.formatXml(xml))
+    fun xml(xml: String?) = print(
+        UtilHelper.getUtilConfig().getLogLevel(),
+        UtilHelper.getUtilConfig().getLogTag(),
+        FormatUtil.formatXml(xml)
+    )
 
     @JvmStatic
-    fun xml(tag: String, xml: String?) = print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatXml(xml))
+    fun xml(tag: String, xml: String?) =
+        print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatXml(xml))
 
     @JvmStatic
-    fun log(t: Throwable?) = print(Log.ERROR, UtilHelper.getUtilConfig().getLogTag(), Log.getStackTraceString(t))
+    fun log(t: Throwable?) =
+        print(Log.ERROR, UtilHelper.getUtilConfig().getLogTag(), Log.getStackTraceString(t))
 
     @JvmStatic
-    fun log(msg: Any?) = print(UtilHelper.getUtilConfig().getLogLevel(), UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun log(msg: Any?) =
+        print(UtilHelper.getUtilConfig().getLogLevel(), UtilHelper.getUtilConfig().getLogTag(), msg)
 
     private fun print(level: Int, tag: String?, msg: Any?): Int {
-        if (!UtilHelper.getUtilConfig().isShowLog() || level < UtilHelper.getUtilConfig().getLogLevel()) return INVALID
-        val logTag = tag ?: getTag(Thread.currentThread().stackTrace)
-        return when (level) {
-            Log.VERBOSE -> Log.v(logTag, "$msg")
-            Log.DEBUG -> Log.d(logTag, "$msg")
-            Log.INFO -> Log.i(logTag, "$msg")
-            Log.WARN -> Log.w(logTag, "$msg")
-            Log.ERROR -> Log.e(logTag, "$msg")
-            Log.ASSERT -> Log.wtf(logTag, "$msg")
-            else -> INVALID
-        }
+        if (!UtilHelper.getUtilConfig().canShowLog(level)) return INVALID
+        return Log.println(level, tag ?: getTag(Thread.currentThread().stackTrace), "$msg")
     }
 
     private fun getTag(traces: Array<StackTraceElement>): String {
