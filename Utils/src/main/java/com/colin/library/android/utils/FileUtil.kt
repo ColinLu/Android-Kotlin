@@ -1,5 +1,6 @@
 package com.colin.library.android.utils
 
+import androidx.annotation.WorkerThread
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -48,7 +49,8 @@ object FileUtil {
         else false
     }
 
-    /*向文件中写内容 子线程*/
+    /*向文件中写内容*/
+    @WorkerThread
     fun write(file: File?, text: String?, append: Boolean = true): Boolean {
         if (text.isNullOrEmpty() || !createFile(file, !append)) return false
         var bw: BufferedWriter? = null
