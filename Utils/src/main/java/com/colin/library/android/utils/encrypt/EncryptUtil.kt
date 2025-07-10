@@ -1,6 +1,8 @@
 package com.colin.library.android.utils.encrypt
 
 import android.util.Base64
+import java.io.UnsupportedEncodingException
+import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
@@ -18,25 +20,38 @@ import javax.crypto.spec.SecretKeySpec
 class EncryptUtil {
     companion object {
         @JvmStatic
-        fun md5(value: String?): String {
-            return if (value.isNullOrEmpty()) "" else md5(value.toByteArray(StandardCharsets.UTF_8))
+        fun url(url: String?, enc: String): String? {
+            try {
+                return if (url.isNullOrEmpty()) null else URLEncoder.encode(url, enc)
+            } catch (e: UnsupportedEncodingException) {
+                e.printStackTrace()
+            }
+            return url
         }
 
         @JvmStatic
-        fun md5(bytes: ByteArray): String {
+        fun md5(value: String?): String? {
+            return if (value.isNullOrEmpty()) null else md5(value.toByteArray(StandardCharsets.UTF_8))
+        }
+
+        @JvmStatic
+        fun md5(bytes: ByteArray): String? {
             return try {
                 val digest = MessageDigest.getInstance("MD5").digest(bytes)
                 digest.joinToString(separator = "") { "%02x".format(it) }
             } catch (e: NoSuchAlgorithmException) {
                 e.printStackTrace()
-                ""
+                null
             }
         }
 
 
         @JvmStatic
         fun aes(
-            value: String?, key: String, iv: String, transformation: String = DecryptUtil.TRANSFORMATION_AES
+            value: String?,
+            key: String,
+            iv: String,
+            transformation: String = DecryptUtil.TRANSFORMATION_AES
         ): String {
             return if (value.isNullOrEmpty()) ""
             else aes(value.toByteArray(StandardCharsets.UTF_8), key, iv, transformation)
@@ -44,7 +59,10 @@ class EncryptUtil {
 
         @JvmStatic
         fun aes(
-            bytes: ByteArray, key: String, iv: String, transformation: String = DecryptUtil.TRANSFORMATION_AES
+            bytes: ByteArray,
+            key: String,
+            iv: String,
+            transformation: String = DecryptUtil.TRANSFORMATION_AES
         ): String {
             return try {
                 val cipher = Cipher.getInstance(transformation)

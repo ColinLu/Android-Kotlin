@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Base" parent="Theme.MaterialComponents.DayNight" />
+    <style name="Base" parent="Theme.Material3.DayNight" />
 
     <style name="Base.Activity">
         <!-- Primary brand color. -->
