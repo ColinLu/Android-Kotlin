@@ -49,7 +49,6 @@ class CommandFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>()
             }
 
             initSearch((requireActivity() as? MainActivity)?.getSearchView())
-
         }
 
     }

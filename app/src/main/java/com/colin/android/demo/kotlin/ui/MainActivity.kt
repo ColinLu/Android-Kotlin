@@ -1,6 +1,7 @@
 package com.colin.android.demo.kotlin.ui
 
 import android.os.Bundle
+import android.util.SparseBooleanArray
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
@@ -51,6 +52,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         val splash = installSplashScreen()
         super.onCreate(savedInstanceState)
         var loading = true
@@ -66,7 +68,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         setSupportActionBar(viewBinding.appBarMain.toolbar)
         viewBinding.appBarMain.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -93,21 +94,33 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.menuState.collect {
+                viewModel.menuState.observe {
                     Log.i("menuState:$it")
-                    it.forEach { id, visible -> getMenu()?.findItem(id)?.setVisible(visible) }
+                    displayMenu(it)
                 }
             }
         }
     }
 
+    /**
+     * 可能此方法在onResume之后
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
+        displayMenu()
         return true
+    }
+
+    private fun displayMenu(array: SparseBooleanArray? = viewModel.menuState.value) {
+        array?.forEach { id, visible ->
+            Log.i("menuState id:$id visible:$visible")
+            viewBinding.appBarMain.toolbar.menu.findItem(id)?.isVisible = visible
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
+            createPopupWindow().show()
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -122,14 +135,15 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         viewBinding.appBarMain.toolbar.title = title
     }
 
-    fun getMenu(): Menu? = viewBinding.appBarMain.toolbar.menu
-
-    fun getSearchView() = getMenu()?.findItem(R.id.action_search)?.actionView as? SearchView
-
     fun setMenuVisible(id: Int = R.id.action_search, visible: Boolean = true) {
         viewModel.updateMenu(id, visible)
     }
 
+    fun getMenuItem(id: Int = R.id.action_search): MenuItem? =
+        viewBinding.appBarMain.toolbar.menu.findItem(id)
+
+    fun getSearchView(): SearchView? =
+        viewBinding.appBarMain.toolbar.menu.findItem(R.id.action_search).actionView as? SearchView
 
     private fun createPopupWindow(): ListPopupWindow {
         return ListPopupWindow(this).apply {

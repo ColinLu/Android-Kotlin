@@ -30,7 +30,6 @@ open class AppViewModel : ViewModel() {
      * 公共异常消息处理
      */
     suspend fun action(it: Throwable) {
-
     }
 
     suspend fun loading(loading: Boolean = false) {

@@ -1,6 +1,7 @@
 package com.colin.android.demo.kotlin.ui.web
 
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelStore
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -36,7 +37,7 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
         adapter.onItemClickListener = { _, item, _ ->
             toWebView(item, false)
         }
-        initSearch((requireActivity() as? MainActivity)?.getSearchView())
+        initSearch((requireActivity() as? MainActivity)?.getMenuItem())
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -64,8 +65,8 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
      *
      * @param searchItem
      */
-    private fun initSearch(search: SearchView?) {
-        search?.apply {
+    private fun initSearch(item: MenuItem?) {
+        (item?.actionView as? SearchView)?.apply {
             queryHint = getString(R.string.query_web_hint_link)
             isSubmitButtonEnabled = true
             setOnQueryTextListener(searchListener)
