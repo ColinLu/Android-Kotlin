@@ -124,19 +124,14 @@ object NetworkHelper {
     fun <T> create(serviceClass: Class<T>): T = retrofit.create(serviceClass)
     inline fun <reified T> create(): T = create(T::class.java)
 
-
     internal suspend fun handleFailure(state: suspend (Int, String) -> Unit, e: Throwable) {
         when (e) {
             is HttpException -> state.invoke(e.code(), "$e")
             is ApiException -> state.invoke(e.code, e.msg)
             is ConnectException -> state.invoke(HTTP_NETWORK_ERROR, "$e")
-
             is javax.net.ssl.SSLException -> state.invoke(HTTP_SSL_ERROR, "$e")
-
             is SocketException, is SocketTimeoutException -> state.invoke(HTTP_TIMEOUT, "$e")
-
             is UnknownHostException -> state.invoke(HTTP_UNKONW_HOST, "$e")
-
             is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> {
                 state.invoke(HTTP_PARSE_ERROR, "$e")
             }

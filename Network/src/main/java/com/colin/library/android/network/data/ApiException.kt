@@ -1,5 +1,6 @@
 package com.colin.library.android.network.data
 
+import android.annotation.SuppressLint
 import java.io.IOException
 
 /**
@@ -18,7 +19,8 @@ open class ApiException : IOException {
         this.msg = msg
     }
 
-    constructor(code: Int, msg: String, e: Throwable? = null) : super(e) {
+    @SuppressLint("NewApi")
+    constructor(code: Int, msg: String, e: Throwable? = null) : super(e ?: Throwable(msg)) {
         this.code = code
         this.msg = msg
     }
