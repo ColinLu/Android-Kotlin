@@ -28,8 +28,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "21"
+    publishing {
+        singleVariant("release") {
+            // 可以在这里添加更多配置选项
+            withSourcesJar()
+            withJavadocJar()
+        }
     }
 }
 

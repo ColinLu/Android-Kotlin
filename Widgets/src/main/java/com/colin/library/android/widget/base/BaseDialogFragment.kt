@@ -37,7 +37,7 @@ import kotlin.math.abs
  */
 abstract class BaseDialogFragment(
     private val layoutRes: Int = Resources.ID_NULL,
-    @IntRange(from = 0, to = 3) private val style: Int = STYLE_NO_TITLE,
+    @param:IntRange(from = 0, to = 3) private val style: Int = STYLE_NO_TITLE,
     private val theme: Int = R.style.Base_Dialog
 ) : DialogFragment(layoutRes), IBase {
 

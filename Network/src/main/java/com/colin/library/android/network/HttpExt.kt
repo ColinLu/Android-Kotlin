@@ -152,7 +152,7 @@ private suspend fun <T> requestResult(
         val result = withTimeout(10 * 1000) { request() }
         //2.发送网络请求结果回调
         if (result == null) throw SocketException()
-        if (result.isSuccess() == true) {
+        if (result.isSuccess()) {
             emit(result.getData())
             state.invoke(result.getCode(), result.getMsg())
         } else throw ApiException(result.getCode(), result.getMsg())

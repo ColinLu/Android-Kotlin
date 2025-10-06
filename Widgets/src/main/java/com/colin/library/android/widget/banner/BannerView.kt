@@ -267,7 +267,7 @@ class BannerView @JvmOverloads constructor(
     }
 
     override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
-        val doNotNeedIntercept = bannerPage.isUserInputEnabled != true || getRealItemCount() <= 1
+        val doNotNeedIntercept = !bannerPage.isUserInputEnabled || getRealItemCount() <= 1
         if (doNotNeedIntercept) return super.onInterceptTouchEvent(ev)
         when (ev.actionMasked) {
             MotionEvent.ACTION_DOWN -> {
@@ -313,8 +313,7 @@ class BannerView @JvmOverloads constructor(
 //    }
 
     fun setAdapter(adapter: RecyclerView.Adapter<out ViewHolder>?) {
-        bannerAdapter =
-            if (adapter == null) null else AdapterWrapper(adapter as RecyclerView.Adapter<ViewHolder>)
+        bannerAdapter = if (adapter == null) null else AdapterWrapper(adapter as RecyclerView.Adapter<ViewHolder>)
         bannerPage.adapter = bannerAdapter
         if (bannerAdapter == null) stopPlay()
         else startPlay()

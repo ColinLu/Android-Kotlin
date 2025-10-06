@@ -337,8 +337,10 @@ object ThreadHelper {
 
 
     class CustomThreadFactory @JvmOverloads constructor(
-        @PoolType private val mPoolType: Int,
-        @IntRange(from = 1, to = 10) private val mPriority: Int,
+        @param:PoolType
+        private val mPoolType: Int,
+        @param:IntRange(from = 1, to = 10)
+        private val mPriority: Int,
         private val mDaemon: Boolean = false
     ) : AtomicLong(), ThreadFactory {
         private val poolNumber = AtomicInteger(1)

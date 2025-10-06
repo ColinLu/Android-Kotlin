@@ -25,7 +25,7 @@ import java.util.Collections
 
 abstract class BaseAdapter<ITEM>(
     list: List<ITEM> = emptyList<ITEM>(),
-    @LayoutRes private val layoutRes: Int,
+    @param:LayoutRes private val layoutRes: Int,
 ) : RecyclerView.Adapter<BaseViewHolder>() {
 //    val defaultDiff = object : ItemCallback<ITEM>() {
 //        override fun areItemsTheSame(oldItem: ITEM & Any, newItem: ITEM & Any) = oldItem == newItem

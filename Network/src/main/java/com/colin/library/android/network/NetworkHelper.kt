@@ -10,6 +10,7 @@ import com.colin.library.android.utils.helper.UtilHelper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParseException
+import com.google.gson.Strictness
 import com.google.gson.stream.MalformedJsonException
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -75,7 +76,8 @@ object NetworkHelper {
     var timeout: Long = TIMEOUT
 
     var gson: Gson =
-        GsonBuilder().setLenient().registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
+        GsonBuilder().setStrictness(Strictness.LENIENT)
+            .registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
             .registerTypeAdapter(String::class.java, StringTypeAdapter()).create()
 
 

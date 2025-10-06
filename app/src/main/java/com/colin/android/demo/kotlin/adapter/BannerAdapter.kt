@@ -27,3 +27,4 @@ class BannerAdapter(list: List<Int> = emptyList<Int>(), layoutRes: Int = R.layou
         }
     }
 }
+

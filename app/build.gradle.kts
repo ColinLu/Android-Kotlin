@@ -23,7 +23,7 @@ android {
     }
 
     signingConfigs {
-        create("sign") {
+        create("release") {
             storeFile = file("${rootDir.absolutePath}/config/app.jks")
             keyAlias = "colinapp"
             storePassword = "ludapeng31"
@@ -33,11 +33,11 @@ android {
 
     buildTypes {
         getByName("debug") {
-            signingConfig = signingConfigs.getByName("sign")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
         }
         getByName("release") {
-            signingConfig = signingConfigs.getByName("sign")
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
@@ -54,14 +54,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        allWarningsAsErrors = true
-        jvmTarget = "21"
-    }
+
     buildFeatures {
         viewBinding = true
         aidl = true
     }
+    
     android.applicationVariants.all {
         val appName = rootProject.name
         val buildType = this.buildType.name
@@ -75,15 +73,23 @@ android {
             }
         }
     }
+
+    publishing {
+        singleVariant("release") {
+            // 可以在这里添加更多配置选项
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
 
-//    implementation(project(":Utils"))
-//    implementation(project(":Widgets"))
-//    implementation(project(":Network"))
-    implementation("com.gitee.colin_lu:Android-Kotlin:0.0.1")
+    implementation(project(":Utils"))
+    implementation(project(":Widgets"))
+    implementation(project(":Network"))
+//    implementation("com.gitee.colin_lu:Android-Kotlin:0.0.2")
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)

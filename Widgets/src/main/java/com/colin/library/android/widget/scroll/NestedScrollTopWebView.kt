@@ -28,18 +28,18 @@ class NestedScrollTopWebView @JvmOverloads constructor(
     }
 
 
-    override fun consumeScroll(yUnconsumed: Int): Int {
+    override fun consumeScroll(dyUnconsumed: Int): Int {
         // compute the consumed value
         var scrollY = getScrollY()
         val maxScrollY = getScrollOffsetRange()
         // the scrollY may be negative or larger than scrolling range
         scrollY = max(0.0, min(scrollY.toDouble(), maxScrollY.toDouble())).toInt()
         var dy = 0
-        if (yUnconsumed < 0) dy = max(yUnconsumed.toDouble(), -scrollY.toDouble()).toInt()
-        else if (yUnconsumed > 0) dy =
-            min(yUnconsumed.toDouble(), (maxScrollY - scrollY).toDouble()).toInt()
+        if (dyUnconsumed < 0) dy = max(dyUnconsumed.toDouble(), -scrollY.toDouble()).toInt()
+        else if (dyUnconsumed > 0) dy =
+            min(dyUnconsumed.toDouble(), (maxScrollY - scrollY).toDouble()).toInt()
         scrollBy(0, dy)
-        return yUnconsumed - dy
+        return dyUnconsumed - dy
     }
 
     override fun getCurrentScroll(): Int {
