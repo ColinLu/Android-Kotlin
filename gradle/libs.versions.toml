@@ -23,7 +23,7 @@ constraintlayout = "2.2.1"
 swiperefreshlayout = "1.1.0"
 viewpager = "1.1.0"
 recyclerview = "1.4.0"
-media = "1.17.1"
+media = "1.8.0"
 tbssdk = "44286"
 gson = "2.13.2"
 squareup_retrofit = "3.0.0"
@@ -54,10 +54,11 @@ squareup-retrofit2 = { group = "com.squareup.retrofit2", name = "retrofit", vers
 squareup-retrofit2-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "squareup_retrofit" }
 
 media-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media" }
-media-session = { group = "androidx.media3", name = "media3-session", version.ref = "media" }
 media-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media" }
+media-session = { group = "androidx.media3", name = "media3-session", version.ref = "media" }
 media-exoplayer-dash = { group = "androidx.media3", name = "media3-exoplayer-dash", version.ref = "media" }
 media-exoplayer-hls = { group = "androidx.media3", name = "media3-exoplayer-hls", version.ref = "media" }
+media-datasource-http = { group = "androidx.media3", name = "media3-datasource-okhttp", version.ref = "media" }
 tbssdk = { module = "com.tencent.tbs:tbssdk", version.ref = "tbssdk" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -70,7 +71,7 @@ androidWidgets = ["androidx-constraintlayout", "androidx-swiperefreshlayout", "a
 androidLifecycle = ["androidx-lifecycle-process", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-ktx"]
 androidNavigation = ["androidx-navigation-ui-ktx", "androidx-navigation-fragment-ktx"]
 squareup = ["squareup-retrofit2", "squareup-okhttp", "squareup-retrofit2-gson", "squareup-okhttp-logging"]
-media = ["media-session", "media-exoplayer", "media-exoplayer-dash", "media-exoplayer-hls", "media-ui"]
+media = ["media-ui", "media-exoplayer", "media-session", "media-exoplayer-dash", "media-exoplayer-hls", "media-datasource-http"]
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
