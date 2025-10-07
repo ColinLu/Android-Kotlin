@@ -35,11 +35,14 @@ android {
             withJavadocJar()
         }
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
     implementation(libs.bundles.androidCommon)
-//    implementation(libs.media.ui)
     compileOnly(libs.bundles.media)
     compileOnly(project(":Utils"))
+    compileOnly(project(":Widgets"))
 }

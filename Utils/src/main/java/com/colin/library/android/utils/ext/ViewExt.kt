@@ -5,6 +5,8 @@ import android.view.View
 import com.colin.library.android.utils.INVALID
 import com.colin.library.android.utils.TIMEOUT_CLICK
 
+private var lastClickTime = INVALID.toLong()
+
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
@@ -12,6 +14,8 @@ import com.colin.library.android.utils.TIMEOUT_CLICK
  *
  * Des   :ViewExt
  */
+
+
 /**
  * 设置防止重复点击事件
  * @param views 需要设置点击事件的view
@@ -29,9 +33,6 @@ fun onClick(vararg views: View, interval: Long = TIMEOUT_CLICK, click: (View) ->
  * @param interval 时间间隔 默认0.5秒
  * @param action 执行方法
  */
-
-private var lastClickTime = INVALID.toLong()
-
 fun View.onClick(interval: Long = TIMEOUT_CLICK, click: (view: View) -> Unit) {
     setOnClickListener {
         val current = System.currentTimeMillis()
@@ -41,5 +42,13 @@ fun View.onClick(interval: Long = TIMEOUT_CLICK, click: (view: View) -> Unit) {
         lastClickTime = current
         click.invoke(it)
     }
+}
+
+/**
+ * 设置View的显示隐藏
+ * @param visible true显示 false隐藏
+ */
+fun View.visible(visible: Boolean) {
+    visibility = if (visible) View.VISIBLE else View.GONE
 }
 
