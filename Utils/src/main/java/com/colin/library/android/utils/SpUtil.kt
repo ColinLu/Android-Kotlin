@@ -1,10 +1,10 @@
 package com.colin.library.android.utils
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.SparseArray
 import androidx.collection.ArrayMap
+import androidx.core.content.edit
 import com.colin.library.android.utils.helper.UtilHelper
 
 /**
@@ -41,11 +41,11 @@ class SpUtil private constructor() {
             mode: Int = Context.MODE_PRIVATE,
         ) {
             when (value) {
-                is Boolean -> getSp(name, mode).edit().putBoolean(key, value).apply()
-                is Int -> getSp(name, mode).edit().putInt(key, value).apply()
-                is Float -> getSp(name, mode).edit().putFloat(key, value).apply()
-                is Long -> getSp(name, mode).edit().putLong(key, value).apply()
-                is String -> getSp(name, mode).edit().putString(key, value).apply()
+                is Boolean -> getSp(name, mode).edit { putBoolean(key, value) }
+                is Int -> getSp(name, mode).edit { putInt(key, value) }
+                is Float -> getSp(name, mode).edit { putFloat(key, value) }
+                is Long -> getSp(name, mode).edit { putLong(key, value) }
+                is String -> getSp(name, mode).edit { putString(key, value) }
                 else -> {
                     Log.e("key:$key value:$value name:$name,mode:$mode not support")
                 }
@@ -61,7 +61,6 @@ class SpUtil private constructor() {
          * @param value  存值 一定要区分Number 类型
          * @return commit 提交方式
          */
-        @SuppressLint("ApplySharedPref")
         @JvmStatic
         @JvmOverloads
         fun commit(
@@ -69,16 +68,15 @@ class SpUtil private constructor() {
             value: Any,
             name: String = SP_NAME,
             mode: Int = Context.MODE_PRIVATE,
-        ): Boolean {
-            return when (value) {
-                is Boolean -> getSp(name, mode).edit().putBoolean(key, value).commit()
-                is Int -> getSp(name, mode).edit().putInt(key, value).commit()
-                is Float -> getSp(name, mode).edit().putFloat(key, value).commit()
-                is Long -> getSp(name, mode).edit().putLong(key, value).commit()
-                is String -> getSp(name, mode).edit().putString(key, value).commit()
+        ) {
+            when (value) {
+                is Boolean -> getSp(name, mode).edit(commit = true) { putBoolean(key, value) }
+                is Int -> getSp(name, mode).edit(commit = true) { putInt(key, value) }
+                is Float -> getSp(name, mode).edit(commit = true) { putFloat(key, value) }
+                is Long -> getSp(name, mode).edit(commit = true) { putLong(key, value) }
+                is String -> getSp(name, mode).edit(commit = true) { putString(key, value) }
                 else -> {
                     Log.e("key:$key value:$value name:$name,mode:$mode not support")
-                    false
                 }
             }
         }
@@ -90,7 +88,7 @@ class SpUtil private constructor() {
             def: Boolean = false,
             name: String = SP_NAME,
             mode: Int = Context.MODE_PRIVATE
-        ) = getSp(name, mode).getBoolean(key, def) == true
+        ) = getSp(name, mode).getBoolean(key, def)
 
 
         @JvmStatic
@@ -154,7 +152,7 @@ class SpUtil private constructor() {
         @JvmStatic
         @JvmOverloads
         fun remove(key: String, name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE) {
-            getSp(name, mode).edit().remove(key).apply()
+            getSp(name, mode).edit { remove(key) }
         }
 
         /**
@@ -166,7 +164,7 @@ class SpUtil private constructor() {
         @JvmStatic
         @JvmOverloads
         fun clear(name: String = SP_NAME, mode: Int = Context.MODE_PRIVATE) {
-            getSp(name, mode).edit().clear().apply()
+            getSp(name, mode).edit { clear() }
         }
 
         @Synchronized
