@@ -19,9 +19,7 @@ object ActivityHelper {
         tasks.remove(activity)
     }
 
-    fun top(): Activity? {
-        return tasks.last()
-    }
+    fun top(): Activity? = tasks.last()
 
     fun finishAllActivity(callback: (() -> Unit)? = null) {
         val it = tasks.iterator()

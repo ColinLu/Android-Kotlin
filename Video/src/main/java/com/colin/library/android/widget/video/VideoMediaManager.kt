@@ -25,6 +25,13 @@ import com.colin.library.android.utils.helper.UtilHelper
 import okhttp3.OkHttpClient
 import java.io.File
 
+/**
+ * Author:ColinLu
+ * E-mail:945919945@qq.com
+ * Create:2025/10/7 10:45
+ *
+ * Des   :管理视频多媒体构建+释放等操作
+ */
 @UnstableApi
 object VideoMediaManager {
     // 缓冲设置（单位：毫秒）
@@ -44,7 +51,7 @@ object VideoMediaManager {
      * 管理本地媒体缓存目录，使用 LRU 算法清除缓存
      * 路径为应用缓存目录下的 media_cache 文件夹
      */
-    private val mediaCache by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
+    val mediaCache by lazy(LazyThreadSafetyMode.SYNCHRONIZED) {
         SimpleCache(
             getCacheFile().apply {
                 if (!exists()) mkdirs()
@@ -94,6 +101,7 @@ object VideoMediaManager {
      * 释放资源，通常在应用退出或不再需要播放器时调用
      */
     fun release() {
+        exoPlayer?.release()
         mediaCache.release()
     }
 
