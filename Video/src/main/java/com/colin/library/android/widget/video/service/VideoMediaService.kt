@@ -18,6 +18,15 @@ import com.colin.library.android.widget.video.VideoMediaManager
  * Create:2025/10/7 10:46
  *
  * Des   :用户后台播放，且一直播放
+ *
+ *     private fun initPlayer(context: Context) {
+ *         val token = SessionToken(context, ComponentName(context, VideoMediaService::class.java))
+ *         val future =
+ *             MediaController.Builder(context, token).buildAsync().also { controllerFuture = it }
+ *         future.addListener(Runnable {
+ *             this.player = future.get().also { it.addListener(this) }
+ *         }, MoreExecutors.directExecutor())
+ *     }
  */
 @OptIn(UnstableApi::class)
 class VideoMediaService : MediaSessionService(), Player.Listener {

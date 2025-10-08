@@ -2,33 +2,25 @@ package com.colin.library.android.widget.video
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
 import android.media.AudioManager
-import android.net.Uri
 import android.util.AttributeSet
 import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
-import androidx.core.net.toUri
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.media3.session.MediaController
-import androidx.media3.session.SessionToken
 import androidx.media3.ui.PlayerView
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widget.video.GestureType.Companion.TYPE_BRIGHTNESS
 import com.colin.library.android.widget.video.GestureType.Companion.TYPE_NONE
 import com.colin.library.android.widget.video.GestureType.Companion.TYPE_PROGRESS
 import com.colin.library.android.widget.video.GestureType.Companion.TYPE_VOLUME
-import com.colin.library.android.widget.video.service.VideoMediaService
-import com.google.common.util.concurrent.ListenableFuture
-import com.google.common.util.concurrent.MoreExecutors
 import kotlinx.coroutines.Runnable
 import kotlin.math.abs
 
@@ -63,9 +55,7 @@ class VideoMediaView @JvmOverloads constructor(
     //窗口,控制大小和透明度
     private val window = if (context is Activity) context.window else null
     private var discardTouchEvent = false
-    private var controllerFuture: ListenableFuture<MediaController>? = null
     var onProgressListener: ((Long) -> Unit)? = null
-    var onBackListener: ((Boolean) -> Boolean)? = null
 
 
     @SuppressLint("CutPasteId")
@@ -112,7 +102,9 @@ class VideoMediaView @JvmOverloads constructor(
     override fun onResume() {
         super.onResume()
         player?.let {
+            // 重新准备
             it.prepare()
+            // 恢复播放
             it.playWhenReady = true
         }
     }
@@ -128,7 +120,10 @@ class VideoMediaView @JvmOverloads constructor(
     fun onRelease() {
         removeCallbacks(progressRunnable)
         removeCallbacks(updateGestureTypeValueRunnable(TYPE_NONE, 0))
-        player?.removeListener(this)
+        player?.let {
+            it.removeListener(this)
+            it.release()
+        }
         player = null
     }
 
@@ -140,6 +135,8 @@ class VideoMediaView @JvmOverloads constructor(
         }
     }
 
+    fun isPlaying() = player?.isPlaying == true
+
     /**
      * 绑定生命周期和播放器实例
      */
@@ -148,55 +145,43 @@ class VideoMediaView @JvmOverloads constructor(
         this.player = player.also { it.addListener(this) }
     }
 
-    fun togglePlay() {
-        player?.let { it.playWhenReady = !it.playWhenReady }
+    fun setVolume(volume: Float) {
+        player?.volume = volume
+        //设置系统音量
+        audioManager?.let {
+            val max = it.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+            val music = (volume * max).toInt().coerceIn(0, max)
+            it.setStreamVolume(AudioManager.STREAM_MUSIC, music, AudioManager.FLAG_PLAY_SOUND)
+        }
     }
 
-
-    fun play(playWhenReady: Boolean = true) {
-        player?.let { it.playWhenReady = playWhenReady }
+    /**
+     * 跳转到指定位置
+     */
+    fun seekTo(positionMs: Long) {
+        player?.seekTo(positionMs)?.also { Log.d("seekTo position: ${positionMs}ms") }
     }
 
-    fun isPlaying() = player?.isPlaying == true
-
-    fun toggleShowController() {
+    fun togglePlayController() {
         if (isControllerFullyVisible) hideController()
         else showController()
     }
 
-    fun seekTo(positionMs: Long) {
-        player?.seekTo(positionMs)?.also { Log.d("Position: ${positionMs}ms") }
+    fun togglePlay() {
+        player?.let { it.playWhenReady = !it.playWhenReady }
     }
 
-    fun play(source: Any, playWhenReady: Boolean = true) {
-        val mediaItem = when (source) {
-            is String -> when {
-                source.startsWith("http") -> MediaItem.fromUri(source)
-                source.startsWith("asset") -> MediaItem.fromUri(source)
-                else -> MediaItem.fromUri(source.toUri())
-            }
+    fun play(play: Boolean = true) {
+        player?.let { it.playWhenReady = play }
+    }
 
-            is Uri -> MediaItem.fromUri(source)
-            is Int -> MediaItem.fromUri("android.resource://${context.packageName}/$source")
-            else -> throw IllegalArgumentException("Unsupported media source type")
-        }
-
+    fun play(item: MediaItem, play: Boolean = true) {
         player?.apply {
-            setMediaItem(mediaItem)
-            prepare()
-            this.playWhenReady = playWhenReady
+            setMediaItem(item)
+            playWhenReady = play
+            if (play) this.prepare()
         }
     }
-
-    private fun initPlayer(context: Context) {
-        val token = SessionToken(context, ComponentName(context, VideoMediaService::class.java))
-        val future =
-            MediaController.Builder(context, token).buildAsync().also { controllerFuture = it }
-        future.addListener(Runnable {
-            this.player = future.get().also { it.addListener(this) }
-        }, MoreExecutors.directExecutor())
-    }
-
 
     private val gestureListener = object : GestureDetector.SimpleOnGestureListener() {
         override fun onDoubleTap(e: MotionEvent): Boolean {
@@ -205,13 +190,7 @@ class VideoMediaView @JvmOverloads constructor(
         }
 
         override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-            toggleShowController()
-            return true
-        }
-
-        fun finish(cancel: Boolean): Boolean {
-            discardTouchEvent = false
-            gestureTypeView?.finish(cancel)
+            togglePlayController()
             return true
         }
 
@@ -220,6 +199,12 @@ class VideoMediaView @JvmOverloads constructor(
         ): Boolean {
             if (e1 == null || gestureTypeView == null) return true
             gestureType(gestureTypeView!!, e1, e2)
+            return true
+        }
+
+        fun finish(cancel: Boolean): Boolean {
+            discardTouchEvent = false
+            gestureTypeView?.finish(cancel)
             return true
         }
 
@@ -278,14 +263,6 @@ class VideoMediaView @JvmOverloads constructor(
         }
     }
 
-    fun setVolume(volume: Float) {
-        player?.volume = volume
-        audioManager?.let {
-            val max = it.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-            val music = (volume * max).toInt().coerceIn(0, max)
-            it.setStreamVolume(AudioManager.STREAM_MUSIC, music, AudioManager.FLAG_PLAY_SOUND)
-        }
-    }
 
     private fun updateGestureTypeValue(@GestureType type: Int, number: Number) {
         removeCallbacks(updateGestureTypeValueRunnable(type, number))

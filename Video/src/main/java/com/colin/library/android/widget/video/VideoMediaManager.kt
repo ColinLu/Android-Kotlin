@@ -1,6 +1,9 @@
 package com.colin.library.android.widget.video
 
 import android.content.Context
+import android.net.Uri
+import androidx.core.net.toUri
+import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
@@ -95,6 +98,20 @@ object VideoMediaManager {
                 }).setMediaSourceFactory(createMediaSourceFactory())
             .setUsePlatformDiagnostics(true) // 启用原生日志
             .build()
+    }
+
+    fun createMediaItem(context: Context, source: Any): MediaItem {
+        return when (source) {
+            is String -> when {
+                source.startsWith("http") -> MediaItem.fromUri(source)
+                source.startsWith("asset") -> MediaItem.fromUri(source)
+                else -> MediaItem.fromUri(source.toUri())
+            }
+
+            is Uri -> MediaItem.fromUri(source)
+            is Int -> MediaItem.fromUri("android.resource://${context.packageName}/$source")
+            else -> throw IllegalArgumentException("Unsupported media source type")
+        }
     }
 
     /**
