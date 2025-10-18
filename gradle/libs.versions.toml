@@ -39,6 +39,7 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-lifecycle-process = { group = "androidx.lifecycle", name = "lifecycle-process", version.ref = "lifecycle" }
 androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
@@ -68,7 +69,7 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 [bundles]
 androidCommon = ["material", "androidx-appcompat", "androidx-core-ktx"]
 androidWidgets = ["androidx-constraintlayout", "androidx-swiperefreshlayout", "androidx-recyclerview", "androidx-viewpager"]
-androidLifecycle = ["androidx-lifecycle-process", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-ktx"]
+androidLifecycle = ["androidx-lifecycle-process", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-runtime-ktx"]
 androidNavigation = ["androidx-navigation-ui-ktx", "androidx-navigation-fragment-ktx"]
 squareup = ["squareup-retrofit2", "squareup-okhttp", "squareup-retrofit2-gson", "squareup-okhttp-logging"]
 media = ["media-ui", "media-exoplayer", "media-session", "media-exoplayer-dash", "media-exoplayer-hls", "media-datasource-http"]

@@ -105,7 +105,7 @@ abstract class IIndicatorView constructor(
     }
 
     override fun onPageSelected(position: Int) {
-        Log.e("IndicatorView onPageSelected->position:$position")
+        Log.i("IndicatorView onPageSelected->position:$position")
         if (this.position != position) {
             this.position = position
             this.scrolledOffset = 0F
@@ -114,7 +114,7 @@ abstract class IIndicatorView constructor(
     }
 
     override fun onPageScrollStateChanged(state: Int) {
-        Log.e("IndicatorView onPageScrollStateChanged->state:$state")
+        Log.i("IndicatorView onPageScrollStateChanged->state:$state")
     }
 
     override fun getView() = this

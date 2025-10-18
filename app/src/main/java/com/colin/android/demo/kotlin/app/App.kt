@@ -33,9 +33,9 @@ class App : Application() {
     private inner class AppLifeObserver : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (Lifecycle.Event.ON_START == event) {
-                Log.e("foreground")
+                Log.i("foreground")
             } else if (Lifecycle.Event.ON_STOP == event) {
-                Log.e("background")
+                Log.i("background")
             }
         }
     }

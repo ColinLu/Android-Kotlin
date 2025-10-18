@@ -300,7 +300,7 @@ class BannerView @JvmOverloads constructor(
     }
 
 
-//    override fun dispatchDraw(canvas: Canvas) {
+    //    override fun dispatchDraw(canvas: Canvas) {
 //        val roundRectRadiusArray: FloatArray? =
 //            bannerManager.getBannerOptions().getRoundRectRadiusArray()
 //        if ((mRadiusRectF != null) && (mRadiusPath != null) && (roundRectRadiusArray != null)) {
@@ -311,7 +311,6 @@ class BannerView @JvmOverloads constructor(
 //        }
 //        super.dispatchDraw(canvas)
 //    }
-
     fun setAdapter(adapter: RecyclerView.Adapter<out ViewHolder>?) {
         bannerAdapter = if (adapter == null) null else AdapterWrapper(adapter as RecyclerView.Adapter<ViewHolder>)
         bannerPage.adapter = bannerAdapter
