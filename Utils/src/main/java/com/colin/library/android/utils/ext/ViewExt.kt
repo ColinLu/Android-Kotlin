@@ -52,3 +52,5 @@ fun View.visible(visible: Boolean) {
     visibility = if (visible) View.VISIBLE else View.GONE
 }
 
+
+fun View.isVisible() = this.visibility == View.VISIBLE

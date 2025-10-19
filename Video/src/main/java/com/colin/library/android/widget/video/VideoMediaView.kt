@@ -283,8 +283,7 @@ class VideoMediaView @JvmOverloads constructor(
     }
 
     private fun maybeDiscardTouchEvent(event: MotionEvent): Boolean {
-        discardTouchEvent =
-            event.x < TOUCH_RANGE || event.x > width - TOUCH_RANGE || event.y < TOUCH_RANGE || event.y > height - TOUCH_RANGE
+        discardTouchEvent = gestureTypeView != null && (event.x < TOUCH_RANGE || event.x > width - TOUCH_RANGE || event.y < TOUCH_RANGE || event.y > height - TOUCH_RANGE)
         return discardTouchEvent
     }
 }

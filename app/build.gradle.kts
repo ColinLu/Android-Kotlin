@@ -47,7 +47,7 @@ android {
     // 指定AIDL源集目录
     sourceSets {
         getByName("main") {
-            jniLibs.srcDirs("libs")
+            jniLibs.srcDirs("${rootDir}/libs")
         }
     }
     compileOptions {
@@ -57,7 +57,6 @@ android {
 
     buildFeatures {
         viewBinding = true
-        aidl = true
     }
     
     android.applicationVariants.all {
@@ -84,7 +83,7 @@ android {
 }
 
 dependencies {
-    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.aar", "*.jar"))))
+    implementation(fileTree(mapOf("dir" to "${rootDir}/libs", "include" to listOf("*.aar", "*.jar"))))
 
     implementation(project(":Utils"))
     implementation(project(":Widgets"))

@@ -15,12 +15,12 @@
         android:theme="@style/Theme.AndroidKotlin.NoActionBar">
 
         <service
-            android:name=".service.DemoAidlService"
+            android:name="com.colin.android.demo.kotlin.service.AIDLService"
             android:enabled="true"
             android:exported="true"
             android:process=":remote">
             <intent-filter>
-                <action android:name="com.colin.android.demo.kotlin.service.DemoAidlService" />
+                <action android:name="com.colin.android.demo.kotlin.service.AIDLService" />
             </intent-filter>
         </service>
 
