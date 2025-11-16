@@ -15,6 +15,7 @@
     <string name="title_slideshow">Slideshow</string>
     <string name="title_log" translatable="false">Log</string>
     <string name="title_web" translatable="false">Web</string>
+    <string name="title_video" translatable="false">Video</string>
     <string name="todo" translatable="false">TODO</string>
     <string name="picture">Choose Picture</string>
 

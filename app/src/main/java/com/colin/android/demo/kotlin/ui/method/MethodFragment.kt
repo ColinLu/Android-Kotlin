@@ -38,6 +38,9 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
                     getString(R.string.title_web) -> {
                         toNavigate(this@MethodFragment, R.id.action_webIndex)
                     }
+                    getString(R.string.title_video) -> {
+                        toNavigate(this@MethodFragment, R.id.action_video)
+                    }
 
                     else -> {
                         Log.i(item)
