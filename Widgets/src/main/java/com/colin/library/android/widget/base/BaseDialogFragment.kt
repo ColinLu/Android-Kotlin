@@ -1,7 +1,6 @@
 package com.colin.library.android.widget.base
 
 import android.app.Dialog
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.os.SystemClock
@@ -36,7 +35,7 @@ import kotlin.math.abs
  * Des   :Dialog基类:最简单的业务逻辑定义
  */
 abstract class BaseDialogFragment(
-    private val layoutRes: Int = Resources.ID_NULL,
+    private val layoutRes: Int = ZERO,
     @param:IntRange(from = 0, to = 3) private val style: Int = STYLE_NO_TITLE,
     private val theme: Int = R.style.Base_Dialog
 ) : DialogFragment(layoutRes), IBase {
@@ -57,6 +56,7 @@ abstract class BaseDialogFragment(
     var offsetY: Int = DEFAULT_DIALOG_WINDOW_OFFSET
 
     var gravity: Int = DEFAULT_DIALOG_WINDOW_GRAVITY
+    var cancelable = true
 
     @FloatRange(from = 0.0, to = 1.0)
     var windowAmount = DEFAULT_WINDOW_AMOUNT
@@ -169,6 +169,7 @@ abstract class BaseDialogFragment(
             putInt(EXTRAS_BASE_GRAVITY, gravity)
             putInt(EXTRAS_BASE_ANIMATION, animation)
             putFloat(EXTRAS_WINDOW_AMOUNT, windowAmount)
+            putBoolean(EXTRAS_DIALOG_CANCELABLE, cancelable)
         }
     }
 
@@ -177,6 +178,8 @@ abstract class BaseDialogFragment(
 
     /*设置dialog window 属性*/
     open fun initWindow(dialog: Dialog, window: Window) {
+        dialog.setCancelable(cancelable)
+        dialog.setCanceledOnTouchOutside(cancelable)
         window.apply {
             // 透明背景
             setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
@@ -227,6 +230,9 @@ abstract class BaseDialogFragment(
             if (it.containsKey(EXTRAS_WINDOW_AMOUNT)) {
                 windowAmount = it.getFloat(EXTRAS_WINDOW_AMOUNT, DEFAULT_WINDOW_AMOUNT)
             }
+            if (it.containsKey(EXTRAS_DIALOG_CANCELABLE)) {
+                cancelable = it.getBoolean(EXTRAS_DIALOG_CANCELABLE, true)
+            }
         }
     }
 
@@ -264,6 +270,7 @@ abstract class BaseDialogFragment(
         const val EXTRAS_BASE_GRAVITY = "EXTRAS_BASE_GRAVITY"
         const val EXTRAS_BASE_ANIMATION = "EXTRAS_BASE_ANIMATION"
         const val EXTRAS_WINDOW_AMOUNT = "EXTRAS_WINDOW_AMOUNT"
+        const val EXTRAS_DIALOG_CANCELABLE = "EXTRAS_DIALOG_CANCELABLE"
 
         private var mShowTag: String? = null
         private var mLastTime: Long = 0
