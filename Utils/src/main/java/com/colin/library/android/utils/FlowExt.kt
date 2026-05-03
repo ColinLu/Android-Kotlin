@@ -19,6 +19,6 @@ fun <T> Flow<T>.collectOnLife(
     collector: (T) -> Unit
 ) {
     owner.lifecycleScope.launch {
-//        repeatOnLifecycle(state) { collect(collector) }
+        //repeatOnLifecycle(state) { collect(collector) }
     }
 }

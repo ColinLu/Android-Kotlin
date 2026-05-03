@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# 保持 Kotlin 协程
+-keepnames class kotlinx.coroutines.internal.MainDispatcherFactory {}
+-keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
+
+# 保持 Gson 序列化类
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.colin.** { *; }
+
+# 保持 AIDL 接口
+-keep class * extends android.os.Binder { *; }
+-keep interface * extends android.os.IInterface { *; }

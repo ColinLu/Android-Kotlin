@@ -28,6 +28,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
+    kotlinOptions {
+        jvmTarget = "21"
+        freeCompilerArgs += listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
+    }
     publishing {
         singleVariant("release") {
             // 可以在这里添加更多配置选项

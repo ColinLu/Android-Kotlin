@@ -33,6 +33,14 @@ android {
             withJavadocJar()
         }
     }
+
+    kotlinOptions {
+        jvmTarget = "21"
+        freeCompilerArgs += listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
+    }
 }
 
 dependencies {

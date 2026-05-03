@@ -64,6 +64,7 @@ annotation class PoolType {
 object ThreadHelper {
 
     const val THREAD_MAX: Int = 128
+    const val KEEP_ALIVE_TIME_DEF = 30L
     val THREAD_CPU_COUNT: Int = Runtime.getRuntime().availableProcessors()
 
     //主线程
@@ -72,9 +73,9 @@ object ThreadHelper {
         ThreadPoolExecutor(
             getCoreCount(PoolType.IO),
             getMaxCount(PoolType.IO),
-            30L,
+            KEEP_ALIVE_TIME_DEF,
             TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue(THREAD_MAX),
             CustomThreadFactory(PoolType.IO, Thread.NORM_PRIORITY),
             getDefaultRejected()
         )
@@ -165,7 +166,7 @@ object ThreadHelper {
             getMaxCount(PoolType.SINGLE),
             0L,
             TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             factory,
             handler
         )
@@ -194,7 +195,7 @@ object ThreadHelper {
             core,
             0L,
             TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             CustomThreadFactory(PoolType.FIXED, Thread.NORM_PRIORITY),
             getDefaultRejected()
         )
@@ -205,14 +206,14 @@ object ThreadHelper {
         @IntRange(from = 1, to = 10) priority: Int,
         rejectedHandler: RejectedExecutionHandler?
     ): ExecutorService {
-        require(core >= 1 && core <= 4) { "core must be between 1 and 4" }
-        require(priority >= 1 && priority <= 10) { "priority must be between 1 and 10" }
+        require(core in 1..4) { "core must be between 1 and 4" }
+        require(priority in 1..10) { "priority must be between 1 and 10" }
         return threadPool(
             core,
             core,
             0L,
             TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             CustomThreadFactory(PoolType.FIXED, priority),
             rejectedHandler ?: getDefaultRejected()
         )
@@ -223,13 +224,13 @@ object ThreadHelper {
         factory: ThreadFactory?,
         rejectedHandler: RejectedExecutionHandler?
     ): ExecutorService {
-        require(core >= 1 && core <= 4) { "core must be between 1 and 4" }
+        require(core in 1..4) { "core must be between 1 and 4" }
         return threadPool(
             core,
             core,
             0L,
             TimeUnit.MILLISECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             factory ?: CustomThreadFactory(PoolType.FIXED, Thread.NORM_PRIORITY),
             rejectedHandler ?: getDefaultRejected()
         )
@@ -257,7 +258,7 @@ object ThreadHelper {
             getMaxCount(PoolType.CACHED),
             60L,
             TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
+            SynchronousQueue<Runnable>(),
             CustomThreadFactory(PoolType.CACHED, Thread.NORM_PRIORITY),
             getDefaultRejected()
         )
@@ -266,14 +267,14 @@ object ThreadHelper {
     fun cache(
         @IntRange(from = 0, to = 128) max: Int, @IntRange(from = 1, to = 10) priority: Int
     ): ExecutorService {
-        require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
-        require(priority >= 1 && priority <= 10) { "priority must be between 1 and 10" }
+        require(max in 0..128) { "max must be between 0 and 128" }
+        require(priority in 1..10) { "priority must be between 1 and 10" }
         return threadPool(
             getCoreCount(PoolType.CACHED),
             max,
-            60L,
+            KEEP_ALIVE_TIME_DEF * 2,
             TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
+            SynchronousQueue<Runnable>(),
             CustomThreadFactory(PoolType.CACHED, priority),
             getDefaultRejected()
         )
@@ -284,13 +285,13 @@ object ThreadHelper {
         factory: ThreadFactory?,
         rejectedHandler: RejectedExecutionHandler?
     ): ExecutorService {
-        require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
+        require(max in 0..128) { "max must be between 0 and 128" }
         return threadPool(
             getCoreCount(PoolType.CACHED),
             max,
-            60L,
+            KEEP_ALIVE_TIME_DEF * 2,
             TimeUnit.SECONDS,
-            SynchronousQueue<Runnable?>(),
+            SynchronousQueue(),
             factory ?: CustomThreadFactory(PoolType.CACHED, Thread.NORM_PRIORITY),
             rejectedHandler ?: getDefaultRejected()
         )
@@ -300,9 +301,9 @@ object ThreadHelper {
         return threadPool(
             getCoreCount(PoolType.IO),
             getMaxCount(PoolType.IO),
-            30L,
+            KEEP_ALIVE_TIME_DEF,
             TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             CustomThreadFactory(PoolType.IO, Thread.NORM_PRIORITY),
             getDefaultRejected()
         )
@@ -312,9 +313,9 @@ object ThreadHelper {
         return threadPool(
             getCoreCount(PoolType.CPU),
             getMaxCount(PoolType.CPU),
-            30L,
+            KEEP_ALIVE_TIME_DEF,
             TimeUnit.SECONDS,
-            LinkedBlockingQueue<Runnable?>(THREAD_MAX),
+            LinkedBlockingQueue<Runnable>(THREAD_MAX),
             CustomThreadFactory(PoolType.CPU, Thread.NORM_PRIORITY),
             getDefaultRejected()
         )
@@ -325,12 +326,12 @@ object ThreadHelper {
         @IntRange(from = 0, to = 128) max: Int,
         @IntRange(from = 0, to = 128) keepAliveTime: Long,
         unit: TimeUnit,
-        queue: BlockingQueue<Runnable?>,
+        queue: BlockingQueue<Runnable>,
         factory: ThreadFactory,
         handler: RejectedExecutionHandler
     ): ExecutorService {
-        require(core >= 0 && core <= 4) { "core must be between 0 and 4" }
-        require(max >= 0 && max <= 128) { "max must be between 0 and 128" }
+        require(core in 0..4) { "core must be between 0 and 4" }
+        require(max in 0..128) { "max must be between 0 and 128" }
         require(keepAliveTime >= 0) { "keepAliveTime must be non-negative" }
         return ThreadPoolExecutor(core, max, keepAliveTime, unit, queue, factory, handler)
     }

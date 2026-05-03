@@ -64,17 +64,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
-            override fun onCoreInitFinished() {
-                Log.i("onCoreInitFinished:x5")
-            }
 
-            override fun onViewInitFinished(isX5: Boolean) {
-                Log.i("onViewInitFinished:isX5:$isX5")
-            }
-
-        })
-        QbSdk.setDownloadWithoutWifi(true)
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {

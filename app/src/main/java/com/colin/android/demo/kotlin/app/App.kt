@@ -8,6 +8,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.config.UtilConfig
 import com.colin.library.android.utils.helper.UtilHelper
+import com.tencent.smtt.sdk.QbSdk
 
 /**
  * Author:ColinLu
@@ -27,6 +28,17 @@ class App : Application() {
         super.onCreate()
         instance = this
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
+        QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
+            override fun onCoreInitFinished() {
+                Log.i("onCoreInitFinished:x5")
+            }
+
+            override fun onViewInitFinished(isX5: Boolean) {
+                Log.i("onViewInitFinished:isX5:$isX5")
+            }
+
+        })
+        QbSdk.setDownloadWithoutWifi(true)
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver())
     }
 

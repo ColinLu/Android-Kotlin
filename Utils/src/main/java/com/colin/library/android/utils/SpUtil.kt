@@ -3,9 +3,9 @@ package com.colin.library.android.utils
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.SparseArray
-import androidx.collection.ArrayMap
 import androidx.core.content.edit
 import com.colin.library.android.utils.helper.UtilHelper
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Author:ColinLu
@@ -21,7 +21,7 @@ class SpUtil private constructor() {
 
     companion object {
         private const val SP_NAME = "app_sp"
-        private val SP_MAP = ArrayMap<String?, SparseArray<SharedPreferences?>?>()
+        private val SP_MAP = ConcurrentHashMap<String, SparseArray<SharedPreferences>>()
 
         /**
          * 存值
@@ -167,16 +167,17 @@ class SpUtil private constructor() {
             getSp(name, mode).edit { clear() }
         }
 
+
         @Synchronized
         fun getSp(spName: String, mode: Int): SharedPreferences {
             var sparseArray = SP_MAP[spName]
             if (sparseArray == null) {
-                sparseArray = SparseArray<SharedPreferences?>()
-                val preferences: SharedPreferences? =
+                sparseArray = SparseArray<SharedPreferences>()
+                val preferences: SharedPreferences =
                     UtilHelper.getApplication().getSharedPreferences(spName, mode)
                 sparseArray.put(mode, preferences)
-                SP_MAP.put(spName, sparseArray)
-                return preferences!!
+                SP_MAP[spName] = sparseArray
+                return preferences
             } else {
                 var preferences = sparseArray.get(mode)
                 if (null == preferences) {

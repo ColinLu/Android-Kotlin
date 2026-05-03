@@ -7,7 +7,6 @@ plugins {
 android {
     namespace = "com.colin.android.demo.kotlin.aidl"
     compileSdk { version = release(libs.versions.compileSdk.get().toInt()) }
-
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -28,6 +27,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "21"
+        freeCompilerArgs += listOf(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
     }
 
     buildFeatures { aidl = true }

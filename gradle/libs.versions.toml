@@ -1,9 +1,9 @@
 [versions]
 applicationID = "com.colin.android.demo.kotlin"
 minSdk = "27"
-compileSdk = "36"
+compileSdk = "37"
 #noinspection EditedTargetSdkVersion
-targetSdk = "36"
+targetSdk = "37"
 versionCode = "1"
 versionName = "0.0.1"
 publishVersion = "0.0.2"
