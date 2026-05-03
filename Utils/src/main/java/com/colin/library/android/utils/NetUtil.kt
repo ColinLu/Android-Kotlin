@@ -61,22 +61,42 @@ object NetUtil {
         get() = isConnected(networkCapabilities)
 
 
-    /*判断当前网络是否是以太网*/
+    /**
+     * 判断当前网络是否是以太网
+     *
+     * @param capabilities 网络能力对象，默认为当前活动网络的能力
+     * @return true表示是以太网，false表示不是
+     */
     fun isEthernet(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
         return capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ?: false
     }
 
-    /*判断当前网络是否是Wifi*/
+    /**
+     * 判断当前网络是否是WiFi
+     *
+     * @param capabilities 网络能力对象，默认为当前活动网络的能力
+     * @return true表示是WiFi，false表示不是
+     */
     fun isWifi(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
         return capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ?: false
     }
 
-    /*判断当前网络是否是移动网*/
+    /**
+     * 判断当前网络是否是移动网络
+     *
+     * @param capabilities 网络能力对象，默认为当前活动网络的能力
+     * @return true表示是移动网络，false表示不是
+     */
     fun isCellular(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
         return capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ?: false
     }
 
-    /*判断是否联网*/
+    /**
+     * 判断当前网络是否已连接
+     *
+     * @param capabilities 网络能力对象，默认为当前活动网络的能力
+     * @return true表示已连接，false表示未连接
+     */
     fun isConnected(capabilities: NetworkCapabilities? = networkCapabilities): Boolean {
         return isEthernet(capabilities) || isWifi(capabilities) || isCellular(capabilities)
     }
@@ -99,7 +119,12 @@ object NetUtil {
         }
     }
 
-
+    /**
+     * 获取当前网络类型
+     *
+     * @param capabilities 网络能力对象，默认为当前活动网络的能力
+     * @return 网络类型枚举值
+     */
     @NetType
     @RequiresPermission(permission.ACCESS_NETWORK_STATE)
     fun getNetType(capabilities: NetworkCapabilities? = networkCapabilities): Int {

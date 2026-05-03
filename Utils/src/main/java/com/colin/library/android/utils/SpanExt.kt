@@ -22,7 +22,12 @@ import android.widget.TextView
  */
 fun CharSequence.toSizeSpan(range: IntRange, scale: Float = 1.5f): SpannableString {
     return SpannableString(this).apply {
-        setSpan(RelativeSizeSpan(scale), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(
+            RelativeSizeSpan(scale),
+            range.first,
+            range.last,
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        )
     }
 }
 
@@ -33,7 +38,12 @@ fun CharSequence.toSizeSpan(range: IntRange, scale: Float = 1.5f): SpannableStri
  */
 fun CharSequence.toColorSpan(range: IntRange, color: Int = Color.RED): SpannableString {
     return SpannableString(this).apply {
-        setSpan(ForegroundColorSpan(color), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(
+            ForegroundColorSpan(color),
+            range.first,
+            range.last,
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        )
     }
 }
 
@@ -44,7 +54,12 @@ fun CharSequence.toColorSpan(range: IntRange, color: Int = Color.RED): Spannable
  */
 fun CharSequence.toBackgroundColorSpan(range: IntRange, color: Int = Color.RED): SpannableString {
     return SpannableString(this).apply {
-        setSpan(BackgroundColorSpan(color), range.first, range.last, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        setSpan(
+            BackgroundColorSpan(color),
+            range.first,
+            range.last,
+            Spannable.SPAN_INCLUSIVE_EXCLUSIVE
+        )
     }
 }
 
@@ -60,14 +75,25 @@ fun CharSequence.toStrikeThroughtSpan(range: IntRange): SpannableString {
 
 /**
  * 将一段文字中指定range的文字添加颜色和点击事件
+ *
  * @param range 目标文字的范围
+ * @param color 文字颜色，默认红色
+ * @param isUnderlineText 是否显示下划线，默认不显示
+ * @param clickAction 点击回调
+ * @return SpannableString对象
  */
-fun CharSequence.toClickSpan(range: IntRange, color: Int = Color.RED, isUnderlineText: Boolean = false, clickAction: ()->Unit): SpannableString {
+fun CharSequence.toClickSpan(
+    range: IntRange,
+    color: Int = Color.RED,
+    isUnderlineText: Boolean = false,
+    clickAction: () -> Unit
+): SpannableString {
     return SpannableString(this).apply {
-        val clickableSpan = object : ClickableSpan(){
+        val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 clickAction()
             }
+
             override fun updateDrawState(ds: TextPaint) {
                 ds.color = color
                 ds.isUnderlineText = isUnderlineText
@@ -87,69 +113,91 @@ fun CharSequence.toStyleSpan(range: IntRange, style: Int = Typeface.BOLD): Spann
     }
 }
 
-/** TextView的扩展 **/
-fun TextView.sizeSpan(str: String = "", range: IntRange, scale: Float = 1.5f): TextView{
-    text = (if(str.isEmpty())text else str).toSizeSpan(range, scale)
+/**
+ * 设置TextView的部分文字大小
+ *
+ * @param str 文本内容，为空则使用当前text
+ * @param range 要改变大小的文字范围
+ * @param scale 缩放比例，大于1则更大，小于1则更小
+ * @return TextView实例
+ */
+fun TextView.sizeSpan(str: String = "", range: IntRange, scale: Float = 1.5f): TextView {
+    text = (if (str.isEmpty()) text else str).toSizeSpan(range, scale)
     return this
 }
 
-fun TextView.appendSizeSpan(str: String = "", scale: Float = 1.5f): TextView{
+/**
+ * 追加带大小效果的文本
+ *
+ * @param str 要追加的文本
+ * @param scale 缩放比例
+ * @return TextView实例
+ */
+fun TextView.appendSizeSpan(str: String = "", scale: Float = 1.5f): TextView {
     append(str.toSizeSpan(0..str.length, scale))
     return this
 }
 
-fun TextView.colorSpan(str: String = "", range: IntRange, color: Int = Color.RED): TextView{
-    text = (if(str.isEmpty())text else str).toColorSpan(range, color)
+fun TextView.colorSpan(str: String = "", range: IntRange, color: Int = Color.RED): TextView {
+    text = (if (str.isEmpty()) text else str).toColorSpan(range, color)
     return this
 }
 
-fun TextView.appendColorSpan(str: String = "", color: Int = Color.RED): TextView{
+fun TextView.appendColorSpan(str: String = "", color: Int = Color.RED): TextView {
     append(str.toColorSpan(0..str.length, color))
     return this
 }
 
-fun TextView.backgroundColorSpan(str: String = "", range: IntRange, color: Int = Color.RED): TextView{
+fun TextView.backgroundColorSpan(
+    str: String = "",
+    range: IntRange,
+    color: Int = Color.RED
+): TextView {
     text = (str.ifEmpty { text }).toBackgroundColorSpan(range, color)
     return this
 }
 
-fun TextView.appendBackgroundColorSpan(str: String = "", color: Int = Color.RED): TextView{
+fun TextView.appendBackgroundColorSpan(str: String = "", color: Int = Color.RED): TextView {
     append(str.toBackgroundColorSpan(0..str.length, color))
     return this
 }
 
-fun TextView.strikeThroughtSpan(str: String = "", range: IntRange): TextView{
+fun TextView.strikeThroughtSpan(str: String = "", range: IntRange): TextView {
     text = (str.ifEmpty { text }).toStrikeThroughtSpan(range)
     return this
 }
 
-fun TextView.appendStrikeThroughtSpan(str: String = ""): TextView{
+fun TextView.appendStrikeThroughtSpan(str: String = ""): TextView {
     append(str.toStrikeThroughtSpan(0..str.length))
     return this
 }
 
-fun TextView.clickSpan(str: String = "", range: IntRange,
-                       color: Int = Color.RED, isUnderlineText: Boolean = false,clickAction: ()->Unit): TextView{
+fun TextView.clickSpan(
+    str: String = "", range: IntRange,
+    color: Int = Color.RED, isUnderlineText: Boolean = false, clickAction: () -> Unit
+): TextView {
     movementMethod = LinkMovementMethod.getInstance()
     highlightColor = Color.TRANSPARENT  // remove click bg color
     text = (str.ifEmpty { text }).toClickSpan(range, color, isUnderlineText, clickAction)
     return this
 }
 
-fun TextView.appendClickSpan(str: String = "", color: Int = Color.RED,
-                             isUnderlineText: Boolean = false, clickAction: ()->Unit): TextView{
+fun TextView.appendClickSpan(
+    str: String = "", color: Int = Color.RED,
+    isUnderlineText: Boolean = false, clickAction: () -> Unit
+): TextView {
     movementMethod = LinkMovementMethod.getInstance()
     highlightColor = Color.TRANSPARENT  // remove click bg color
     append(str.toClickSpan(0..str.length, color, isUnderlineText, clickAction))
     return this
 }
 
-fun TextView.styleSpan(str: String = "", range: IntRange, style: Int = Typeface.BOLD): TextView{
+fun TextView.styleSpan(str: String = "", range: IntRange, style: Int = Typeface.BOLD): TextView {
     text = (str.ifEmpty { text }).toStyleSpan(range, style)
     return this
 }
 
-fun TextView.appendStyleSpan(str: String = "", style: Int = Typeface.BOLD): TextView{
+fun TextView.appendStyleSpan(str: String = "", style: Int = Typeface.BOLD): TextView {
     append(str.toStyleSpan(0..str.length, style))
     return this
 }

@@ -24,7 +24,12 @@ import kotlinx.coroutines.launch
  * Des   :ScopeExt
  */
 /**
- * 倒计时
+ * 倒计时功能（LifecycleOwner版本）
+ *
+ * @param time 倒计时总时长（秒），默认5秒
+ * @param start 倒计时开始回调
+ * @param next 每次倒计时更新回调
+ * @param end 倒计时结束回调
  */
 fun LifecycleOwner.countDown(
     time: Int = 5,
@@ -33,6 +38,15 @@ fun LifecycleOwner.countDown(
     end: () -> Unit
 ) = countDown(lifecycleScope, time, start, next, end)
 
+/**
+ * 倒计时功能（CoroutineScope版本）
+ *
+ * @param scope 协程作用域
+ * @param time 倒计时总时长（秒），默认5秒
+ * @param start 倒计时开始回调
+ * @param next 每次倒计时更新回调
+ * @param finish 倒计时结束回调
+ */
 fun countDown(
     scope: CoroutineScope,
     time: Int = 5,
@@ -42,32 +56,32 @@ fun countDown(
 ) {
     scope.launch {
         flow {
-            (time downTo 0).forEach {
-                Log.e("countDown downTo:${it}")
-                delay(ONE_SECOND.toLong())
-                emit(it)
+            for (i in time downTo 0) {
+                emit(i)
+                if (i > 0) delay(ONE_SECOND.toLong())
             }
         }.onStart {
-            Log.e("countDown onStart:$this")
-            // 倒计时开始 ，在这里可以让Button 禁止点击状态
             start(this@launch)
-        }.onCompletion {
-            // 倒计时结束 ，在这里可以让Button 恢复点击状态
-            Log.e("countDown finish:${it}")
-            finish()
+        }.onCompletion { cause ->
+            if (cause !is CancellationException) {
+                finish()
+            }
         }.catch {
-            // 处理异常，例如记录日志
-            Log.e("countDown catch:${it}")
+            Log.e("countDown error: ${it.message}")
         }.collect {
-            // 在这里 更新值来显示到UI
-            Log.e("countDown collect:$it")
             next(it)
         }
     }
 }
 
 /**
- * 倒计时
+ * 倒计时功能（简化版LifecycleOwner）
+ *
+ * @param total 倒计时总时长（秒）
+ * @param onNext 每次倒计时更新回调
+ * @param onStart 倒计时开始回调，可选
+ * @param onFinish 倒计时结束回调，可选
+ * @return Job对象，可用于取消倒计时
  */
 fun LifecycleOwner.countDown(
     total: Int, onNext: (Int) -> Unit, onStart: (() -> Unit) = {}, onFinish: (() -> Unit) = {}
@@ -77,6 +91,16 @@ fun LifecycleOwner.countDown(
     )
 }
 
+/**
+ * 倒计时功能（简化版CoroutineScope）
+ *
+ * @param scope 协程作用域
+ * @param total 倒计时总时长（秒）
+ * @param onNext 每次倒计时更新回调
+ * @param onStart 倒计时开始回调，可选
+ * @param onFinish 倒计时结束回调，可选
+ * @return Job对象，可用于取消倒计时
+ */
 fun countDown(
     scope: CoroutineScope,
     total: Int,
@@ -88,7 +112,7 @@ fun countDown(
         flow {
             for (i in total downTo 0) {
                 emit(i)
-                delay(1000)
+                if (i > 0) delay(1000)
             }
         }.flowOn(Dispatchers.Main).onStart { onStart() }.onCompletion { cause ->
             if (cause !is CancellationException) {

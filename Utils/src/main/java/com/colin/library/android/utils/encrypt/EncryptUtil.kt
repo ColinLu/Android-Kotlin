@@ -13,15 +13,27 @@ import javax.crypto.spec.SecretKeySpec
  * E-mail:945919945@qq.com
  * Create:2025-05-07 13:34
  *
- * Des   :EncryptUtil 加密工具类
+ * Des   :加密工具类，提供MD5和AES加密功能
  */
 class EncryptUtil {
     companion object {
+        /**
+         * MD5加密（字符串版本）
+         *
+         * @param value 待加密的字符串
+         * @return MD5哈希值（32位十六进制字符串），如果输入为空则返回空字符串
+         */
         @JvmStatic
         fun md5(value: String?): String {
             return if (value.isNullOrEmpty()) "" else md5(value.toByteArray(StandardCharsets.UTF_8))
         }
 
+        /**
+         * MD5加密（字节数组版本）
+         *
+         * @param bytes 待加密的字节数组
+         * @return MD5哈希值（32位十六进制字符串）
+         */
         @JvmStatic
         fun md5(bytes: ByteArray): String {
             return try {
@@ -33,7 +45,15 @@ class EncryptUtil {
             }
         }
 
-
+        /**
+         * AES加密（字符串版本）
+         *
+         * @param value 待加密的字符串
+         * @param key 加密密钥
+         * @param iv 初始化向量
+         * @param transformation 加密转换模式，默认AES/CBC/PKCS5Padding
+         * @return Base64编码的密文字符串，如果输入为空则返回空字符串
+         */
         @JvmStatic
         fun aes(
             value: String?, key: String, iv: String, transformation: String = DecryptUtil.TRANSFORMATION_AES
@@ -42,6 +62,15 @@ class EncryptUtil {
             else aes(value.toByteArray(StandardCharsets.UTF_8), key, iv, transformation)
         }
 
+        /**
+         * AES加密（字节数组版本）
+         *
+         * @param bytes 待加密的字节数组
+         * @param key 加密密钥
+         * @param iv 初始化向量
+         * @param transformation 加密转换模式，默认AES/CBC/PKCS5Padding
+         * @return Base64编码的密文字符串，失败返回空字符串
+         */
         @JvmStatic
         fun aes(
             bytes: ByteArray, key: String, iv: String, transformation: String = DecryptUtil.TRANSFORMATION_AES

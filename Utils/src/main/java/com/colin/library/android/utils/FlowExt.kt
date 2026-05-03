@@ -13,12 +13,21 @@ import kotlinx.coroutines.launch
  *
  * Des   :FlowExt
  */
+/**
+ * 在指定的生命周期状态下收集Flow数据
+ *
+ * @param owner 生命周期所有者
+ * @param state 生命周期状态，默认为STARTED
+ * @param collector 数据收集器
+ */
 fun <T> Flow<T>.collectOnLife(
     owner: LifecycleOwner,
     state: Lifecycle.State = Lifecycle.State.STARTED,
     collector: (T) -> Unit
 ) {
     owner.lifecycleScope.launch {
-        //repeatOnLifecycle(state) { collect(collector) }
+//        owner.repeatOnLifecycle(state) {
+//            collect(collector)
+//        }
     }
 }

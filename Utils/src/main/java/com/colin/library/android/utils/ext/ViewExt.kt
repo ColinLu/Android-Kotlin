@@ -1,26 +1,26 @@
 package com.colin.library.android.utils.ext
 
-import android.R.attr.action
+import android.os.SystemClock
 import android.view.View
-import com.colin.library.android.utils.INVALID
 import com.colin.library.android.utils.TIMEOUT_CLICK
 
-private var lastClickTime = INVALID.toLong()
+private var lastClickTime = 0L
 
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
  * Create:2025-05-01 02:52
  *
- * Des   :ViewExt
+ * Des   :View扩展函数，提供防抖点击和可见性控制
  */
 
 
 /**
- * 设置防止重复点击事件
- * @param views 需要设置点击事件的view
- * @param interval 时间间隔 默认0.5秒
- * @param onClick 点击触发的方法
+ * 为多个View设置防重复点击事件
+ *
+ * @param views 需要设置点击事件的View数组
+ * @param interval 时间间隔（毫秒），默认500毫秒
+ * @param click 点击回调
  */
 fun onClick(vararg views: View, interval: Long = TIMEOUT_CLICK, click: (View) -> Unit) {
     views.forEach {
@@ -29,13 +29,14 @@ fun onClick(vararg views: View, interval: Long = TIMEOUT_CLICK, click: (View) ->
 }
 
 /**
- * 防止重复点击事件 默认0.5秒内不可重复点击
- * @param interval 时间间隔 默认0.5秒
- * @param action 执行方法
+ * 为单个View设置防重复点击事件
+ *
+ * @param interval 时间间隔（毫秒），默认500毫秒
+ * @param click 点击回调
  */
 fun View.onClick(interval: Long = TIMEOUT_CLICK, click: (view: View) -> Unit) {
     setOnClickListener {
-        val current = System.currentTimeMillis()
+        val current = SystemClock.elapsedRealtime()
         if (lastClickTime != 0L && (current - lastClickTime < interval)) {
             return@setOnClickListener
         }
@@ -45,12 +46,17 @@ fun View.onClick(interval: Long = TIMEOUT_CLICK, click: (view: View) -> Unit) {
 }
 
 /**
- * 设置View的显示隐藏
- * @param visible true显示 false隐藏
+ * 设置View的显示/隐藏状态
+ *
+ * @param visible true显示，false隐藏（GONE）
  */
 fun View.visible(visible: Boolean) {
     visibility = if (visible) View.VISIBLE else View.GONE
 }
 
-
+/**
+ * 判断View是否可见
+ *
+ * @return true表示可见，false表示不可见
+ */
 fun View.isVisible() = this.visibility == View.VISIBLE

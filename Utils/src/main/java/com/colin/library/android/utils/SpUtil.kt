@@ -129,11 +129,12 @@ class SpUtil private constructor() {
         ) = getSp(name, mode).getStringSet(key, def)
 
         /**
-         * 查询Sp 是否保存某一个关键词
-         * @param key    关键字
-         * @param name SP 本地保存文件名
-         * @param mode   SP 保存模式
-         * @return 返回 true 含有 关键词  false  不含有 也可能 获取失败
+         * 查询SharedPreferences中是否包含指定key
+         *
+         * @param key 关键字
+         * @param name SP文件名
+         * @param mode SP保存模式
+         * @return true表示包含该key，false表示不包含
          */
         @JvmStatic
         @JvmOverloads
@@ -143,11 +144,11 @@ class SpUtil private constructor() {
 
 
         /**
-         * 移除
+         * 移除指定key的值
          *
-         * @param name SP 本地保存文件名
-         * @param mode   SP 保存模式
-         * @param key    移除关键字
+         * @param key 移除关键字
+         * @param name SP文件名
+         * @param mode SP保存模式
          */
         @JvmStatic
         @JvmOverloads
@@ -155,11 +156,12 @@ class SpUtil private constructor() {
             getSp(name, mode).edit { remove(key) }
         }
 
+
         /**
-         * 清除
+         * 清空指定SP文件的所有数据
          *
-         * @param spName SP 本地保存文件名
-         * @param mode   SP 保存模式
+         * @param name SP文件名
+         * @param mode SP保存模式
          */
         @JvmStatic
         @JvmOverloads
@@ -168,21 +170,27 @@ class SpUtil private constructor() {
         }
 
 
+        /**
+         * 获取SharedPreferences实例（带缓存）
+         *
+         * @param name SP文件名
+         * @param mode SP保存模式
+         * @return SharedPreferences实例
+         */
         @Synchronized
-        fun getSp(spName: String, mode: Int): SharedPreferences {
-            var sparseArray = SP_MAP[spName]
-            if (sparseArray == null) {
-                sparseArray = SparseArray<SharedPreferences>()
-                val preferences: SharedPreferences =
-                    UtilHelper.getApplication().getSharedPreferences(spName, mode)
-                sparseArray.put(mode, preferences)
-                SP_MAP[spName] = sparseArray
+        fun getSp(name: String, mode: Int): SharedPreferences {
+            var array = SP_MAP[name]
+            if (array == null) {
+                array = SparseArray<SharedPreferences>()
+                val preferences: SharedPreferences = UtilHelper.getApplication().getSharedPreferences(name, mode)
+                array.put(mode, preferences)
+                SP_MAP[name] = array
                 return preferences
             } else {
-                var preferences = sparseArray.get(mode)
+                var preferences = array.get(mode)
                 if (null == preferences) {
-                    preferences = UtilHelper.getApplication().getSharedPreferences(spName, mode)
-                    sparseArray.put(mode, preferences)
+                    preferences = UtilHelper.getApplication().getSharedPreferences(name, mode)
+                    array.put(mode, preferences)
                 }
                 return preferences!!
             }

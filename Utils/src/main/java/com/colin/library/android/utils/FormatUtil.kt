@@ -20,8 +20,12 @@ object FormatUtil {
     private const val INDENT_SPACES = 4
     private val LINE_SEPARATOR = System.lineSeparator()
 
+
     /**
-     * 格式化Json 字符串
+     * 格式化JSON字符串
+     *
+     * @param json 待格式化的JSON对象、数组或字符串
+     * @return 格式化后的JSON字符串，如果输入为null则返回null
      */
     @JvmStatic
     fun formatJson(json: Any?): String? {
@@ -33,15 +37,21 @@ object FormatUtil {
                 when {
                     isJSONObject(json) -> JSONObject(json).toString(INDENT_SPACES)
                     isJSONArray(json) -> JSONArray(json).toString(INDENT_SPACES)
-                    else -> json // Return the string as is if it's not JSON
+                    else -> json
                 }
             }
 
-            else -> "$json" // If it's not a JSONObject, JSONArray, or String, convert it to string
+            else -> "$json"
         }
-
     }
 
+
+    /**
+     * 格式化XML字符串
+     *
+     * @param xml 待格式化的XML字符串
+     * @return 格式化后的XML字符串，如果格式化失败则返回原字符串
+     */
     @JvmStatic
     fun formatXml(xml: String?): String? {
         if (xml == null) return null
@@ -59,12 +69,24 @@ object FormatUtil {
         return xml
     }
 
+    /**
+     * 判断字符串是否为JSONObject格式
+     *
+     * @param json 待判断的字符串
+     * @return true表示是JSONObject格式，false表示不是
+     */
     fun isJSONObject(json: String): Boolean {
-        return json.startsWith('{') and json.endsWith('}')
+        return json.startsWith('{') && json.endsWith('}')
     }
 
+    /**
+     * 判断字符串是否为JSONArray格式
+     *
+     * @param json 待判断的字符串
+     * @return true表示是JSONArray格式，false表示不是
+     */
     fun isJSONArray(json: String): Boolean {
-        return json.startsWith('[') and json.endsWith(']')
+        return json.startsWith('[') && json.endsWith(']')
     }
 
 }
