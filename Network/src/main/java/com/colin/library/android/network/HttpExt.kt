@@ -22,25 +22,6 @@ import java.io.IOException
 import java.io.InterruptedIOException
 import java.net.SocketException
 
-/**
- * 核心实现：通过ViewMode异步发起网络请求，支持延迟启动和自动重试机制。
- *
- * @param request 网络请求体。
- * @param result 成功时回调，接收响应数据 [T]。
- * @param state 状态变化回调，适用于各种业务状态反馈（包括成功、失败等）。
- * @param loading 用于网络请求状态弹框展示。
- * @param retry 最大重试次数。
- * @param delay 请求前延迟时间（毫秒）。
- * @return 返回 [Job]，可用于取消请求。
- */
-fun <T> ViewModel.request(
-    request: suspend () -> AppResponse<T>,
-    result: (suspend (T?) -> Unit) = { },
-    state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
-    loading: (suspend (Boolean) -> Unit) = {},
-    retry: Int = NetworkHelper.retry,
-    delay: Long = NetworkHelper.delay
-) = request(viewModelScope, request, result, state, loading, retry, delay)
 
 /**
  * 核心实现：异步发起网络请求，支持延迟启动和自动重试机制。
@@ -86,6 +67,26 @@ fun <T> request(
 }
 
 /**
+ * 核心实现：通过ViewMode异步发起网络请求，支持延迟启动和自动重试机制。
+ *
+ * @param request 网络请求体。
+ * @param result 成功时回调，接收响应数据 [T]。
+ * @param state 状态变化回调，适用于各种业务状态反馈（包括成功、失败等）。
+ * @param loading 用于网络请求状态弹框展示。
+ * @param retry 最大重试次数。
+ * @param delay 请求前延迟时间（毫秒）。
+ * @return 返回 [Job]，可用于取消请求。
+ */
+fun <T> ViewModel.request(
+    request: suspend () -> AppResponse<T>,
+    result: (suspend (T?) -> Unit) = { },
+    state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
+    loading: (suspend (Boolean) -> Unit) = {},
+    retry: Int = NetworkHelper.retry,
+    delay: Long = NetworkHelper.delay
+) = request(viewModelScope, request, result, state, loading, retry, delay)
+
+/**
  * 挂起函数版：适用于已处于协程上下文中的调用。
  *
  * @param request 网络请求体。
@@ -114,26 +115,6 @@ private suspend fun <T> requestResult(
 }
 
 /**
- * 通过 Flow 发起网络请求，适用于协程上下文中使用。
- *
- * @param request 网络请求体。
- * @param state 状态变化回调，适用于各种业务状态反馈（包括成功、失败等）。
- * @param loading 控制加载框显示或隐藏。
- * @return 返回解析后的数据结果 [T?]
- */
-suspend fun <T> requestFlow(
-    request: suspend () -> AppResponse<T>,
-    state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
-    loading: ((Boolean) -> Unit) = {}
-): T? {
-    var data: T? = null
-    val flow = requestResult(request, state, loading)
-    //7.调用collect获取emit()回调的结果，就是请求最后的结果
-    flow.collect { data = it }
-    return data
-}
-
-/**
  * 构建并返回一个 Flow，用于执行网络请求。
  *
  * 包含超时处理、异常捕获、加载状态切换等功能。
@@ -147,7 +128,8 @@ private suspend fun <T> requestResult(
     state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
     loading: ((Boolean) -> Unit) = {}
 ): Flow<T?> {
-    val flow = flow {//1.执行请求
+    //1.执行请求
+    val flow = flow {
         //设置超时时间
         val result = withTimeout(10 * 1000) { request() }
         //2.发送网络请求结果回调
@@ -167,6 +149,28 @@ private suspend fun <T> requestResult(
         }
     return flow
 }
+
+/**
+ * 通过 Flow 发起网络请求，适用于协程上下文中使用。
+ *
+ * @param request 网络请求体。
+ * @param state 状态变化回调，适用于各种业务状态反馈（包括成功、失败等）。
+ * @param loading 控制加载框显示或隐藏。
+ * @return 返回解析后的数据结果 [T?]
+ */
+suspend fun <T> requestFlow(
+    request: suspend () -> AppResponse<T>,
+    state: (suspend (Int, String) -> Unit) = { _, _ -> Unit },
+    loading: ((Boolean) -> Unit) = {}
+): T? {
+    var data: T? = null
+    val flow = requestResult(request, state, loading)
+    //7.调用collect获取emit()回调的结果，就是请求最后的结果
+    flow.collect { data = it }
+    return data
+}
+
+
 
 
 

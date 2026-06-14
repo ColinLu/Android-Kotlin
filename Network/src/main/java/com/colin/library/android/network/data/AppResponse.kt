@@ -13,10 +13,9 @@ import com.colin.library.android.utils.ZERO
  */
 
 open class AppResponse<T>(
-    private val code: Int = INVALID,
-    private val msg: String = "",
-    private val data: T? = null
+    private val code: Int = INVALID, private val msg: String = "", private val data: T? = null
 ) {
+    //判断是否网络请求成功
     open fun isSuccess() = getCode() == ZERO
 
     fun getCode() = code

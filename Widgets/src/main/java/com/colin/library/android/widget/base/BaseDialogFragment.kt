@@ -56,7 +56,9 @@ abstract class BaseDialogFragment(
     var offsetY: Int = DEFAULT_DIALOG_WINDOW_OFFSET
 
     var gravity: Int = DEFAULT_DIALOG_WINDOW_GRAVITY
-    var cancelable = true
+
+    //dialog是否支持点击取消
+    var dialogCancelable = true
 
     @FloatRange(from = 0.0, to = 1.0)
     var windowAmount = DEFAULT_WINDOW_AMOUNT
@@ -169,7 +171,7 @@ abstract class BaseDialogFragment(
             putInt(EXTRAS_BASE_GRAVITY, gravity)
             putInt(EXTRAS_BASE_ANIMATION, animation)
             putFloat(EXTRAS_WINDOW_AMOUNT, windowAmount)
-            putBoolean(EXTRAS_DIALOG_CANCELABLE, cancelable)
+            putBoolean(EXTRAS_DIALOG_CANCELABLE, dialogCancelable)
         }
     }
 
@@ -178,8 +180,8 @@ abstract class BaseDialogFragment(
 
     /*设置dialog window 属性*/
     open fun initWindow(dialog: Dialog, window: Window) {
-        dialog.setCancelable(cancelable)
-        dialog.setCanceledOnTouchOutside(cancelable)
+        dialog.setCancelable(dialogCancelable)
+        dialog.setCanceledOnTouchOutside(dialogCancelable)
         window.apply {
             // 透明背景
             setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
@@ -231,7 +233,7 @@ abstract class BaseDialogFragment(
                 windowAmount = it.getFloat(EXTRAS_WINDOW_AMOUNT, DEFAULT_WINDOW_AMOUNT)
             }
             if (it.containsKey(EXTRAS_DIALOG_CANCELABLE)) {
-                cancelable = it.getBoolean(EXTRAS_DIALOG_CANCELABLE, true)
+                dialogCancelable = it.getBoolean(EXTRAS_DIALOG_CANCELABLE, true)
             }
         }
     }

@@ -25,18 +25,20 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs += listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-Xjvm-default=all-compatibility"
-        )
+    kotlin {
+        jvmToolchain(libs.versions.versionJava.get().toInt())
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-Xjvm-default=all-compatibility"
+            )
+        }
     }
 
     buildFeatures { aidl = true }
 
     // 确保所有类都被包含
-    packagingOptions {
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }

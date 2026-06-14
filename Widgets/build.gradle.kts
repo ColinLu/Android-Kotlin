@@ -26,12 +26,14 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlinOptions {
-        jvmTarget = "21"
-        freeCompilerArgs += listOf(
-            "-opt-in=kotlin.RequiresOptIn",
-            "-Xjvm-default=all-compatibility"
-        )
+    kotlin {
+        jvmToolchain(libs.versions.versionJava.get().toInt())
+        compilerOptions {
+            freeCompilerArgs.addAll(
+                "-opt-in=kotlin.RequiresOptIn",
+                "-Xjvm-default=all-compatibility"
+            )
+        }
     }
     publishing {
         singleVariant("release") {

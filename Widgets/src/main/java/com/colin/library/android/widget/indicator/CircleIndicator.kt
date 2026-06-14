@@ -43,8 +43,8 @@ class CircleIndicator @JvmOverloads constructor(
             val indicatorWidth =
                 if (config.getCurrentPosition() == i) config.getSelectedWidth() else config.getNormalWidth()
             val radius = if (config.getCurrentPosition() == i) mSelectedRadius else mNormalRadius
-            canvas.drawCircle(left + radius, maxRadius.toFloat(), radius.toFloat(), paint)
-            left += (indicatorWidth + config.getIndicatorSpace()).toFloat()
+            canvas.drawCircle(left + radius, maxRadius, radius, paint)
+            left += (indicatorWidth + config.getIndicatorSpace())
         }
     }
 }

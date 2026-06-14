@@ -42,12 +42,12 @@ class RectangleIndicator @JvmOverloads constructor(
                 if (config.getCurrentPosition() == i) config.getSelectedColor() else config.getNormalColor()
             val width =
                 if (config.getCurrentPosition() == i) config.getSelectedWidth() else config.getNormalWidth()
-            rectF[left, 0f, left + width] = config.getHeight().toFloat()
+            rectF[left, 0f, left + width] = config.getHeight()
             left += (width + config.getIndicatorSpace())
             canvas.drawRoundRect(
                 rectF,
-                config.getRadius().toFloat(),
-                config.getRadius().toFloat(),
+                config.getRadius(),
+                config.getRadius(),
                 paint
             )
         }

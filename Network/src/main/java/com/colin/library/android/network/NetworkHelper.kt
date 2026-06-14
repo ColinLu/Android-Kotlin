@@ -48,7 +48,7 @@ object NetworkHelper {
     const val HTTP_PARSE_ERROR = 1001//"解析错误"
     const val HTTP_NETWORK_ERROR = 1002//"网络异常，请尝试刷新"
     const val HTTP_SSL_ERROR = 1004//"证书出错"
-    const val HTTP_UNKONW_HOST = 1005//"未知Host"
+    const val HTTP_HOST_UNKONW = 1005//"未知Host"
 
     private const val DELAY: Long = 0L
     private const val RETRY: Int = 3
@@ -75,10 +75,9 @@ object NetworkHelper {
     @Volatile
     var timeout: Long = TIMEOUT
 
-    var gson: Gson =
-        GsonBuilder().setStrictness(Strictness.LENIENT)
-            .registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
-            .registerTypeAdapter(String::class.java, StringTypeAdapter()).create()
+    var gson: Gson = GsonBuilder().setStrictness(Strictness.LENIENT)
+        .registerTypeAdapter(Int::class.java, IntegerTypeAdapter())
+        .registerTypeAdapter(String::class.java, StringTypeAdapter()).create()
 
 
     fun addInterceptor(interceptor: Interceptor) = apply {
@@ -103,12 +102,11 @@ object NetworkHelper {
         return builder.build()
     }
 
-    fun createLoggingInterceptor(tag: String = "okhttp") =
-        HttpLoggingInterceptor { message ->
-            Log.i(tag, message)
-        }.also {
-            it.level = if (UtilHelper.isDebug()) Level.BODY else Level.BASIC
-        }
+    fun createLoggingInterceptor(tag: String = "okhttp") = HttpLoggingInterceptor { message ->
+        Log.i(tag, message)
+    }.also {
+        it.level = if (UtilHelper.isDebug()) Level.BODY else Level.BASIC
+    }
 
     fun createNetworkInterceptor() = object : Interceptor {
         override fun intercept(chain: Interceptor.Chain): Response {
@@ -140,7 +138,7 @@ object NetworkHelper {
                 HTTP_TIMEOUT, "$e"
             )
 
-            is java.net.UnknownHostException -> state.invoke(HTTP_UNKONW_HOST, "$e")
+            is java.net.UnknownHostException -> state.invoke(HTTP_HOST_UNKONW, "$e")
 
             is JsonParseException, is JSONException, is ParseException, is MalformedJsonException -> {
                 state.invoke(HTTP_PARSE_ERROR, "$e")
