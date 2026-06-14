@@ -1,8 +1,13 @@
 pluginManagement {
     repositories {
-        maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
+        // 阿里云镜像(优先)
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        // Gitee 仓库
         maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
+        // JitPack
         maven { url = uri("https://jitpack.io") }
+        // Google Maven
         google {
             content {
                 includeGroupByRegex("com\\.android.*")
@@ -10,17 +15,25 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        // Maven Central
         mavenCentral()
+        // Gradle Plugin Portal
         gradlePluginPortal()
     }
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        maven { url = uri("https://info-maven.apps.saic-gm.com/repository/maven-public/") }
+        // 阿里云镜像(优先)
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
+        // Gitee 仓库
         maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
+        // JitPack
         maven { url = uri("https://jitpack.io") }
+        // Google Maven
         google()
+        // Maven Central
         mavenCentral()
     }
 }

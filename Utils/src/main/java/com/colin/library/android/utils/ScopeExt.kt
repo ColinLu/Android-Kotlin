@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Author:ColinLu
@@ -112,7 +113,7 @@ fun countDown(
         flow {
             for (i in total downTo 0) {
                 emit(i)
-                if (i > 0) delay(1000)
+                if (i > 0) delay(1000.milliseconds)
             }
         }.flowOn(Dispatchers.Main).onStart { onStart() }.onCompletion { cause ->
             if (cause !is CancellationException) {

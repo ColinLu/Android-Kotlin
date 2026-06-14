@@ -7,6 +7,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+!local.properties.template
 
 # Compiled class file
 *.class

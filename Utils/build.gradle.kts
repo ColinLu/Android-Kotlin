@@ -39,7 +39,6 @@ android {
     }
     publishing {
         singleVariant("release") {
-            // 可以在这里添加更多配置选项
             withSourcesJar()
             withJavadocJar()
         }
@@ -51,36 +50,6 @@ dependencies {
     compileOnly(libs.gson)
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            groupId = libs.versions.publishGroup.get()
-            artifactId = libs.versions.publishUtils.get()
-            version = libs.versions.publishVersion.get()
-            afterEvaluate {
-                from(components["release"])
-            }
-        }
-    }
-    publishing.repositories {
-        maven {
-            url = uri("/Users/Colin/Projects/Maven/Repository")
-        }
-        maven {
-            val properties = Properties().apply {
-                load(project.rootProject.file("local.properties").inputStream())
-            }
-            url = uri(
-                properties.getProperty("gitee.url")
-                    ?: "https://gitee.com/ColinTeam/maven/raw/master/repository"
-            )
-            credentials {
-                username = properties.getProperty("gitee.user") ?: ""
-                password = properties.getProperty("gitee.pwd") ?: ""
-            }
-        }
-    }
-}
-
-//apply(from = "publish_utils.gradle.kts")
+// 应用统一发布配置
+apply(from = rootProject.file("publish-config.gradle.kts"))
 

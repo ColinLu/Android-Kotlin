@@ -1,0 +1,34 @@
+# ==========================================
+# 发布配置说明
+# ==========================================
+
+# 发布目标: local(本地) / gitee / github
+publish.target=local
+
+# 通用发布配置
+publish.group=com.colin.library.android
+publish.version=0.0.2
+
+# 本地仓库路径
+publish.local.path=/Users/Colin/Projects/Maven/Repository
+
+# ==========================================
+# Gitee 配置
+# ==========================================
+gitee.url=https://gitee.com/ColinTeam/maven/raw/master/repository
+gitee.user=你的Gitee用户名
+gitee.pwd=你的Gitee密码或私人令牌
+
+# ==========================================
+# GitHub Packages 配置
+# ==========================================
+github.user=你的GitHub用户名
+github.token=你的GitHub Personal Access Token (需要 read:packages, write:packages 权限)
+
+# ==========================================
+# 使用说明
+# ==========================================
+# 1. 修改上面的配置项，填入你的账号信息
+# 2. 不要将 local.properties 提交到版本控制
+# 3. GitHub Token 生成: https://github.com/settings/tokens
+# 4. Gitee 私人令牌生成: https://gitee.com/profile/personal_access_tokens

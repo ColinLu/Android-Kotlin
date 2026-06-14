@@ -37,7 +37,6 @@ android {
     }
     publishing {
         singleVariant("release") {
-            // 可以在这里添加更多配置选项
             withSourcesJar()
             withJavadocJar()
         }
@@ -56,20 +55,5 @@ dependencies {
     compileOnly(project(":Utils"))
 }
 
-publishing {
-    publications {
-        create<MavenPublication>("release") {
-            groupId = libs.versions.publishGroup.get()
-            artifactId = libs.versions.publishWidgets.get()
-            version = libs.versions.publishVersion.get()
-            afterEvaluate {
-                from(components["release"])
-            }
-        }
-    }
-    publishing.repositories {
-        maven {
-            url = uri("/Users/Colin/Projects/Maven/Repository")
-        }
-    }
-}
+// 应用统一发布配置
+apply(from = rootProject.file("publish-config.gradle.kts"))
