@@ -16,6 +16,9 @@
             android:id="@+id/video"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_0"
+            android:orientation="horizontal"
+            app:use_controller="true"
+            app:resize_mode="fit"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/menu"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,12 +26,12 @@
 
         <com.colin.android.demo.kotlin.ui.RefreshListLayout
             android:id="@+id/menu"
-            android:visibility="gone"
             android:layout_width="@dimen/dp_0"
             android:layout_height="@dimen/dp_0"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/video"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/video"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

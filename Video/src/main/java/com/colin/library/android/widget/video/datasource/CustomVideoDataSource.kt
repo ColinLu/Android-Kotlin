@@ -85,9 +85,8 @@ class CustomVideoDataSource(private val context: Context) : DataSource {
         currentDataSource?.close()
         currentDataSource = dataSource.apply {
             listeners.forEach { addTransferListener(it) }
-            open(spec)
         }
-        return spec.length
+        return dataSource.open(spec)
     }
 
     /**
@@ -114,8 +113,8 @@ class CustomVideoDataSource(private val context: Context) : DataSource {
             setCache(VideoMediaManager.mediaCache)
             setUpstreamDataSourceFactory(createHttpDataSourceFactory())
             setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
-            // 改进：使用URI+时间戳避免缓存冲突
-            setCacheKeyFactory { dataSpec -> "${dataSpec.uri}_${System.currentTimeMillis()}" }
+            // 修复：使用稳定的 URI 作为缓存 Key，避免使用时间戳导致缓存失效
+            setCacheKeyFactory { dataSpec -> dataSpec.key ?: dataSpec.uri.toString() }
         }.createDataSource()
     }
 
@@ -129,6 +128,10 @@ class CustomVideoDataSource(private val context: Context) : DataSource {
 //                .addNetworkInterceptor(VideoAesInterceptor())
                 .build()
         )
+
+
+//        return OkHttpDataSource.Factory(okHttpClient)
+//            .setUserAgent(Util.getUserAgent(context, context.packageName))
     }
 
     /**

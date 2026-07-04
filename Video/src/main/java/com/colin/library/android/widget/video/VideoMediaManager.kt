@@ -1,16 +1,14 @@
 package com.colin.library.android.widget.video
 
+import android.content.ComponentName
 import android.content.Context
-import android.net.Uri
-import androidx.core.net.toUri
-import androidx.media3.common.MediaItem
+import androidx.media3.common.C
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.cache.CacheDataSource
 import androidx.media3.datasource.cache.LeastRecentlyUsedCacheEvictor
 import androidx.media3.datasource.cache.SimpleCache
-import androidx.media3.datasource.okhttp.OkHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.DefaultRenderersFactory.EXTENSION_RENDERER_MODE_ON
@@ -23,9 +21,14 @@ import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import androidx.media3.exoplayer.trackselection.TrackSelector
 import androidx.media3.exoplayer.upstream.DefaultLoadErrorHandlingPolicy
+import androidx.media3.session.MediaController
+import androidx.media3.session.SessionToken
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.helper.UtilHelper
-import okhttp3.OkHttpClient
+import com.colin.library.android.widget.video.datasource.CustomVideoDataSource
+import com.colin.library.android.widget.video.service.VideoMediaService
+import com.google.common.util.concurrent.ListenableFuture
+import com.google.common.util.concurrent.MoreExecutors
 import java.io.File
 
 /**
@@ -36,18 +39,19 @@ import java.io.File
  * Des   :管理视频多媒体构建+释放等操作
  */
 @UnstableApi
-object VideoMediaManager {
+object VideoMediaManager : Player.Listener {
     // 缓冲设置（单位：毫秒）
-    private const val MIN_BUFFER_MS = 15000 // 降低最小缓冲（首次加载更快）
-    private const val MAX_BUFFER_MS = 30000 // 降低最大缓冲（减少内存占用）
-    private const val PLAYBACK_BUFFER_MS = 3000 // 播放缓冲
-    private const val REBUFFER_BUFFER_MS = 5000 // 重新缓冲
+    private const val MIN_BUFFER_MS = 15_000 // 降低最小缓冲（首次加载更快）
+    private const val MAX_BUFFER_MS = 30_000 // 降低最大缓冲（减少内存占用）
+    private const val PLAYBACK_BUFFER_MS = 3_000 // 播放缓冲
+    private const val REBUFFER_BUFFER_MS = 5_000 // 重新缓冲
 
     // 缓存最大容量：200MB
-    private const val MAX_CACHE_SIZE = 200 * 1024 * 1024L
+    private const val MAX_CACHE_SIZE = 1L * 1024 * 1024 * 1024
 
     // ExoPlayer 实例（单例）
     private var exoPlayer: ExoPlayer? = null
+    private var controllerFuture: ListenableFuture<MediaController>? = null
 
 
     /**
@@ -62,12 +66,6 @@ object VideoMediaManager {
         )
     }
 
-    /**
-     * 构建音频播放器
-     */
-    fun getAudioExoPlayer(context: Context): ExoPlayer {
-        return ExoPlayer.Builder(context).build()
-    }
 
     /**
      * 获取或创建 ExoPlayer 实例,构建的时候不能prepare()
@@ -82,42 +80,44 @@ object VideoMediaManager {
         }
     }
 
+    // 连接后台MediaSessionService
+    fun connectSessionToken(context: Context) {
+        val componentName = ComponentName(context, VideoMediaService::class.java)
+        val token = SessionToken(context, componentName)
+        val future = MediaController.Builder(context, token)
+            .buildAsync().also { controllerFuture = it }
+        future.addListener(
+            { future.get().also { it.addListener(this) } },
+            MoreExecutors.directExecutor()
+        )
+    }
+
 
     /**
      * 创建并配置 MediaPlayer 实例
      * 包括 TrackSelector、LoadControl、RenderersFactory、MediaSourceFactory
-     */
+    //     */
     fun createMediaPlayer(context: Context): ExoPlayer {
         return ExoPlayer.Builder(context)
+            .setWakeMode(C.WAKE_MODE_NETWORK)
             .setTrackSelector(createTrack(context))
-            .setLoadControl(createLoadControl()).setRenderersFactory(
+            .setLoadControl(createLoadControl())
+            .setRenderersFactory(
                 DefaultRenderersFactory(context).apply {
                     setExtensionRendererMode(EXTENSION_RENDERER_MODE_ON)
                     setMediaCodecSelector(MediaCodecSelector.PREFER_SOFTWARE)
                     setEnableAudioFloatOutput(true)
-                }).setMediaSourceFactory(createMediaSourceFactory())
+                }).setMediaSourceFactory(createMediaSourceFactory(context))
             .setUsePlatformDiagnostics(true) // 启用原生日志
             .build()
     }
 
-    fun createMediaItem(context: Context, source: Any): MediaItem {
-        return when (source) {
-            is String -> when {
-                source.startsWith("http") -> MediaItem.fromUri(source)
-                source.startsWith("asset") -> MediaItem.fromUri(source)
-                else -> MediaItem.fromUri(source.toUri())
-            }
-
-            is Uri -> MediaItem.fromUri(source)
-            is Int -> MediaItem.fromUri("android.resource://${context.packageName}/$source")
-            else -> throw IllegalArgumentException("Unsupported media source type")
-        }
-    }
 
     /**
      * 释放资源，通常在应用退出或不再需要播放器时调用
      */
     fun release() {
+        controllerFuture?.get()?.release()
         exoPlayer?.release()
         mediaCache.release()
     }
@@ -125,7 +125,7 @@ object VideoMediaManager {
     /**
      * 创建轨道选择器，默认选择 SD 分辨率视频轨道
      */
-    private fun createTrack(context: Context): TrackSelector {
+    fun createTrack(context: Context): TrackSelector {
         return DefaultTrackSelector(context).apply {
             parameters = buildUponParameters().setMaxVideoSizeSd().build() // 默认选择SD画质
         }
@@ -134,20 +134,20 @@ object VideoMediaManager {
     /**
      * 创建加载控制器，控制缓冲行为
      */
-    private fun createLoadControl(): LoadControl {
+    fun createLoadControl(): LoadControl {
         return DefaultLoadControl.Builder().setBufferDurationsMs(
             MIN_BUFFER_MS, MAX_BUFFER_MS, PLAYBACK_BUFFER_MS, REBUFFER_BUFFER_MS
         ).setPrioritizeTimeOverSizeThresholds(true).setBackBuffer(REBUFFER_BUFFER_MS, true).build()
     }
 
-    private fun createMediaSourceFactory(): MediaSource.Factory {
-        return DefaultMediaSourceFactory(createHttpDataSourceFactory()).apply {
+    fun createMediaSourceFactory(context: Context): MediaSource.Factory {
+        return DefaultMediaSourceFactory(createDataSourceFactory(context)).apply {
             setLoadErrorHandlingPolicy(DefaultLoadErrorHandlingPolicy(3))
         }
     }
 
-    private fun createHlsMediaSourceFactory(): MediaSource.Factory {
-        return HlsMediaSource.Factory(createCacheDataSourceFactory()) // 使用缓存数据源
+    fun createHlsMediaSourceFactory(context: Context): MediaSource.Factory {
+        return HlsMediaSource.Factory(createCacheDataSourceFactory(context)) // 使用缓存数据源
             .setAllowChunklessPreparation(true)  // 必需：解决首次元数据加载
             .setUseSessionKeys(true)            // 必需：支持加密流
             .setLoadErrorHandlingPolicy(DefaultLoadErrorHandlingPolicy(3))
@@ -156,14 +156,14 @@ object VideoMediaManager {
     /**
      * 播放器支持缓存
      */
-    fun createCacheDataSourceFactory(): DataSource.Factory {
+    fun createCacheDataSourceFactory(context: Context): DataSource.Factory {
         return CacheDataSource.Factory().apply {
             setCache(mediaCache)
-            setUpstreamDataSourceFactory(createHttpDataSourceFactory())
+            setUpstreamDataSourceFactory(createDataSourceFactory(context))
             setFlags(CacheDataSource.FLAG_IGNORE_CACHE_ON_ERROR)
             setCacheKeyFactory { dataSpec ->
-                // 改进：使用URI+时间戳避免缓存冲突
-                "${dataSpec.uri}_${System.currentTimeMillis()}"
+                // 修复：使用稳定的 URI 作为缓存 Key，避免使用时间戳导致缓存失效
+                dataSpec.key ?: dataSpec.uri.toString()
             }
         }
     }
@@ -171,13 +171,14 @@ object VideoMediaManager {
     /**
      * 播放器不带缓存
      */
-    fun createHttpDataSourceFactory(): DataSource.Factory {
-        return OkHttpDataSource.Factory(
-            OkHttpClient.Builder()
-//                .addNetworkInterceptor(NetworkHelper.createLoggingInterceptor("media_http"))
-//                .addNetworkInterceptor(VideoAesInterceptor())
-                .build()
-        )
+    fun createDataSourceFactory(context: Context): DataSource.Factory {
+        return CustomVideoDataSource.Factory(context)
+//        return OkHttpDataSource.Factory(
+//            OkHttpClient.Builder()
+////                .addNetworkInterceptor(NetworkHelper.createLoggingInterceptor("media_http"))
+////                .addNetworkInterceptor(VideoAesInterceptor())
+//                .build()
+//        )
     }
 
 

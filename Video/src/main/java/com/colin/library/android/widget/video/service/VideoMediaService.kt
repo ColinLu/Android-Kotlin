@@ -38,7 +38,6 @@ class VideoMediaService : MediaSessionService(), Player.Listener {
         Log.e("VideoMediaService onCreate")
         VideoMediaManager.getMediaPlayer(this).also {
             it.addListener(this)
-            // 基于已创建的ExoPlayer创建MediaSession
             mediaSession = MediaSession.Builder(this, it).setCallback(mediaSessionCallback).build()
             Log.d("VideoMediaService player init")
         }

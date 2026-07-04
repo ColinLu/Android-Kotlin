@@ -7,6 +7,8 @@ import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.media3.common.Player
+import androidx.media3.common.util.UnstableApi
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -17,11 +19,18 @@ import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ToastUtil
+import com.colin.library.android.widget.video.VideoMediaManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-
-class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
+@UnstableApi
+class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>(), Player.Listener {
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        VideoMediaManager.connectSessionToken(this)
+    }
 
     override fun onResume() {
         super.onResume()
@@ -34,8 +43,11 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     }
 
     override fun onDestroy() {
+        VideoMediaManager.release()
         super.onDestroy()
     }
+
+    override fun getContext(): Context = this
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         enableEdgeToEdge()
@@ -94,6 +106,4 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         val menuItem = menu?.findItem(res) ?: return
         menuItem.isVisible = visible
     }
-
-    override fun getContext(): Context = this
 }

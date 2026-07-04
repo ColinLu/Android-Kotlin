@@ -52,6 +52,7 @@ kotlin {
 
 dependencies {
     implementation(libs.bundles.androidCommon)
+    compileOnly(libs.squareup.okhttp)
     compileOnly(libs.bundles.media)
     compileOnly(project(":Utils"))
     compileOnly(project(":Widgets"))

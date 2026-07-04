@@ -9,9 +9,6 @@ import android.view.GestureDetector
 import android.view.MotionEvent
 import androidx.annotation.OptIn
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
@@ -31,20 +28,20 @@ import kotlin.math.abs
 @OptIn(UnstableApi::class)
 class VideoMediaView @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
-) : PlayerView(context, attrs, defStyleAttr), LifecycleEventObserver, Player.Listener {
+) : PlayerView(context, attrs, defStyleAttr), Player.Listener {
     companion object Companion {
-        const val ONE_SECOND = 1000L
+        const val ONE_SECOND = 1_000L
         const val DELAY_TIME = 50L
         const val TOUCH_RANGE = 50F
     }
 
+    private val gestureDetector by lazy {
+        GestureDetector(context, gestureListener).apply { setIsLongpressEnabled(false) }
+    }
     private val gestureTypeView by lazy {
         findViewById<GestureTypeView>(R.id.videoGestureType)?.apply {
             onProgressListener = ::updateGestureTypeValue
         }
-    }
-    private val gestureDetector by lazy {
-        GestureDetector(context, gestureListener).apply { setIsLongpressEnabled(false) }
     }
 
     //音频管理器
@@ -56,23 +53,6 @@ class VideoMediaView @JvmOverloads constructor(
     private val window = if (context is Activity) context.window else null
     private var discardTouchEvent = false
     var onProgressListener: ((Long) -> Unit)? = null
-
-
-    @SuppressLint("CutPasteId")
-    override fun onStateChanged(
-        source: LifecycleOwner, event: Lifecycle.Event
-    ) {
-        Log.i("onStateChanged event:$event")
-        when (event) {
-            Lifecycle.Event.ON_RESUME -> onResume()
-
-            Lifecycle.Event.ON_PAUSE -> onPause()
-
-            Lifecycle.Event.ON_DESTROY -> onRelease()
-
-            else -> {}
-        }
-    }
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -127,6 +107,11 @@ class VideoMediaView @JvmOverloads constructor(
         player = null
     }
 
+    fun setFullScreen(isFullscreen: Boolean) {
+        setFullscreenButtonState(isFullscreen)
+
+    }
+
     override fun onIsPlayingChanged(isPlaying: Boolean) {
         if (isPlaying) {
             postDelayed(progressRunnable, ONE_SECOND)
@@ -135,15 +120,12 @@ class VideoMediaView @JvmOverloads constructor(
         }
     }
 
-    fun isPlaying() = player?.isPlaying == true
-
-    /**
-     * 绑定生命周期和播放器实例
-     */
-    fun bind(lifecycle: Lifecycle, player: Player) {
-        lifecycle.addObserver(this)
+    fun bind(player: Player) {
         this.player = player.also { it.addListener(this) }
     }
+
+    fun isPlaying() = player?.isPlaying == true
+
 
     fun setVolume(volume: Float) {
         player?.volume = volume
@@ -283,7 +265,8 @@ class VideoMediaView @JvmOverloads constructor(
     }
 
     private fun maybeDiscardTouchEvent(event: MotionEvent): Boolean {
-        discardTouchEvent = gestureTypeView != null && (event.x < TOUCH_RANGE || event.x > width - TOUCH_RANGE || event.y < TOUCH_RANGE || event.y > height - TOUCH_RANGE)
+        discardTouchEvent =
+            gestureTypeView != null && (event.x < TOUCH_RANGE || event.x > width - TOUCH_RANGE || event.y < TOUCH_RANGE || event.y > height - TOUCH_RANGE)
         return discardTouchEvent
     }
 }

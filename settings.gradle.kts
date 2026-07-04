@@ -3,6 +3,7 @@ pluginManagement {
         // 阿里云镜像(优先)
         maven { url = uri("https://maven.aliyun.com/repository/public") }
         maven { url = uri("https://maven.aliyun.com/repository/google") }
+        maven { url = uri("https://maven.aliyun.com/repository/gradle-plugin") }
         // Gitee 仓库
         maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
         // JitPack
@@ -24,9 +25,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
+        maven { url = uri("https://maven.aliyun.com/repository/google") }
         // 阿里云镜像(优先)
         maven { url = uri("https://maven.aliyun.com/repository/public") }
-        maven { url = uri("https://maven.aliyun.com/repository/google") }
         // Gitee 仓库
         maven { url = uri("https://gitee.com/ColinTeam/maven/raw/master/repository") }
         // JitPack

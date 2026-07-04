@@ -2,25 +2,60 @@ package com.colin.android.demo.kotlin.ui.widget.video
 
 import android.os.Bundle
 import androidx.annotation.OptIn
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.colin.android.demo.kotlin.R
+import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
-import com.colin.android.demo.kotlin.databinding.FragmentVideoBinding
-import com.colin.android.demo.kotlin.ui.slideshow.SlideshowViewModel
-import com.colin.library.android.widget.video.VideoMediaManager
+import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
+import com.colin.android.demo.kotlin.dialog.DialogVideoPlayer
+import com.colin.library.android.widget.recycler.SpaceItemDecoration
+import kotlinx.coroutines.launch
 
-class VideoFragment : AppFragment<FragmentVideoBinding, SlideshowViewModel>() {
+@OptIn(UnstableApi::class)
+class VideoFragment : AppFragment<LayoutRefreshListBinding, VideoViewModel>(), Player.Listener {
+    private val adapter by lazy { StringAdapter() }
 
-    @OptIn(UnstableApi::class)
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        val player = VideoMediaManager.getMediaPlayer(requireContext())
-        viewBinding.video.bind(lifecycle, player)
+        viewBinding.apply {
+            refresh.setColorSchemeResources(
+                R.color.purple_200, R.color.purple_500, R.color.purple_700
+            )
+            refresh.setOnRefreshListener { loadData(true) }
 
-        // Use a test video URL
-        val videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-        viewBinding.video.play(MediaItem.fromUri(videoUrl))
+            list.apply {
+                this.layoutManager = LinearLayoutManager(requireActivity())
+                this.adapter = this@VideoFragment.adapter
+                this.addItemDecoration(SpaceItemDecoration(space = 5))
+            }
+            adapter.onItemClickListener = { _, item, position ->
+                play(item)
+            }
+        }
+    }
+
+    private fun play(url: String) {
+        val item = MediaItem.fromUri(url)
+        DialogVideoPlayer(item).show(childFragmentManager, "VideoPlayerDialog")
     }
 
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
+        lifecycleScope.launch {
+            viewModel.list.flowWithLifecycle(lifecycle).collect {
+                adapter.submitList(it)
+                viewBinding.refresh.isRefreshing = false
+            }
+        }
+
     }
+
+    override fun loadData(refresh: Boolean) {
+        viewModel.loadData()
+    }
+
+
 }
