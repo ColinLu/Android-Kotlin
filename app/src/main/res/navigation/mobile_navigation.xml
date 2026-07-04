@@ -57,6 +57,37 @@
         android:name="com.colin.android.demo.kotlin.ui.video.VideoFragment"
         android:label="@string/title_video"
         tools:layout="@layout/fragment_video"/>
+
+    <fragment
+        android:id="@+id/fragment_aidl"
+        android:name="com.colin.android.demo.kotlin.ui.module.AidlFragment"
+        android:label="@string/method_aidl"
+        tools:layout="@layout/layout_refresh_list" />
+
+    <fragment
+        android:id="@+id/fragment_network"
+        android:name="com.colin.android.demo.kotlin.ui.module.NetworkFragment"
+        android:label="@string/method_http"
+        tools:layout="@layout/layout_refresh_list" />
+
+    <fragment
+        android:id="@+id/fragment_nfc"
+        android:name="com.colin.android.demo.kotlin.ui.module.NfcFocusFragment"
+        android:label="@string/method_nfc"
+        tools:layout="@layout/layout_refresh_list" />
+
+    <fragment
+        android:id="@+id/fragment_utils"
+        android:name="com.colin.android.demo.kotlin.ui.module.UtilsFragment"
+        android:label="@string/todo"
+        tools:layout="@layout/layout_refresh_list" />
+
+    <fragment
+        android:id="@+id/fragment_widgets"
+        android:name="com.colin.android.demo.kotlin.ui.module.WidgetsFragment"
+        android:label="@string/todo"
+        tools:layout="@layout/layout_refresh_list" />
+
     <action
         android:id="@+id/action_to_log"
         app:destination="@+id/fragment_log"
@@ -74,4 +105,19 @@
     <action
         android:id="@+id/action_video"
         app:destination="@+id/fragment_video" />
+    <action
+        android:id="@+id/action_aidl"
+        app:destination="@+id/fragment_aidl" />
+    <action
+        android:id="@+id/action_network"
+        app:destination="@+id/fragment_network" />
+    <action
+        android:id="@+id/action_nfc"
+        app:destination="@+id/fragment_nfc" />
+    <action
+        android:id="@+id/action_utils"
+        app:destination="@+id/fragment_utils" />
+    <action
+        android:id="@+id/action_widgets"
+        app:destination="@+id/fragment_widgets" />
 </navigation>

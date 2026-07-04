@@ -8,6 +8,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.config.UtilConfig
 import com.colin.library.android.utils.helper.UtilHelper
+import com.colin.nfc.focus.NFCFocus
 import com.tencent.smtt.sdk.QbSdk
 
 /**
@@ -27,6 +28,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        NFCFocus.initialize(this)
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
         QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
             override fun onCoreInitFinished() {

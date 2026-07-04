@@ -25,21 +25,7 @@ class AIDLClient(
     }
 
     private var aidlService: IAIDLInterface? = null
-//    private val callback = object : IAIDLCallback.Stub() {
-//        override fun aidlStatus(isConnected: Boolean) {
-//            Log.i(TAG, "aidlStatus:$isConnected")
-//        }
-//
-//        override fun aidlChanged(data: String?) {
-//            Log.i(TAG, "aidlChanged:$data")
-//        }
-//
-//        override fun itemChanged(itembean: ItemBean?) {
-//            Log.i(TAG, "itemChanged:$itembean")
-//        }
-//
-//    }
-
+    private var isBound = false
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -54,14 +40,32 @@ class AIDLClient(
     }
 
     fun bindService(`package`: String = "com.colin.android.demo.kotlin") {
+        if (isBound) return
         val intent = Intent(AIDLService.ACTION).apply {
             this.`package` = `package`
         }
-        context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        isBound = context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
     }
 
     fun unbindService() {
-        context.unbindService(connection)
+        if (isBound) {
+            aidlService?.unregister(aidlCallback)
+            context.unbindService(connection)
+            isBound = false
+            aidlService = null
+        }
+    }
+
+    fun aidlStatus(isConnected: Boolean) {
+        aidlService?.aidlStatus(isConnected)
+    }
+
+    fun stringChanged(string: String) {
+        aidlService?.stringChanged(string)
+    }
+
+    fun itemChanged(item: ItemBean) {
+        aidlService?.itemChanged(item)
     }
 
     private val aidlCallback = object : IAIDLCallback.Stub() {
