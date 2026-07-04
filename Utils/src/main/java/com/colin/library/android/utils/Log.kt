@@ -1,8 +1,6 @@
 package com.colin.library.android.utils
 
 import android.util.Log
-import com.colin.library.android.utils.Log.json
-import com.colin.library.android.utils.Log.xml
 import com.colin.library.android.utils.helper.UtilHelper
 
 /**
@@ -19,147 +17,89 @@ object Log {
      * VERBOSE级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun v(msg: Any?) = print(Log.VERBOSE, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * VERBOSE级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun v(tag: String, msg: Any?) = print(Log.VERBOSE, tag, msg)
+    @JvmOverloads
+    fun v(msg: Any?, tag: String? = null) = print(Log.VERBOSE, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * DEBUG级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun d(msg: Any?) = print(Log.DEBUG, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * DEBUG级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun d(tag: String, msg: Any?) = print(Log.DEBUG, tag, msg)
+    @JvmOverloads
+    fun d(msg: Any?, tag: String? = null) = print(Log.DEBUG, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * INFO级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun i(msg: Any?) = print(Log.INFO, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * INFO级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun i(tag: String, msg: Any?) = print(Log.INFO, tag, msg)
+    @JvmOverloads
+    fun i(msg: Any?, tag: String? = null) = print(Log.INFO, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * WARN级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun w(msg: Any?) = print(Log.WARN, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * WARN级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun w(tag: String, msg: Any?) = print(Log.WARN, tag, msg)
+    @JvmOverloads
+    fun w(msg: Any?, tag: String? = null) = print(Log.WARN, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * ERROR级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun e(msg: Any?) = print(Log.ERROR, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * ERROR级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun e(tag: String, msg: Any?) = print(Log.ERROR, tag, msg)
+    @JvmOverloads
+    fun e(msg: Any?, tag: String? = null) = print(Log.ERROR, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * ASSERT级别日志
      *
      * @param msg 日志消息
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun a(msg: Any?) = print(Log.ASSERT, UtilHelper.getUtilConfig().getLogTag(), msg)
-
-    /**
-     * ASSERT级别日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param msg 日志消息
-     */
-    @JvmStatic
-    fun a(tag: String, msg: Any?) = print(Log.ASSERT, tag, msg)
+    @JvmOverloads
+    fun a(msg: Any?, tag: String? = null) = print(Log.ASSERT, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * 格式化输出JSON日志
      *
      * @param json JSON对象、数组或字符串
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun json(json: Any?) = print(
+    @JvmOverloads
+    fun json(json: Any?, tag: String? = null) = print(
         UtilHelper.getUtilConfig().getLogLevel(),
-        UtilHelper.getUtilConfig().getLogTag(),
+        tag ?: UtilHelper.getUtilConfig().getLogTag(),
         FormatUtil.formatJson(json)
     )
-
-    /**
-     * 格式化输出JSON日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param json JSON对象、数组或字符串
-     */
-    @JvmStatic
-    fun json(tag: String, json: Any?) =
-        print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatJson(json))
 
     /**
      * 格式化输出XML日志
      *
      * @param xml XML字符串
+     * @param tag 日志标签（可选）
      */
     @JvmStatic
-    fun xml(xml: String?) = print(
+    @JvmOverloads
+    fun xml(xml: String?, tag: String? = null) = print(
         UtilHelper.getUtilConfig().getLogLevel(),
-        UtilHelper.getUtilConfig().getLogTag(),
+        tag ?: UtilHelper.getUtilConfig().getLogTag(),
         FormatUtil.formatXml(xml)
     )
-
-    /**
-     * 格式化输出XML日志（自定义Tag）
-     *
-     * @param tag 日志标签
-     * @param xml XML字符串
-     */
-    @JvmStatic
-    fun xml(tag: String, xml: String?) =
-        print(UtilHelper.getUtilConfig().getLogLevel(), tag, FormatUtil.formatXml(xml))
 
     /**
      * 输出异常堆栈信息
@@ -193,12 +133,12 @@ object Log {
         ) return INVALID
         val logTag = tag ?: getTag(Thread.currentThread().stackTrace)
         return when (level) {
-            Log.VERBOSE -> Log.v(logTag, "$msg")
-            Log.DEBUG -> Log.d(logTag, "$msg")
-            Log.INFO -> Log.i(logTag, "$msg")
-            Log.WARN -> Log.w(logTag, "$msg")
-            Log.ERROR -> Log.e(logTag, "$msg")
-            Log.ASSERT -> Log.wtf(logTag, "$msg")
+            Log.VERBOSE -> android.util.Log.v(logTag, "$msg")
+            Log.DEBUG -> android.util.Log.d(logTag, "$msg")
+            Log.INFO -> android.util.Log.i(logTag, "$msg")
+            Log.WARN -> android.util.Log.w(logTag, "$msg")
+            Log.ERROR -> android.util.Log.e(logTag, "$msg")
+            Log.ASSERT -> android.util.Log.wtf(logTag, "$msg")
             else -> INVALID
         }
     }

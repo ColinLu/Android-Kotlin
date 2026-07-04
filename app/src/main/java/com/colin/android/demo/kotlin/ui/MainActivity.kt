@@ -23,7 +23,6 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.tencent.smtt.sdk.QbSdk
 
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -99,33 +98,4 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         val menuItem = menu?.findItem(res) ?: return
         menuItem.isVisible = visible
     }
-
-
-    private fun createPopupWindow(): ListPopupWindow {
-        return ListPopupWindow(this).apply {
-            setAdapter(
-                ArrayAdapter(
-                    this@MainActivity,
-                    R.layout.item_text,
-                    resources.getStringArray(R.array.local_list)
-                ).apply {
-                    setOnItemClickListener { _, _, position, _ ->
-//                        selectedLanguagege(position)
-                    }
-                })
-            anchorView = viewBinding.appBarMain.toolbar
-            width = 150.dp()
-            height = WindowManager.LayoutParams.WRAP_CONTENT
-            setDropDownGravity(Gravity.BOTTOM or Gravity.END)
-        }
-    }
-
-//    private fun selectedLanguage(position: Int) {
-//        val languages = resources.getStringArray(R.array.local_language_list)
-//        val countries = resources.getStringArray(R.array.local_country_list)
-//        LanguageHelper.saveLocale(Locale(languages[position], countries[position]))
-//        onCreate(null)
-//    }
-
-
 }

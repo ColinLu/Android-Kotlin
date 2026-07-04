@@ -27,15 +27,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin {
-        jvmToolchain(libs.versions.versionJava.get().toInt())
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-Xjvm-default=all-compatibility"
-            )
-        }
-    }
+
     publishing {
         singleVariant("release") {
             // 可以在这里添加更多配置选项
@@ -45,6 +37,16 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+}
+
+kotlin {
+    jvmToolchain(libs.versions.versionJava.get().toInt())
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
     }
 }
 

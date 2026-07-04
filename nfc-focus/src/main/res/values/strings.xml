@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NFC Focus</string>
+    
+    <!-- 无障碍服务描述 -->
+    <string name="accessibility_service_description">
+        专注模式无障碍服务用于检测和拦截分心应用。\n\n
+        功能：\n
+        • 监听应用切换事件\n
+        • 检测是否打开分心应用\n
+        • 立即显示提醒并引导返回专注\n\n
+        隐私说明：\n
+        • 此服务仅在专注会话期间运行\n
+        • 不会收集或上传任何个人信息\n
+        • 所有数据仅存储在本地设备\n\n
+        您可以随时在系统设置中关闭此服务。
+    </string>
+    
+    <!-- 通知文本 -->
+    <string name="notification_channel_session">专注会话</string>
+    <string name="notification_channel_alert">分心提醒</string>
+    <string name="notification_channel_completed">专注完成</string>
+    
+    <string name="notification_focus_session">专注中</string>
+    <string name="notification_distraction_detected">检测到分心</string>
+    <string name="notification_focus_completed">专注完成</string>
+    
+    <!-- 覆盖窗口文本 -->
+    <string name="overlay_message_gentle">专注时间，请勿分心</string>
+    <string name="overlay_message_balanced">检测到分心应用，建议返回专注</string>
+    <string name="overlay_message_strict">严格模式：禁止使用此应用</string>
+    <string name="overlay_btn_return">返回专注</string>
+    <string name="overlay_btn_temporary_exit">休息 5 分钟</string>
+    <string name="overlay_btn_dismiss">关闭提醒</string>
+</resources>

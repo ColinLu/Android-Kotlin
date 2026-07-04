@@ -48,6 +48,11 @@
         <item>@string/method_http</item>
         <item>@string/method_contact</item>
         <item>@string/method_path</item>
+        <item>@string/method_aidl</item>
+        <item>@string/method_nfc</item>
+        <item>@string/method_sp</item>
+        <item>@string/method_toast</item>
+        <item>@string/method_banner</item>
         <item>@string/title_web</item>
         <item>@string/title_video</item>
     </string-array>

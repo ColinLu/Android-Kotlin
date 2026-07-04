@@ -5,7 +5,7 @@ import java.util.Locale
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -54,14 +54,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin {
-        jvmToolchain(libs.versions.versionJava.get().toInt())
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-opt-in=kotlin.RequiresOptIn", "-Xjvm-default=all-compatibility"
-            )
-        }
-    }
     buildFeatures {
         viewBinding = true
     }
@@ -89,6 +81,15 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(libs.versions.versionJava.get().toInt())
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn", "-Xjvm-default=all-compatibility"
+        )
+    }
+}
+
 dependencies {
     implementation(
         fileTree(
@@ -99,9 +100,11 @@ dependencies {
     )
 
     implementation(project(":Utils"))
+    implementation(project(":nfc-focus"))
     implementation(project(":Widgets"))
     implementation(project(":Network"))
     implementation(project(":Video"))
+    implementation(project(":AIDL"))
 //    implementation("com.gitee.colin_lu:Android-Kotlin:0.0.2")
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)

@@ -25,6 +25,11 @@
     <string name="method_permission">Permission</string>
     <string name="method_http" translatable="false">Http</string>
     <string name="method_path">Path</string>
+    <string name="method_aidl" translatable="false">AIDL Test</string>
+    <string name="method_nfc" translatable="false">NFC Focus Test</string>
+    <string name="method_sp" translatable="false">SpUtil Test</string>
+    <string name="method_toast" translatable="false">Toast Test</string>
+    <string name="method_banner" translatable="false">Banner Test</string>
 
 
 </resources>

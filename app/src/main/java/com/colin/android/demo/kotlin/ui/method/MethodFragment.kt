@@ -31,20 +31,16 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
             }
             adapter.onItemClickListener = { _, item, _ ->
                 when (item) {
-                    getString(R.string.title_log) -> {
-                        toNavigate(this@MethodFragment, R.id.action_to_log)
-                    }
-
-                    getString(R.string.title_web) -> {
-                        toNavigate(this@MethodFragment, R.id.action_webIndex)
-                    }
-                    getString(R.string.title_video) -> {
-                        toNavigate(this@MethodFragment, R.id.action_video)
-                    }
-
-                    else -> {
-                        Log.i(item)
-                    }
+                    getString(R.string.title_log) -> toNavigate(this@MethodFragment, R.id.action_to_log)
+                    getString(R.string.title_web) -> toNavigate(this@MethodFragment, R.id.action_webIndex)
+                    getString(R.string.title_video) -> toNavigate(this@MethodFragment, R.id.action_video)
+                    getString(R.string.method_http) -> viewModel.testHttp()
+                    getString(R.string.method_sp) -> viewModel.testSp()
+                    getString(R.string.method_toast) -> viewModel.testToast()
+                    getString(R.string.method_nfc) -> viewModel.testNfc()
+                    getString(R.string.method_aidl) -> viewModel.testAidl(requireActivity().application as com.colin.android.demo.kotlin.app.App)
+                    getString(R.string.method_banner) -> toNavigate(this@MethodFragment, R.id.fragment_home)
+                    else -> Log.i(item)
                 }
             }
         }

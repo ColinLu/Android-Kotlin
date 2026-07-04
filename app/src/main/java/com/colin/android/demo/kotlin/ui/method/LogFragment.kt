@@ -69,7 +69,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
     override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
         lifecycleScope.launch {
             viewModel.list.flowWithLifecycle(lifecycle).collect {
-                Log.i("LogFragment", it)
+                Log.i(it)
                 it.apply { adapter.submitList(it) }
                 viewBinding.refresh.isRefreshing = false
             }

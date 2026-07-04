@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    id("kotlin-parcelize")
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
     namespace = "com.colin.android.demo.kotlin.aidl"
-    compileSdk { version = release(libs.versions.compileSdk.get().toInt()) }
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -25,15 +25,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin {
-        jvmToolchain(libs.versions.versionJava.get().toInt())
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-Xjvm-default=all-compatibility"
-            )
-        }
-    }
 
     buildFeatures { aidl = true }
 
@@ -42,6 +33,16 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+}
+
+kotlin {
+    jvmToolchain(libs.versions.versionJava.get().toInt())
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
     }
 }
 
@@ -57,7 +58,6 @@ val copyAar by tasks.registering {
     doLast {
         // 定义多个目标目录列表
         val targetDirs = listOf(
-            file("${rootDir}/libs"),
             //指定客服端工程的libs目录
             file("/Users/Colin/Projects/Code/DemoAidlClient/app/libs")
         )

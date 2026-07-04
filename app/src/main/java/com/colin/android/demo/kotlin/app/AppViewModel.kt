@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
  */
 open class AppViewModel : ViewModel() {
     val service: ApiService by lazy {
-        NetworkHelper.create(ApiService::class.java)
+        NetworkHelper.create()
     }
 
     /*加载状态*/

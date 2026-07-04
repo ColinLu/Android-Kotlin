@@ -4,8 +4,6 @@ import android.os.SystemClock
 import android.view.View
 import com.colin.library.android.utils.TIMEOUT_CLICK
 
-private var lastClickTime = 0L
-
 /**
  * Author:ColinLu
  * E-mail:945919945@qq.com
@@ -14,33 +12,24 @@ private var lastClickTime = 0L
  * Des   :View扩展函数，提供防抖点击和可见性控制
  */
 
+private const val TAG_LAST_CLICK_TIME = -101
 
 /**
  * 为多个View设置防重复点击事件
- *
- * @param views 需要设置点击事件的View数组
- * @param interval 时间间隔（毫秒），默认500毫秒
- * @param click 点击回调
  */
 fun onClick(vararg views: View, interval: Long = TIMEOUT_CLICK, click: (View) -> Unit) {
-    views.forEach {
-        it.onClick(interval = interval) { view -> click.invoke(view) }
-    }
+    views.forEach { it.onClick(interval, click) }
 }
 
 /**
  * 为单个View设置防重复点击事件
- *
- * @param interval 时间间隔（毫秒），默认500毫秒
- * @param click 点击回调
  */
 fun View.onClick(interval: Long = TIMEOUT_CLICK, click: (view: View) -> Unit) {
     setOnClickListener {
         val current = SystemClock.elapsedRealtime()
-        if (lastClickTime != 0L && (current - lastClickTime < interval)) {
-            return@setOnClickListener
-        }
-        lastClickTime = current
+        val lastClickTime = getTag(TAG_LAST_CLICK_TIME) as? Long ?: 0L
+        if (current - lastClickTime < interval) return@setOnClickListener
+        setTag(TAG_LAST_CLICK_TIME, current)
         click.invoke(it)
     }
 }
@@ -55,8 +44,8 @@ fun View.visible(visible: Boolean) {
 }
 
 /**
- * 判断View是否可见
- *
- * @return true表示可见，false表示不可见
+ * 设置View的可见性（支持 INVISIBLE）
  */
-fun View.isVisible() = this.visibility == View.VISIBLE
+fun View.invisible(invisible: Boolean) {
+    visibility = if (invisible) View.INVISIBLE else View.VISIBLE
+}

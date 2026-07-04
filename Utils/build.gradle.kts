@@ -28,15 +28,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-    kotlin {
-        jvmToolchain(libs.versions.versionJava.get().toInt())
-        compilerOptions {
-            freeCompilerArgs.addAll(
-                "-opt-in=kotlin.RequiresOptIn",
-                "-Xjvm-default=all-compatibility"
-            )
-        }
-    }
+
     publishing {
         singleVariant("release") {
             withSourcesJar()
@@ -45,11 +37,23 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(libs.versions.versionJava.get().toInt())
+    compilerOptions {
+        freeCompilerArgs.addAll(
+            "-opt-in=kotlin.RequiresOptIn",
+            "-Xjvm-default=all-compatibility"
+        )
+    }
+}
+
 dependencies {
     compileOnly(libs.bundles.androidCommon)
     compileOnly(libs.gson)
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
 }
 
 // 应用统一发布配置
 apply(from = rootProject.file("publish-config.gradle.kts"))
-
