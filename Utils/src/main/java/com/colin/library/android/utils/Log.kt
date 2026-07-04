@@ -21,7 +21,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun v(msg: Any?, tag: String? = null) = print(Log.VERBOSE, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun v(msg: Any?, tag: String? = null) =
+        print(Log.VERBOSE, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * DEBUG级别日志
@@ -31,7 +32,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun d(msg: Any?, tag: String? = null) = print(Log.DEBUG, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun d(msg: Any?, tag: String? = null) =
+        print(Log.DEBUG, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * INFO级别日志
@@ -41,7 +43,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun i(msg: Any?, tag: String? = null) = print(Log.INFO, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun i(msg: Any?, tag: String? = null) =
+        print(Log.INFO, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * WARN级别日志
@@ -51,7 +54,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun w(msg: Any?, tag: String? = null) = print(Log.WARN, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun w(msg: Any?, tag: String? = null) =
+        print(Log.WARN, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * ERROR级别日志
@@ -61,7 +65,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun e(msg: Any?, tag: String? = null) = print(Log.ERROR, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun e(msg: Any?, tag: String? = null) =
+        print(Log.ERROR, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * ASSERT级别日志
@@ -71,7 +76,8 @@ object Log {
      */
     @JvmStatic
     @JvmOverloads
-    fun a(msg: Any?, tag: String? = null) = print(Log.ASSERT, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
+    fun a(msg: Any?, tag: String? = null) =
+        print(Log.ASSERT, tag ?: UtilHelper.getUtilConfig().getLogTag(), msg)
 
     /**
      * 格式化输出JSON日志
@@ -132,15 +138,7 @@ object Log {
                 .getLogLevel()
         ) return INVALID
         val logTag = tag ?: getTag(Thread.currentThread().stackTrace)
-        return when (level) {
-            Log.VERBOSE -> android.util.Log.v(logTag, "$msg")
-            Log.DEBUG -> android.util.Log.d(logTag, "$msg")
-            Log.INFO -> android.util.Log.i(logTag, "$msg")
-            Log.WARN -> android.util.Log.w(logTag, "$msg")
-            Log.ERROR -> android.util.Log.e(logTag, "$msg")
-            Log.ASSERT -> android.util.Log.wtf(logTag, "$msg")
-            else -> INVALID
-        }
+        return android.util.Log.println(level, logTag, "$msg")
     }
 
     /**
@@ -150,8 +148,8 @@ object Log {
      * @return 文件名:行号格式的Tag
      */
     private fun getTag(traces: Array<StackTraceElement>): String {
-        val index = if (traces.getOrNull(0)?.fileName == VM_STACK) 4 else 3
-        return classInfo(traces.getOrElse(index) { traces[3] })
+        val index = if (traces.getOrNull(0)?.fileName == VM_STACK) 5 else 4
+        return classInfo(traces.getOrElse(index) { traces[4] })
     }
 
     /**

@@ -1,4 +1,4 @@
-package com.colin.android.demo.kotlin.ui.video
+package com.colin.android.demo.kotlin.ui.widget.video
 
 import android.os.Bundle
 import androidx.annotation.OptIn
@@ -15,7 +15,7 @@ class VideoFragment : AppFragment<FragmentVideoBinding, SlideshowViewModel>() {
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
         val player = VideoMediaManager.getMediaPlayer(requireContext())
         viewBinding.video.bind(lifecycle, player)
-        
+
         // Use a test video URL
         val videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
         viewBinding.video.play(MediaItem.fromUri(videoUrl))

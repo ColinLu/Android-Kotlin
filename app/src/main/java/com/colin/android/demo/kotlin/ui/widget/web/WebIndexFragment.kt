@@ -1,4 +1,4 @@
-package com.colin.android.demo.kotlin.ui.web
+package com.colin.android.demo.kotlin.ui.widget.web
 
 import android.os.Bundle
 import android.view.ContextMenu

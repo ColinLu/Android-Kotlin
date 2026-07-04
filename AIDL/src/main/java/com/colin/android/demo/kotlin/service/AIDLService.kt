@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.os.RemoteCallbackList
 import android.os.RemoteException
 import android.util.Log
+import androidx.core.os.BundleCompat
 import com.colin.android.demo.kotlin.IAIDLCallback
 import com.colin.android.demo.kotlin.IAIDLInterface
 import com.colin.android.demo.kotlin.ItemBean
@@ -21,27 +22,41 @@ class AIDLService : Service() {
     companion object {
         private const val TAG = "AIDLService"
         const val ACTION = "com.colin.android.demo.kotlin.service.AIDLService"
+        const val ACTION_SEND_STRING = "action.aidl.send.string"
+        const val ACTION_SEND_ITEM = "action.aidl.send.item"
+        const val KEY_SEND_VALUE = "KEY_SEND_VALUE"
     }
 
     private val callbackList by lazy { RemoteCallbackList<IAIDLCallback>() }
+    private var isConnected = false
     override fun onCreate() {
         super.onCreate()
-        Log.i(TAG, "onCreate")
+        Log.i(TAG, "onCreate AIDLService")
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        Log.i(TAG, "onBind")
+        Log.i(TAG, "onBind AIDLService")
         return bind
     }
 
 
     override fun onDestroy() {
+        Log.i(TAG, "onDestroy AIDLService")
         super.onDestroy()
-        Log.i(TAG, "onDestroy")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.i(TAG, "onStartCommand")
+        val action = intent?.action
+        Log.i(TAG, "onStartCommand AIDLService action:$action")
+        if (ACTION_SEND_STRING == action) {
+            val value = intent.extras?.getString(KEY_SEND_VALUE) ?: ""
+            bind.stringChanged(value)
+        }
+        if (ACTION_SEND_ITEM == action) {
+            val item =
+                BundleCompat.getParcelable(intent.extras!!, KEY_SEND_VALUE, ItemBean::class.java)
+            bind.itemChanged(item)
+        }
         // 防止服务被系统杀死后自动重启
         return START_NOT_STICKY
     }
@@ -49,16 +64,23 @@ class AIDLService : Service() {
     private val bind = object : IAIDLInterface.Stub() {
         @Throws(RemoteException::class)
         override fun register(callback: IAIDLCallback?) {
-            Log.i(TAG, "register IDemoAidlCallback")
+            Log.i(TAG, "register IAIDLCallback")
             callback?.let { callbackList.register(it) }
-            aidlStatus(true)
+            isConnected = true
+            aidlStatus(isConnected)
         }
 
         @Throws(RemoteException::class)
         override fun unregister(callback: IAIDLCallback?) {
-            Log.i(TAG, "unregister IDemoAidlCallback")
+            Log.i(TAG, "unregister IAIDLCallback")
+            isConnected = false
             callback?.let { callbackList.unregister(it) }
-            aidlStatus(false)
+            aidlStatus(isConnected)
+        }
+
+        override fun getAidlStatus(): Boolean {
+            Log.i(TAG, "getAidlStatus isConnected:$isConnected")
+            return isConnected
         }
 
         @Throws(RemoteException::class)

@@ -1,14 +1,11 @@
 package com.colin.android.demo.kotlin.ui
 
+import android.content.Context
 import android.os.Bundle
-import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
-import android.view.WindowManager
-import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
-import androidx.appcompat.widget.ListPopupWindow
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,7 +17,6 @@ import com.colin.android.demo.kotlin.app.AppActivity
 import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ToastUtil
-import com.colin.library.android.utils.ext.dp
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 
@@ -56,8 +52,9 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.fragment_home,
-                R.id.fragment_gallery,
                 R.id.fragment_method,
+                R.id.fragment_widget,
+                R.id.fragment_gallery,
                 R.id.fragment_slideshow
             ), drawerLayout
         )
@@ -79,7 +76,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.action_language) {
-
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -98,4 +94,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>() {
         val menuItem = menu?.findItem(res) ?: return
         menuItem.isVisible = visible
     }
+
+    override fun getContext(): Context = this
 }

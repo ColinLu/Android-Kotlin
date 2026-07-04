@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <queries>
+        <package android:name="com.colin.android.demo.kotlin" />
+    </queries>
+
     <application
         android:name=".app.App"
         android:allowBackup="true"
@@ -12,7 +17,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AndroidKotlin.NoActionBar">
+        android:theme="@style/Theme.AndroidKotlin.NoActionBar"
+        tools:ignore="RtlEnabled">
 
         <service
             android:name="com.colin.android.demo.kotlin.service.AIDLService"
@@ -20,10 +26,11 @@
             android:exported="true"
             android:process=":remote">
             <intent-filter>
+                <action android:name="action.aidl.send.string" />
+                <action android:name="action.aidl.send.item" />
                 <action android:name="com.colin.android.demo.kotlin.service.AIDLService" />
             </intent-filter>
         </service>
-
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">

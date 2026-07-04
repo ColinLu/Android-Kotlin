@@ -4,9 +4,10 @@ import android.content.res.Resources
 import androidx.annotation.ArrayRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.colin.android.demo.kotlin.ItemBean
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.AppViewModel
-import com.colin.android.demo.kotlin.def.ItemBean
+import com.colin.library.android.utils.helper.UtilHelper
 
 class ListViewModel : AppViewModel() {
     @ArrayRes
@@ -24,7 +25,8 @@ class ListViewModel : AppViewModel() {
     val list: LiveData<List<ItemBean>> = _list
 
     fun loadData() {
-        val newData = ItemBean.initList(id)
+        val array = UtilHelper.getApplication().resources.getStringArray(id)
+        val newData = array.mapIndexed { index, s -> ItemBean(index, s) }
         _list.postValue(newData)
     }
 

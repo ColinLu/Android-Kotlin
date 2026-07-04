@@ -47,6 +47,7 @@
     </style>
 
     <style name="Text.Title" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textStyle">bold</item>
     </style>

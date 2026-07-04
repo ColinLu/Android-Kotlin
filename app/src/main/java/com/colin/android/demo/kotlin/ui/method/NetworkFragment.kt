@@ -1,4 +1,4 @@
-package com.colin.android.demo.kotlin.ui.module
+package com.colin.android.demo.kotlin.ui.method
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -6,7 +6,6 @@ import com.colin.android.demo.kotlin.ApiService
 import com.colin.android.demo.kotlin.adapter.StringAdapter
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
-import com.colin.android.demo.kotlin.ui.method.MethodViewModel
 import com.colin.library.android.network.NetworkHelper
 import com.colin.library.android.network.request
 import com.colin.library.android.utils.Log

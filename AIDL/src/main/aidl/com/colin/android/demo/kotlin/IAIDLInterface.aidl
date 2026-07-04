@@ -13,6 +13,7 @@ import com.colin.android.demo.kotlin.ItemBean;
 interface IAIDLInterface {
     void register(IAIDLCallback callback);
     void unregister(IAIDLCallback callback);
+    boolean getAidlStatus();
     void aidlStatus(in boolean isConnected);
     void stringChanged(String string);
     void itemChanged(in ItemBean item);

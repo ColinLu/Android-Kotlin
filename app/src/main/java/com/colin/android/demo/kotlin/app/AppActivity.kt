@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewbinding.ViewBinding
+import com.colin.android.demo.kotlin.receiver.ScreenChangedReceiver
 import com.colin.library.android.utils.Log
 import com.colin.library.android.widget.base.BaseActivity
 import java.lang.reflect.ParameterizedType
@@ -13,18 +14,19 @@ import java.lang.reflect.ParameterizedType
 /**
  * 业务层 Activity 基类，自动处理 ViewBinding 与 ViewModel
  */
-abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
-    
+abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity(),
+    ScreenChangedReceiver.OnScreenChangedListener {
+
     private var _viewBinding: VB? = null
     val viewBinding: VB get() = _viewBinding!!
-    
+
     val viewModel: VM by lazy { reflectViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _viewBinding = reflectViewBinding()
         setContentView(viewBinding.root)
-        
+        ScreenChangedReceiver.bind(this)
         initView(intent?.extras, savedInstanceState)
         initData(intent?.extras, savedInstanceState)
     }
@@ -32,6 +34,10 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         _viewBinding = null
+    }
+
+    override fun screenChanged(action: String) {
+        Log.i(TAG, "screenChanged:$action")
     }
 
     @Suppress("UNCHECKED_CAST")

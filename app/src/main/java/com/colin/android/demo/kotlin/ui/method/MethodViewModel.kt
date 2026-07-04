@@ -1,11 +1,12 @@
 package com.colin.android.demo.kotlin.ui.method
 
 import androidx.lifecycle.viewModelScope
+import com.colin.android.demo.kotlin.ItemBean
 import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.app.App
 import com.colin.android.demo.kotlin.app.AppViewModel
+import com.colin.android.demo.kotlin.app.DELAY_TIME_REFRESH
 import com.colin.android.demo.kotlin.client.AIDLClient
-import com.colin.android.demo.kotlin.ItemBean
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.SpUtil
 import com.colin.library.android.utils.ToastUtil
@@ -15,6 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class MethodViewModel : AppViewModel() {
 
@@ -26,9 +28,9 @@ class MethodViewModel : AppViewModel() {
     fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
             loading(true)
-            delay(500)
+            delay(DELAY_TIME_REFRESH.milliseconds)
             _list.emit(App.getInstance().resources.getStringArray(R.array.method_list).asList())
-            loading()
+            loading(true)
         }
     }
 

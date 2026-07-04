@@ -18,6 +18,12 @@ import com.tencent.smtt.sdk.QbSdk
  *
  * Des   :项目 Android 全局App，配置初始化
  */
+const val DELAY_TIME_REFRESH = 500L
+const val ACTION_AIDL_SEND_STRING = "com.colin."
+const val ACTION_AIDL_SEND_ITEM = 500L
+const val URL_DEBUG: String = "https://www.mxwsl.cn"
+const val URL_RELEASE: String = "https://app.wanwuzhinan.top"
+
 class App : Application() {
 
     companion object {
@@ -29,6 +35,8 @@ class App : Application() {
         super.onCreate()
         instance = this
         NFCFocus.initialize(this)
+//        NetworkHelper.baseUrl = if (debug) ConfigApp.URL_DEBUG else ConfigApp.URL_RELEASE
+
         UtilHelper.init(UtilConfig.newBuilder(this, true).build())
         QbSdk.initX5Environment(this, object : QbSdk.PreInitCallback {
             override fun onCoreInitFinished() {
@@ -44,7 +52,7 @@ class App : Application() {
         ProcessLifecycleOwner.get().lifecycle.addObserver(AppLifeObserver())
     }
 
-    private inner class AppLifeObserver : LifecycleEventObserver {
+    private class AppLifeObserver : LifecycleEventObserver {
         override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
             if (Lifecycle.Event.ON_START == event) {
                 Log.i("foreground")

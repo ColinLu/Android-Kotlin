@@ -104,7 +104,7 @@ dependencies {
     implementation(project(":Widgets"))
     implementation(project(":Network"))
     implementation(project(":Video"))
-    implementation(project(":AIDL"))
+//    implementation(project(":AIDL"))
 //    implementation("com.gitee.colin_lu:Android-Kotlin:0.0.2")
     implementation(libs.tbssdk)
     implementation(libs.bundles.androidCommon)

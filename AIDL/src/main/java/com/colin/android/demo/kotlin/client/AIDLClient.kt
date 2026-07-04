@@ -39,9 +39,11 @@ class AIDLClient(
         }
     }
 
-    fun bindService(`package`: String = "com.colin.android.demo.kotlin") {
+    fun bindService(
+        `package`: String = "com.colin.android.demo.kotlin", action: String = AIDLService.ACTION
+    ) {
         if (isBound) return
-        val intent = Intent(AIDLService.ACTION).apply {
+        val intent = Intent(action).apply {
             this.`package` = `package`
         }
         isBound = context.bindService(intent, connection, Context.BIND_AUTO_CREATE)
@@ -55,6 +57,8 @@ class AIDLClient(
             aidlService = null
         }
     }
+
+    fun isConnected() = aidlService?.aidlStatus == true
 
     fun aidlStatus(isConnected: Boolean) {
         aidlService?.aidlStatus(isConnected)

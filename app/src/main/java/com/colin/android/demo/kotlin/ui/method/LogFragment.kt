@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
  *
  * Des   :Log日志打印
  */
-class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
+class LogFragment : AppFragment<LayoutRefreshListBinding, ModuleViewModel>() {
 
     val JSON: String =
         "{\n" + "  \"sites\": {\n" + "    \"site\": [\n" + "      {\n" + "        \"id\": \"1\",\n" + "        \"name\": \"菜鸟教程\",\n" + "        \"url\": \"www.runoob.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"2\",\n" + "        \"name\": \"菜鸟工具\",\n" + "        \"url\": \"www.jyshare.com\"\n" + "      },\n" + "      {\n" + "        \"id\": \"3\",\n" + "        \"name\": \"Google\",\n" + "        \"url\": \"www.google.com\"\n" + "      }\n" + "    ]\n" + "  }\n" + "}"
@@ -44,21 +44,17 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
             adapter.onItemClickListener = { _, item, position ->
                 when (item) {
                     "Log V" -> Log.v(item)
-                    "Log V with Tag" -> Log.v(TAG, item)
+                    "Log V with Tag" -> Log.v(item, TAG)
                     "Log D" -> Log.d(item)
-                    "Log D with Tag" -> Log.d(TAG, item)
+                    "Log D with Tag" -> Log.d(item, TAG)
                     "Log I" -> Log.i(item)
-                    "Log I with Tag" -> Log.i(TAG, item)
+                    "Log I with Tag" -> Log.i(item, TAG)
                     "Log W" -> Log.w(item)
-                    "Log W with Tag" -> Log.w(TAG, item)
-                    "Log E" -> Log.e(item)
-                    "Log E with Tag" -> Log.e(TAG, item)
-                    "Log A" -> Log.a(item)
-                    "Log A with Tag" -> Log.a(TAG, item)
+                    "Log W with Tag" -> Log.w(item, TAG)
                     "Log Json" -> Log.json(json = JSON)
-                    "Log Json with Tag" -> Log.json(TAG, JSON)
+                    "Log Json with Tag" -> Log.json(JSON, TAG)
                     "Log Xml" -> Log.xml(xml = XML)
-                    "Log Xml with Tag" -> Log.xml(TAG, XML)
+                    "Log Xml with Tag" -> Log.xml(XML, TAG)
                     "Log Error" -> Log.log(Throwable("is error"))
                     else -> Log.log(item)
                 }
@@ -78,7 +74,7 @@ class LogFragment : AppFragment<LayoutRefreshListBinding, LogViewModel>() {
 
     override fun loadData(refresh: Boolean) {
         lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.loadData()
+            viewModel.loadData(R.array.log_list)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.colin.android.demo.kotlin.adapter
 
+import com.colin.android.demo.kotlin.ItemBean
 import com.colin.android.demo.kotlin.R
-import com.colin.android.demo.kotlin.def.ItemBean
 import com.colin.library.android.utils.ext.onClick
 import com.colin.library.android.widget.base.BaseAdapter
 import com.colin.library.android.widget.base.BaseViewHolder

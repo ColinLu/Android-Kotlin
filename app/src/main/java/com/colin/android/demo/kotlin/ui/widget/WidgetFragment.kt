@@ -1,4 +1,4 @@
-package com.colin.android.demo.kotlin.ui.method
+package com.colin.android.demo.kotlin.ui.widget
 
 import android.os.Bundle
 import androidx.lifecycle.flowWithLifecycle
@@ -14,7 +14,7 @@ import com.colin.library.android.widget.recycler.SpaceItemDecoration
 import kotlinx.coroutines.launch
 
 
-class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
+class WidgetFragment : AppFragment<LayoutRefreshListBinding, WidgetViewModel>() {
     private val adapter by lazy { StringAdapter() }
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
@@ -26,15 +26,26 @@ class MethodFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() 
 
             list.apply {
                 this.layoutManager = LinearLayoutManager(requireActivity())
-                this.adapter = this@MethodFragment.adapter
+                this.adapter = this@WidgetFragment.adapter
                 this.addItemDecoration(SpaceItemDecoration(space = 5))
             }
             adapter.onItemClickListener = { _, item, _ ->
                 when (item) {
-                    getString(R.string.title_log) -> toNavigate(this@MethodFragment, R.id.action_to_log)
-                    getString(R.string.method_http) -> toNavigate(this@MethodFragment, R.id.action_network)
-                    getString(R.string.method_aidl) -> toNavigate(this@MethodFragment, R.id.action_aidl)
-                    getString(R.string.method_nfc) -> toNavigate(this@MethodFragment, R.id.action_nfc)
+                    getString(R.string.widget_web) -> toNavigate(
+                        this@WidgetFragment,
+                        R.id.action_webIndex
+                    )
+
+                    getString(R.string.widget_video) -> toNavigate(
+                        this@WidgetFragment,
+                        R.id.action_video
+                    )
+
+                    getString(R.string.widget_banner) -> toNavigate(
+                        this@WidgetFragment,
+                        R.id.fragment_home
+                    )
+
                     else -> Log.i(item)
                 }
             }

@@ -59,18 +59,19 @@ abstract class AppFragment<VB : ViewBinding, VM : AppViewModel> : BaseFragment()
         super.onDestroyView()
     }
 
-    override fun loadData(refresh: Boolean) {
-    }
-
     override fun screenChanged(action: String) {
         Log.i(TAG, "screenChanged:$action")
     }
+
+    override fun loadData(refresh: Boolean) {
+    }
+
 
     /*如果想修改Store 可以重写此方法*/
     open fun bindViewModelStore() = viewModelStore
 
     /**
-     * add an observer within the [ViewLifecycleOwner] lifespan
+     * add an observer within the [observer] lifespan
      */
     inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
         observe(viewLifecycleOwner) { it?.let(observer) }

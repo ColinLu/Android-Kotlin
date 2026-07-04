@@ -56,6 +56,28 @@
         <item>@string/title_web</item>
         <item>@string/title_video</item>
     </string-array>
+    <string-array name="widget_list">
+        <item>@string/widget_web</item>
+        <item>@string/widget_video</item>
+        <item>@string/widget_banner</item>
+    </string-array>
+
+    <string-array name="nfc_list">
+        <item>Check NFC Support</item>
+        <item>Request Usage Stats Permission</item>
+        <item>Get Current Focus Session</item>
+        <item>Stop Focus Mode</item>
+        <item>Get Today\'s Stats</item>
+    </string-array>
+    <string-array name="aidl_list">
+        <item>Check Status</item>
+        <item>Bind Service</item>
+        <item>Unbind Service</item>
+        <item>Send String: Hello AIDL</item>
+        <item>Send Item: ID 1, Title \'AIDL Test\'</item>
+        <item>Get Today\'s Stats</item>
+    </string-array>
+
     <string-array name="path_list">
         <item>can write</item>
         <item>has sd card</item>

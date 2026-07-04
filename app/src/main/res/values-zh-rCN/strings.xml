@@ -6,6 +6,7 @@
     <string name="language">语言</string>
     <string name="title_home">主页</string>
     <string name="title_method">方法</string>
+    <string name="title_widget">组件</string>
     <string name="title_gallery">阅览</string>
     <string name="title_slideshow">分享</string>
     <string name="method_contact">联系人</string>
@@ -14,4 +15,8 @@
     <string name="method_path">路径</string>
     <string name="search">搜索</string>
     <string name="picture">选择图片</string>
+    <string name="aidl_client">AIDL Client</string>
+    <string name="aidl_service">AIDL Service</string>
+    <string name="send_text">send text</string>
+    <string name="send_object">send object</string>
 </resources>

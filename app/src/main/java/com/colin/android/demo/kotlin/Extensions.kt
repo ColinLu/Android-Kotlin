@@ -35,7 +35,6 @@ fun SwipeRefreshLayout.initRefreshView() {
 }
 
 
-
 fun <T> Lifecycle.request() {
 
 }
