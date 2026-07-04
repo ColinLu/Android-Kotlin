@@ -2,9 +2,7 @@ package com.colin.android.demo.kotlin.ui.module
 
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.colin.android.demo.kotlin.R
 import com.colin.android.demo.kotlin.adapter.StringAdapter
-import com.colin.android.demo.kotlin.app.App
 import com.colin.android.demo.kotlin.app.AppFragment
 import com.colin.android.demo.kotlin.client.AIDLClient
 import com.colin.android.demo.kotlin.databinding.LayoutRefreshListBinding
@@ -13,6 +11,9 @@ import com.colin.android.demo.kotlin.ui.method.MethodViewModel
 import com.colin.library.android.utils.Log
 import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.widget.recycler.SpaceItemDecoration
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class AidlFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
     private val adapter by lazy { StringAdapter() }
@@ -52,17 +53,23 @@ class AidlFragment : AppFragment<LayoutRefreshListBinding, MethodViewModel>() {
             aidlClient = AIDLClient(requireActivity().application, object : AIDLClient.Callback {
                 override fun aidlStatus(isConnected: Boolean) {
                     Log.i("AIDL Status: $isConnected")
-                    ToastUtil.show("AIDL Connected: $isConnected")
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        ToastUtil.show("AIDL Connected: $isConnected")
+                    }
                 }
 
                 override fun aidlChanged(data: String?) {
                     Log.i("AIDL Data Changed: $data")
-                    ToastUtil.show("AIDL Received: $data")
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        ToastUtil.show("AIDL Received: $data")
+                    }
                 }
 
                 override fun itemChanged(itemBean: ItemBean?) {
                     Log.i("AIDL Item Changed: $itemBean")
-                    ToastUtil.show("AIDL Received Item: $itemBean")
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        ToastUtil.show("AIDL Received Item: $itemBean")
+                    }
                 }
             })
         }
