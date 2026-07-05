@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
@@ -56,6 +57,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        compose = true
     }
 
     android.applicationVariants.all {
@@ -105,6 +107,9 @@ dependencies {
     implementation(project(":Network"))
     implementation(project(":Video"))
     implementation(libs.tbssdk)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.bundles.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.bundles.androidCommon)
     implementation(libs.bundles.androidWidgets)
     implementation(libs.bundles.androidNavigation)

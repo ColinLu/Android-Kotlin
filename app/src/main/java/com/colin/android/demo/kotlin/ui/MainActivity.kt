@@ -1,35 +1,37 @@
 package com.colin.android.demo.kotlin.ui
 
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
-import androidx.annotation.IdRes
-import androidx.drawerlayout.widget.DrawerLayout
+import android.view.WindowManager
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
-import com.colin.android.demo.kotlin.R
-import com.colin.android.demo.kotlin.app.AppActivity
-import com.colin.android.demo.kotlin.databinding.ActivityMainBinding
-import com.colin.library.android.utils.Log
-import com.colin.library.android.utils.ToastUtil
+import com.colin.android.demo.kotlin.ui.compose.MainScreen
+import com.colin.android.demo.kotlin.ui.theme.AppTheme
 import com.colin.library.android.widget.video.VideoMediaManager
-import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 
 @UnstableApi
-class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>(), Player.Listener {
-    private lateinit var appBarConfiguration: AppBarConfiguration
-
+class MainActivity : ComponentActivity(), Player.Listener {
+    private val viewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES
+        }
+
         VideoMediaManager.connectSessionToken(this)
+        setContent {
+            AppTheme {
+                MainScreen()
+            }
+        }
     }
 
     override fun onResume() {
@@ -47,62 +49,7 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>(), Player.L
         super.onDestroy()
     }
 
-    override fun getContext(): Context = this
+    // TODO: Remove this once fragments are fully migrated to Compose
+    fun setMenuVisible(resId: Int, visible: Boolean) {}
 
-    override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        setSupportActionBar(viewBinding.appBarMain.toolbar)
-        viewBinding.appBarMain.fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action") {
-                    ToastUtil.show(R.string.app_name)
-                }.setAnchorView(R.id.fab).show()
-        }
-        val drawerLayout: DrawerLayout = viewBinding.drawerLayout
-        val navView: NavigationView = viewBinding.navView
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.fragment_home,
-                R.id.fragment_method,
-                R.id.fragment_widget,
-                R.id.fragment_gallery,
-                R.id.fragment_slideshow
-            ), drawerLayout
-        )
-        setupActionBarWithNavController(navController, appBarConfiguration)
-        navView.setupWithNavController(navController)
-
-    }
-
-    override fun initData(bundle: Bundle?, savedInstanceState: Bundle?) {
-        viewModel.status.observe {
-            Log.i(TAG, "status:$it")
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_language) {
-            return true
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
-    }
-
-    fun setMenuVisible(@IdRes res: Int, visible: Boolean) {
-        setMenuVisible(viewBinding.appBarMain.toolbar.menu, res, visible)
-    }
-
-    fun setMenuVisible(menu: Menu?, @IdRes res: Int, visible: Boolean) {
-        val menuItem = menu?.findItem(res) ?: return
-        menuItem.isVisible = visible
-    }
 }

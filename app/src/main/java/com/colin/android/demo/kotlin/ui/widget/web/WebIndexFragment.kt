@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
+import androidx.annotation.OptIn
 import androidx.appcompat.widget.SearchView
+import androidx.media3.common.util.UnstableApi
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.colin.android.demo.kotlin.R
@@ -63,6 +65,7 @@ class WebIndexFragment : AppFragment<LayoutRefreshListBinding, WebViewModel>() {
         viewModel.loadData(refresh)
     }
 
+    @OptIn(UnstableApi::class)
     override fun onResume() {
         super.onResume()
         (requireActivity() as MainActivity).setMenuVisible(R.id.action_search, true)

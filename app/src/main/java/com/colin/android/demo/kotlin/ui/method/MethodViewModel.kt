@@ -30,7 +30,7 @@ class MethodViewModel : AppViewModel() {
             loading(true)
             delay(DELAY_TIME_REFRESH.milliseconds)
             _list.emit(App.getInstance().resources.getStringArray(R.array.method_list).asList())
-            loading(true)
+            loading(false)
         }
     }
 

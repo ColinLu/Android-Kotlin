@@ -20,6 +20,8 @@ appcompat = "1.7.1"
 material = "1.14.0"
 lifecycle = "2.11.0"
 navigation = "2.9.8"
+composeBom = "2026.06.01"
+activityCompose = "1.13.0"
 constraintlayout = "2.2.1"
 swiperefreshlayout = "1.2.0"
 viewpager = "1.1.0"
@@ -66,6 +68,17 @@ media-datasource = { group = "androidx.media3", name = "media3-datasource", vers
 media-exoplayer-hls = { group = "androidx.media3", name = "media3-exoplayer-hls", version.ref = "media" }
 media-datasource-http = { group = "androidx.media3", name = "media3-datasource-okhttp", version.ref = "media" }
 tbssdk = { module = "com.tencent.tbs:tbssdk", version.ref = "tbssdk" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui" }
+androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
+androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
+androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -81,6 +94,7 @@ androidCommon = ["material", "androidx-appcompat", "androidx-core-ktx"]
 androidWidgets = ["androidx-constraintlayout", "androidx-swiperefreshlayout", "androidx-recyclerview", "androidx-viewpager"]
 androidLifecycle = ["androidx-lifecycle-process", "androidx-lifecycle-livedata-ktx", "androidx-lifecycle-viewmodel-ktx", "androidx-lifecycle-runtime-ktx"]
 androidNavigation = ["androidx-navigation-ui-ktx", "androidx-navigation-fragment-ktx"]
+compose = ["androidx-compose-ui", "androidx-compose-ui-graphics", "androidx-compose-ui-tooling-preview", "androidx-compose-material3", "androidx-activity-compose", "androidx-navigation-compose", "androidx-compose-material-icons-core", "androidx-compose-material-icons-extended", "androidx-compose-runtime-livedata"]
 squareup = ["squareup-retrofit2", "squareup-okhttp", "squareup-retrofit2-gson", "squareup-okhttp-logging"]
 media = ["media-ui", "media-exoplayer", "media-common", "media-session", "media-exoplayer-dash", "media-exoplayer-hls", "media-datasource", "media-datasource-http"]
 
@@ -90,5 +104,6 @@ android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize" }
+compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 maven-publish = { id = "com.vanniktech.maven.publish", version = "28" }
 ksp = { id = "com.google.devtools.ksp", version = "2.3.2" }

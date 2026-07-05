@@ -38,7 +38,7 @@ class VideoViewModel : AppViewModel(), Player.Listener {
                 "https://s.wanwuzhinan.top/m3u8/1080p/1.3/100001/6fc6453a46e22186d989a50306c588a8.m3u8",
             ).asList()
             _list.emit(list)
-            loading(true)
+            loading(false)
         }
     }
 
