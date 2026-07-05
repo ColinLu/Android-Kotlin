@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.enableEdgeToEdge
 import androidx.annotation.IdRes
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.media3.common.Player
@@ -22,6 +21,7 @@ import com.colin.library.android.utils.ToastUtil
 import com.colin.library.android.widget.video.VideoMediaManager
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+
 @UnstableApi
 class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>(), Player.Listener {
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -50,7 +50,6 @@ class MainActivity : AppActivity<ActivityMainBinding, MainViewModel>(), Player.L
     override fun getContext(): Context = this
 
     override fun initView(bundle: Bundle?, savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
         setSupportActionBar(viewBinding.appBarMain.toolbar)
         viewBinding.appBarMain.fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)

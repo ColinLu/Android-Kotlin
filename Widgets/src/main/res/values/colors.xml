@@ -19,7 +19,9 @@
     <color name="color_FFE7E7E7">#FFE7E7E7</color>
     <color name="color_FFCCCCCC">#FFCCCCCC</color>
 
-    <color name="status_bar_bg">#27000000</color>
+    <color name="app_background_bg">#00000000</color>
+    <color name="app_status_bar_bg">#00000000</color>
+    <color name="app_navigation_bar_bg">#000000</color>
     <!--Button颜色定义样例-->
     <color name="bt_ripple">@color/color_FFE7E7E7</color>
     <color name="bt_bg_default">@color/purple_700</color>

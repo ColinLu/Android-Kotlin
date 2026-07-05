@@ -12,7 +12,10 @@
         <item name="colorSecondaryVariant">@color/grey_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@color/status_bar_bg</item>
+        <item name="android:background">@color/app_background_bg</item>
+        <item name="android:windowBackground">@color/app_background_bg</item>
+        <item name="android:statusBarColor">@color/app_status_bar_bg</item>
+        <item name="android:navigationBarColor">@color/app_navigation_bar_bg</item>
         <!-- Customize your theme here. -->
         <item name="android:windowEnterAnimation">@android:anim/slide_in_left</item>
         <item name="android:windowExitAnimation">@android:anim/slide_out_right</item>
@@ -25,13 +28,11 @@
         <item name="android:windowFullscreen">true</item>
         <!-- 无边框 -->
         <item name="android:windowFrame">@null</item>
-        <!-- 无标题 -->
-        <item name="android:windowNoTitle">true</item>
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowTranslucentStatus">true</item>
         <!-- 背景透明 -->
-        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowBackground">@color/app_background_bg</item>
         <!-- 遮盖层 -->
         <item name="android:backgroundDimEnabled">true</item>
         <!-- 动画效果 -->

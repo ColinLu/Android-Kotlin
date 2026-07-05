@@ -2,6 +2,7 @@ package com.colin.android.demo.kotlin.app
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -23,6 +24,7 @@ abstract class AppActivity<VB : ViewBinding, VM : ViewModel> : BaseActivity(),
     val viewModel: VM by lazy { reflectViewModel() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         _viewBinding = reflectViewBinding()
         setContentView(viewBinding.root)

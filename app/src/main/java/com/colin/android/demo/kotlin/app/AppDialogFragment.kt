@@ -63,7 +63,7 @@ abstract class AppDialogFragment<VB : ViewBinding>() : BaseDialogFragment(ZERO) 
     }
 
     /**
-     * add an observer within the [ViewLifecycleOwner] lifespan
+     * add an observer within the [observer] lifespan
      */
     inline fun <reified OUT : Any> LiveData<out OUT?>.observe(crossinline observer: (OUT) -> Unit) {
         observe(viewLifecycleOwner) { it?.let(observer) }

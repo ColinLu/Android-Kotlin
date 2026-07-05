@@ -28,7 +28,7 @@
         <item name="cardMaxElevation">@dimen/app_elevation_default</item>
         <item name="cardUseCompatPadding">false</item>
         <item name="cardPreventCornerOverlap">true</item>
-        <item name="cardBackgroundColor">@color/app_background_color</item>
+        <item name="cardBackgroundColor">@color/app_background_bg</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
